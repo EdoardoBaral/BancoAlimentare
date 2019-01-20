@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author Edoardo Baral
  */
-
 public class EntityMagazzino
 {
     private String nome;
