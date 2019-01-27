@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
  *
  * @author Edoardo Baral
  */
-public class EntityRegistro
+public class EntityRegistro implements Comparable<EntityRegistro>
 {
     private Long id;
     private String nome;
@@ -113,6 +113,16 @@ public class EntityRegistro
     public void setDataCessione(DateTime dataCessione)
     {
         this.dataCessione = dataCessione;
+    }
+
+    /**
+     * Metodo che mermette di confrontare l'istanza this di EntityRegistro con un'altra per determinare l'ordine tra le due
+     * @param other: istanza di EntityRegistro da confrontare con quella chiamante
+     * @return una valore negativo se l'id dell'istanza chiamante (this) è minore di quello dell'istanza other, 0 se sono uguali, un valore positivo altrimenti
+     */
+    public int compareTo(EntityRegistro other)
+    {
+        return this.getId().compareTo(other.getId());
     }
 
     /**
