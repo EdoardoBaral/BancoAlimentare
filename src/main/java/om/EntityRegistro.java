@@ -15,7 +15,8 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     private String nome;
     private int quantita;
     private String destinatario;
-    private DateTime dataCessione;
+    private DateTime dataTransazione;
+    private TipoTransazione tipoTransazione;
 
     /**
      * Costruttore di default della classe EntityRegistro
@@ -101,28 +102,51 @@ public class EntityRegistro implements Comparable<EntityRegistro>
      * Metodo che restituisce la data di cessione del prodotto
      * @return la data di cessione del prodotto
      */
-    public DateTime getDataCessione()
+    public DateTime getDataTransazione()
     {
-        return dataCessione;
+        return dataTransazione;
     }
 
     /**
      * Metodo che permette di indicare una data di cessione per il prodotto
-     * @param dataCessione: data di cessione da indicare per il prodotto
+     * @param dataTransazione: data di cessione da indicare per il prodotto
      */
-    public void setDataCessione(DateTime dataCessione)
+    public void setDataTransazione(DateTime dataTransazione)
     {
-        this.dataCessione = dataCessione;
+        this.dataTransazione = dataTransazione;
+    }
+
+    /**
+     * Metodo che restituisce il tipo di transazione rappresentata dall'istanza di EntityRegistro
+     * @return il tipo della transazione
+     */
+    public TipoTransazione getTipoTransazione()
+    {
+        return tipoTransazione;
+    }
+
+    /**
+     * Metodo che permette di impostare un tipo di transazione per un oggetto EntityRegistro
+     * @param tipoTransazione: tipo di transazione da impostare sull'oggetto EntityRegistro
+     */
+    public void setTipoTransazione(TipoTransazione tipoTransazione)
+    {
+        this.tipoTransazione = tipoTransazione;
     }
 
     /**
      * Metodo che mermette di confrontare l'istanza this di EntityRegistro con un'altra per determinare l'ordine tra le due
      * @param other: istanza di EntityRegistro da confrontare con quella chiamante
-     * @return una valore negativo se l'id dell'istanza chiamante (this) è minore di quello dell'istanza other, 0 se sono uguali, un valore positivo altrimenti
+     * @return una valore negativo se l'id dell'istanza chiamante (this) è minore di quello dell'istanza other, un valore positivo in caso contrario.
+ *             Nel caso in cui gli id corrispondano, si applica lo stesso criterio di confronto alla data della transazione
      */
     public int compareTo(EntityRegistro other)
     {
-        return this.getId().compareTo(other.getId());
+        int flagId = this.getId().compareTo(other.getId());
+        if(flagId != 0)
+            return flagId;
+        else
+            return this.getDataTransazione().compareTo(other.getDataTransazione());
     }
 
     /**
