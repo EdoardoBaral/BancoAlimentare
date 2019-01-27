@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author Edoardo Baral
  */
-public class EntityMagazzino
+public class EntityMagazzino implements Comparable<EntityMagazzino>
 {
     private String nome;
     private int giacenza;
@@ -56,6 +56,16 @@ public class EntityMagazzino
     public void setGiacenza(int giacenza)
     {
         this.giacenza = giacenza;
+    }
+
+    /**
+     * Metodo che mermette di confrontare l'istanza this di EntityMagazzino con un'altra per determinare l'ordine tra le due
+     * @param other: istanza di EntityMagazzino da confrontare con quella chiamante
+     * @return una valore negativo che il nome dell'istanza chiamante (this) precede alfabeticamente quello dell'istanza other, 0 se sono uguali, una valore positivo altrimenti
+     */
+    public int compareTo(EntityMagazzino other)
+    {
+        return this.nome.compareTo(other.getNome());
     }
 
     /**
