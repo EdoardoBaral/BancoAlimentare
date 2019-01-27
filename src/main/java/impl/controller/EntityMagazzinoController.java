@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class EntityMagazzinoController
 {
-    private static final String PATH = "magazzino.csv";
+    private static final String PATH = "archivio/magazzino.csv";
     private static final String INTESTAZIONE = "NOME;GIACENZA";
     private static final String SEPARATORE = ";";
 
@@ -64,6 +64,11 @@ public class EntityMagazzinoController
      */
     public void scriviProdottiSuFile() throws IOException
     {
+        // Cancellazione del contenuto ormai obsoleto del file
+        bw.write("");
+        bw.flush();
+
+        // Scrittura del contenuto aggiornato a partire da listaProdotti
         bw.append(INTESTAZIONE +"\n");
         for(EntityMagazzino prodotto : listaProdotti)
         {
