@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
  */
 public class EntityRegistro
 {
+    private long id;
     private String nome;
     private int quantita;
     private String destinatario;
@@ -22,6 +23,24 @@ public class EntityRegistro
     public EntityRegistro()
     {
         quantita = 0;
+    }
+
+    /**
+     * Metodo che restituisce l'identificativo della transazione registrata
+     * @return l'identificativo della transazione registrata
+     */
+    public long getId()
+    {
+        return id;
+    }
+
+    /**
+     * Metodo che permette di indicare un identificativo per la transazione di cessione di un prodotto
+     * @param id: identificativo da impostare per la transazione
+     */
+    public void setId(long id)
+    {
+        this.id = id;
     }
 
     /**
