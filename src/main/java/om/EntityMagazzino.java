@@ -61,7 +61,7 @@ public class EntityMagazzino implements Comparable<EntityMagazzino>
     /**
      * Metodo che mermette di confrontare l'istanza this di EntityMagazzino con un'altra per determinare l'ordine tra le due
      * @param other: istanza di EntityMagazzino da confrontare con quella chiamante
-     * @return una valore negativo che il nome dell'istanza chiamante (this) precede alfabeticamente quello dell'istanza other, 0 se sono uguali, una valore positivo altrimenti
+     * @return una valore negativo se il nome dell'istanza chiamante (this) precede alfabeticamente quello dell'istanza other, 0 se sono uguali, un valore positivo altrimenti
      */
     public int compareTo(EntityMagazzino other)
     {
