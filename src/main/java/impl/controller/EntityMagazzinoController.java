@@ -44,7 +44,7 @@ public class EntityMagazzinoController
      */
     public void mappingDaFile() throws IOException
     {
-        String riga = null;
+        String riga;
         while( (riga = br.readLine()) != null )
         {
             if(!riga.equals(INTESTAZIONE))
@@ -84,11 +84,13 @@ public class EntityMagazzinoController
      */
     public EntityMagazzino aggiungiProdotto(EntityMagazzino prodotto)
     {
-        if(listaProdotti.contains(prodotto))
+        int indice = exists(prodotto);
+        if(indice >= 0)
             return null;
         else
         {
-            listaProdotti.add(prodotto);
+            indice = -(indice + 1);
+            listaProdotti.add(indice, prodotto);
             ordinaListaProdotti();
             return prodotto;
         }
@@ -101,15 +103,13 @@ public class EntityMagazzinoController
      */
     public EntityMagazzino cancellaProdotto(EntityMagazzino prodotto)
     {
-        int indice = listaProdotti.indexOf(prodotto);
-        if(indice == -1)
+        int indice = exists(prodotto);
+        if(indice < 0)
             return null;
         else
         {
-            EntityMagazzino p = listaProdotti.get(indice);
-            listaProdotti.remove(p);
             // In caso di rimozione di un elemento della lista, non è necessario riordinare i rimanenti in quanto l'ordine rimane inalterato
-            return p;
+            return listaProdotti.remove(indice);
         }
     }
 
@@ -120,29 +120,26 @@ public class EntityMagazzinoController
      */
     public EntityMagazzino cancellaProdotto(String nomeProdotto)
     {
-        EntityMagazzino p = new EntityMagazzino();
-        p.setNome(nomeProdotto);
-        int indice = listaProdotti.indexOf(p);
-        if(indice == -1)
+        int indice = exists(nomeProdotto);
+        if(indice < 0)
             return null;
         else
             return listaProdotti.remove(indice);
     }
 
     /**
-     * Metodo che permette di modificare uno dei prodotti presenti in magazzino
+     * Metodo che permette di modificare uno dei prodotti presenti in magazzino (non il nome, che è la chiave di ricerca)
      * @param prodotto: prodotto aggiornato
      * @return il prodotto appena aggiornato, se esiste nella lista, altrimenti null
      */
     public EntityMagazzino modificaProdotto(EntityMagazzino prodotto)
     {
-        int indice = listaProdotti.indexOf(prodotto);
-        if(indice == -1)
+        int indice = exists(prodotto);
+        if(indice < 0)
             return null;
         else
         {
             EntityMagazzino p = listaProdotti.get(indice);
-            p.setNome(prodotto.getNome());
             p.setGiacenza(prodotto.getGiacenza());
             ordinaListaProdotti();
             return p;
@@ -150,25 +147,45 @@ public class EntityMagazzinoController
     }
 
     /**
-     * Metodo che verifica l'esistenza nelmagazzino di un prodotto uguale a quello passato come argomento
+     * Metodo che verifica l'esistenza nelmagazzino di un prodotto uguale a quello passato come argomento, sfruttando l'algoritmo di ricerca binaria
      * @param prodotto: prodotto da cercare nel magazzino
-     * @return true se prodotto è presente nel magazzino, false altrimenti
+     * @return l'indice del prodotto all'interno della lista, negativo nel caso non esista
      */
-    public boolean exists(EntityMagazzino prodotto)
+    public int exists(EntityMagazzino prodotto)
     {
-        return listaProdotti.contains(prodotto);
+        return exists(prodotto.getNome());
     }
 
     /**
-     * Metodo che verifica l'esistenza nelmagazzino di un prodotto il cui nome è uguale a quello passato come argomento
+     * Metodo che verifica l'esistenza nel magazzino di un prodotto il cui nome è uguale a quello passato come argomento, sfruttando l'algoritmo della ricerca binaria
      * @param nomeProdotto: nome del prodotto da cercare nel magazzino
-     * @return true se prodotto è presente nel magazzino, false altrimenti
+     * @return l'indice del prodotto all'interno della lista, negativo nel caso non esista
      */
-    public boolean exists(String nomeProdotto)
+    public int exists(String nomeProdotto)
     {
-        EntityMagazzino p = new EntityMagazzino();
-        p.setNome(nomeProdotto);
-        return exists(p);
+        int start = 0;
+        int end = listaProdotti.size() - 1;
+
+        if(listaProdotti.isEmpty())
+            return -1;
+        if(nomeProdotto.compareTo(listaProdotti.get(0).getNome()) < 0)
+            return -1;
+        if(nomeProdotto.compareTo(listaProdotti.get(end).getNome()) > 0)
+            return -(end + 1);
+
+        while(start <= end)
+        {
+            int middle = (start + end) >>> 1;
+            String middleName = listaProdotti.get(middle).getNome();
+            if(nomeProdotto.compareTo(middleName) < 0)
+                end = middle - 1;
+            else if(nomeProdotto.compareTo(middleName) > 0)
+                start = middle + 1;
+            else
+                return middle;
+        }
+
+        return -(end + 1);
     }
 
     /**
