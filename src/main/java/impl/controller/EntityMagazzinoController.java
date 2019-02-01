@@ -21,8 +21,6 @@ public class EntityMagazzinoController
     private static final String INTESTAZIONE = "NOME;GIACENZA";
     private static final String SEPARATORE = ";";
 
-    private BufferedWriter bw;
-    private BufferedReader br;
     private List<EntityMagazzino> listaProdotti;
 
     /**
@@ -43,7 +41,7 @@ public class EntityMagazzinoController
     public void mappingDaFile() throws IOException
     {
         File fileMagazzino = new File(PATH);
-        br = new BufferedReader(new FileReader(fileMagazzino));
+        BufferedReader br = new BufferedReader(new FileReader(fileMagazzino));
         String riga;
         while( (riga = br.readLine()) != null )
         {
@@ -65,7 +63,7 @@ public class EntityMagazzinoController
     public void scriviProdottiSuFile() throws IOException
     {
         File fileMagazzino = new File(PATH);
-        bw = new BufferedWriter(new FileWriter(fileMagazzino));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(fileMagazzino));
         // Cancellazione del contenuto ormai obsoleto del file
         bw.write("");
         bw.flush();
