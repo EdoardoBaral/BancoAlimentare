@@ -33,8 +33,6 @@ public class EntityMagazzinoController
     {
         File fileMagazzino = new File(PATH);
         fileMagazzino.createNewFile();
-        bw = new BufferedWriter(new FileWriter(fileMagazzino));
-        br = new BufferedReader(new FileReader(fileMagazzino));
         listaProdotti = new ArrayList<>();
     }
 
@@ -44,6 +42,8 @@ public class EntityMagazzinoController
      */
     public void mappingDaFile() throws IOException
     {
+        File fileMagazzino = new File(PATH);
+        br = new BufferedReader(new FileReader(fileMagazzino));
         String riga;
         while( (riga = br.readLine()) != null )
         {
@@ -64,6 +64,8 @@ public class EntityMagazzinoController
      */
     public void scriviProdottiSuFile() throws IOException
     {
+        File fileMagazzino = new File(PATH);
+        bw = new BufferedWriter(new FileWriter(fileMagazzino));
         // Cancellazione del contenuto ormai obsoleto del file
         bw.write("");
         bw.flush();
