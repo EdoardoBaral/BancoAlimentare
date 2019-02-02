@@ -148,7 +148,7 @@ public class EntityMagazzinoController
     }
 
     /**
-     * Metodo che verifica l'esistenza nelmagazzino di un prodotto uguale a quello passato come argomento, sfruttando l'algoritmo di ricerca binaria
+     * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento, sfruttando l'algoritmo di ricerca binaria
      * @param prodotto: prodotto da cercare nel magazzino
      * @return l'indice del prodotto all'interno della lista, negativo nel caso non esista
      */
