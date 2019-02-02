@@ -5,14 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.joda.time.DateTime;
 
 /**
- * EntityRegistro. Classe che rappresenta un record nel registro dei prodotti ceduti dal Banco Alimentare.
+ * EntityRegistro. Classe che rappresenta un record (transazione) nel registro dei prodotti ceduti/acquisiti dal Banco Alimentare.
  *
  * @author Edoardo Baral
  */
 public class EntityRegistro implements Comparable<EntityRegistro>
 {
     private Long id;
-    private String nome;
+    private String prodotto;
     private int quantita;
     private String destinatario;
     private DateTime dataTransazione;
@@ -45,21 +45,21 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     }
 
     /**
-     * Metodo che restituisce il nome del prodotto ceduto
-     * @return il nome del prodotto
+     * Metodo che restituisce il prodotto del prodotto ceduto
+     * @return il prodotto del prodotto
      */
-    public String getNome()
+    public String getProdotto()
     {
-        return nome;
+        return prodotto;
     }
 
     /**
-     * Metodo che permette di impostare un nuovo nome per il prodotto ceduto
-     * @param nome: nuovo nome del prodotto
+     * Metodo che permette di impostare un nuovo prodotto per il prodotto ceduto
+     * @param prodotto: nuovo prodotto del prodotto
      */
-    public void setNome(String nome)
+    public void setProdotto(String prodotto)
     {
-        this.nome = nome;
+        this.prodotto = prodotto;
     }
 
     /**
@@ -81,8 +81,8 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     }
 
     /**
-     * Metodo che restituisce il nome del destinatario del prodotto ceduto
-     * @return il nome del destinatario del prodotto indicato sul registro
+     * Metodo che restituisce il prodotto del destinatario del prodotto ceduto
+     * @return il prodotto del destinatario del prodotto indicato sul registro
      */
     public String getDestinatario()
     {
@@ -90,8 +90,8 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     }
 
     /**
-     * Metodo che permette di indicare un nuovo nome per il destinatario del prodotto
-     * @param destinatario: nome del destinatario da indicare per il prodotto ceduto
+     * Metodo che permette di indicare un nuovo prodotto per il destinatario del prodotto
+     * @param destinatario: prodotto del destinatario da indicare per il prodotto ceduto
      */
     public void setDestinatario(String destinatario)
     {
