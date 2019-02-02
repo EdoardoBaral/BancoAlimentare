@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * EntityMagazzinoController. Classe che permette di realizzare un impl.controller per la gestione dei prodotti presenti in magazzino.
+ * EntityMagazzinoController. Classe che permette di realizzare un controller per la gestione dei prodotti presenti in magazzino.
  * Lo stato del magazzino viene scritto su un apposito file CSV.
  * La classe contiene metodi che permettono la lettura del file per recuperarne l'intero contenuto e mapparlo all'interno di una lista e metodi che permettono la scrittura del
  * contenuto della lista sul medesimo file, in caso di aggiornamenti.
@@ -43,6 +43,7 @@ public class EntityMagazzinoController
         File fileMagazzino = new File(PATH);
         BufferedReader br = new BufferedReader(new FileReader(fileMagazzino));
         String riga;
+
         while( (riga = br.readLine()) != null )
         {
             if(!riga.equals(INTESTAZIONE))
