@@ -74,4 +74,34 @@ public class EntityRegistroTest
         assertTrue(er1.compareTo(er3) < 0);
         assertEquals(0, er1.compareTo(er4));
     }
+
+    /**
+     * Metodo che permette di testare il corretto funzionamento del metodo compareTo()
+     */
+    @Test
+    public void testCompareToBis()
+    {
+        EntityRegistro er1 = new EntityRegistro();
+        er1.setProdotto("Fusilli");
+        er1.setQuantita(5);
+        er1.setDestinatario("Mario Rossi");
+        er1.setDataTransazione(new DateTime());
+        er1.setTipoTransazione(TipoTransazione.USCITA);
+
+        EntityRegistro er2 = new EntityRegistro();
+        DateTime d = new DateTime();
+        d = d.plus(100);
+        er2.setProdotto("Aceto");
+        er2.setQuantita(2);
+        er2.setDataTransazione(d);
+        er2.setTipoTransazione(TipoTransazione.INGRESSO);
+
+        assertEquals(-1, er1.compareTo(er2));
+
+        er1.setId(1L);
+        er2.setId(2L);
+        assertTrue(er1.compareTo(er2) < 0);
+        assertTrue(er2.compareTo(er1) > 0);
+        assertTrue(er1.compareTo(er1) == 0);
+    }
 }
