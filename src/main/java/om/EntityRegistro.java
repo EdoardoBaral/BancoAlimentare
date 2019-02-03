@@ -137,16 +137,51 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     /**
      * Metodo che mermette di confrontare l'istanza this di EntityRegistro con un'altra per determinare l'ordine tra le due
      * @param other: istanza di EntityRegistro da confrontare con quella chiamante
-     * @return una valore negativo se l'id dell'istanza chiamante (this) è minore di quello dell'istanza other, un valore positivo in caso contrario.
- *             Nel caso in cui gli id corrispondano, si applica lo stesso criterio di confronto alla data della transazione
+     * @return una valore negativo se l'istanza chiamante (this) precede l'istanza other, un valore positivo in caso contrario.
      */
     public int compareTo(EntityRegistro other)
     {
-        int flagId = this.getId().compareTo(other.getId());
-        if(flagId != 0)
-            return flagId;
+        if(this.id == null || other.getId() == null)
+        {
+            if (this.dataTransazione.getMillis() < other.getDataTransazione().getMillis())
+                return -1;
+            else if(this.dataTransazione.getMillis() == other.getDataTransazione().getMillis())
+                return 0;
+            else
+                return 1;
+        }
         else
-            return this.getDataTransazione().compareTo(other.getDataTransazione());
+        {
+            if(this.id < other.getId())
+                return -1;
+            else if(this.id == other.getId())
+                return 0;
+            else
+                return 1;
+        }
+    }
+
+    /**
+     * Metodo che verifica se due istanze di EntityRegistro sono uguali
+     * @param other: istanza da comparare con this
+     * @return true se le due istanze sono uguali, false altrimenti
+     */
+    public boolean equals(EntityRegistro other)
+    {
+        if(this.id != other.getId())
+            return false;
+        else if(!this.getProdotto().equals(other.getProdotto()))
+            return false;
+        else if(this.quantita != other.getQuantita())
+            return false;
+        else if(!this.destinatario.equals(other.getDestinatario()))
+            return false;
+        else if(this.dataTransazione.getMillis() != other.getDataTransazione().getMillis())
+            return false;
+        else if(!this.getTipoTransazione().equals(other.getTipoTransazione()))
+            return false;
+        else
+            return true;
     }
 
     /**
