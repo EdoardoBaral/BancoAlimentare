@@ -190,6 +190,46 @@ public class EntityMagazzinoController
     }
 
     /**
+     * Metodo che permette di incrementare la giacenza di un prodotto in magazzino della quantità specificata
+     * @param prodotto: prodotto da cercare in magazzino
+     * @param quantita: quantità da aggiungere alla giacenza
+     * @return
+     */
+    public boolean incrementaGiacenza(EntityMagazzino prodotto, int quantita)
+    {
+        int indice = exists(prodotto);
+        if(indice < 0)
+            return false;
+        else
+        {
+            EntityMagazzino p = listaProdotti.get(indice);
+            int tot = p.getGiacenza() + quantita;
+            p.setGiacenza(tot);
+            return true;
+        }
+    }
+
+    /**
+     * Metodo che permette di decrementare la giacenza di un prodotto in magazzino della quantità specificata
+     * @param prodotto: prodotto da cercare in magazzino
+     * @param quantita: quantità da sottrarre alla giacenza
+     * @return
+     */
+    public boolean decrementaGiacenza(EntityMagazzino prodotto, int quantita)
+    {
+        int indice = exists(prodotto);
+        if(indice < 0)
+            return false;
+        else
+        {
+            EntityMagazzino p = listaProdotti.get(indice);
+            int tot = p.getGiacenza() - quantita;
+            p.setGiacenza(tot);
+            return true;
+        }
+    }
+
+    /**
      * Metodo che permette di ordinare la lista dei prodotti presenti in magazzino
      */
     private void ordinaListaProdotti()
