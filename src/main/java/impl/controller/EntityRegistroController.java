@@ -37,8 +37,8 @@ public class EntityRegistroController
         File fileRegistro = new File(PATH);
         fileRegistro.createNewFile();
         listaTransazioni = new ArrayList<>();
+        nextId = 1L;
         mappingDaFile();
-        nextId = listaTransazioni.isEmpty() ? 1 : listaTransazioni.get(listaTransazioni.size()-1).getId();
     }
 
     /**
@@ -50,6 +50,7 @@ public class EntityRegistroController
         File fileMagazzino = new File(PATH);
         BufferedReader br = new BufferedReader(new FileReader(fileMagazzino));
         String riga;
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         while( (riga = br.readLine()) != null )
         {
@@ -61,7 +62,7 @@ public class EntityRegistroController
                 transazione.setProdotto(valori[1]);
                 transazione.setQuantita(Integer.parseInt(valori[2]));
                 transazione.setDestinatario(valori[3]);
-                transazione.setDataTransazione(new DateTime(valori[4]));
+                transazione.setDataTransazione(dtf.parseDateTime(valori[4]));
                 if(valori[5].equals(TipoTransazione.INGRESSO))
                     transazione.setTipoTransazione(TipoTransazione.INGRESSO);
                 else
@@ -78,9 +79,13 @@ public class EntityRegistroController
     public void scriviProdottiSuFile() throws IOException
     {
         File fileMagazzino = new File(PATH);
+        BufferedReader br = new BufferedReader(new FileReader(fileMagazzino));
+        String checkIntestazione = br.readLine();
         BufferedWriter bw = new BufferedWriter(new FileWriter(fileMagazzino, true));
 
-        bw.append(INTESTAZIONE +"\n");
+        if(checkIntestazione == null) //controllo se il file contiene già delle transazioni registrate o meno
+            bw.append(INTESTAZIONE +"\n");
+
         for(EntityRegistro transazione : listaTransazioni)
         {
             DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
