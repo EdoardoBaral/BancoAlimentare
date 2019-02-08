@@ -145,4 +145,37 @@ public class EntityRegistroControllerTest
         assertNull(resultNull);
     }
 
+    @Test
+    public void testScritturaLetturaFile() throws IOException
+    {
+        EntityRegistroController controller = new EntityRegistroController();
+        EntityRegistro er1 = new EntityRegistro();
+        er1.setProdotto("Fusilli");
+        er1.setQuantita(5);
+        er1.setDestinatario("Mario Rossi");
+        er1.setDataTransazione(new DateTime());
+        er1.setTipoTransazione(TipoTransazione.USCITA);
+        assertNotNull(controller.aggiungiTransazione(er1));
+
+        EntityRegistro er2 = new EntityRegistro();
+        er2.setProdotto("Aceto");
+        er2.setQuantita(2);
+        er2.setDataTransazione(new DateTime());
+        er2.setTipoTransazione(TipoTransazione.INGRESSO);
+        assertNotNull(controller.aggiungiTransazione(er2));
+
+        EntityRegistro er3 = new EntityRegistro();
+        er3.setProdotto("Mele");
+        er3.setQuantita(10);
+        er3.setDataTransazione(new DateTime());
+        er3.setTipoTransazione(TipoTransazione.USCITA);
+        assertNotNull(controller.aggiungiTransazione(er3));
+
+        controller.scriviProdottiSuFile();
+
+        EntityRegistroController controller2 = new EntityRegistroController();
+        int result = controller2.exists(1L);
+        assertEquals(0, result);
+    }
+
 }
