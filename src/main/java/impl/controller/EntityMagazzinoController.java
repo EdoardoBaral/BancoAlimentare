@@ -193,13 +193,16 @@ public class EntityMagazzinoController
      * Metodo che permette di incrementare la giacenza di un prodotto in magazzino della quantità specificata
      * @param prodotto: prodotto da cercare in magazzino
      * @param quantita: quantità da aggiungere alla giacenza
-     * @return
+     * @return true se il prodotto indicato viene trovato e la giacenza viene incrementata, false altrimenti
      */
     public boolean incrementaGiacenza(EntityMagazzino prodotto, int quantita)
     {
         int indice = exists(prodotto);
         if(indice < 0)
-            return false;
+        {
+            prodotto.setGiacenza(quantita);
+            return aggiungiProdotto(prodotto) != null ? true : false;
+        }
         else
         {
             EntityMagazzino p = listaProdotti.get(indice);
@@ -213,7 +216,7 @@ public class EntityMagazzinoController
      * Metodo che permette di decrementare la giacenza di un prodotto in magazzino della quantità specificata
      * @param prodotto: prodotto da cercare in magazzino
      * @param quantita: quantità da sottrarre alla giacenza
-     * @return
+     * @return true se il prodotto indicato viene trovato e la giacenza viene decrementata, false altrimenti
      */
     public boolean decrementaGiacenza(EntityMagazzino prodotto, int quantita)
     {
@@ -224,6 +227,8 @@ public class EntityMagazzinoController
         {
             EntityMagazzino p = listaProdotti.get(indice);
             int tot = p.getGiacenza() - quantita;
+            if(tot < 0)
+                return false;
             p.setGiacenza(tot);
             return true;
         }
@@ -236,5 +241,26 @@ public class EntityMagazzinoController
     {
         if(!listaProdotti.isEmpty() && listaProdotti.size() > 1)
             Collections.sort(listaProdotti);
+    }
+
+    /**
+     * Metodo che restituisce la lista dei nomi dei prodotti presenti in magazzino
+     * @return la lista dei nomi dei prodotti presenti in magazzino
+     */
+    public List<String> getNomiProdotti()
+    {
+        List<String> listaNomiProdotti = new ArrayList<>();
+        for(EntityMagazzino prodotto : this.listaProdotti)
+            listaNomiProdotti.add(prodotto.getNome());
+        return listaNomiProdotti;
+    }
+
+    /**
+     * Metodo che restituisce la lista dei prodotti presenti in magazzino
+     * @return la lista dei prodotti presenti in magazzino
+     */
+    public List<EntityMagazzino> getProdotti()
+    {
+        return this.listaProdotti;
     }
 }

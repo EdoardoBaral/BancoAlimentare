@@ -247,4 +247,31 @@ public class EntityMagazzinoControllerTest
         controller2.mappingDaFile();
         assertEquals(0, controller2.exists("Asparagi 300 g"));
     }
+
+    /**
+     * Metodo che permette di testare incrementaGiacenza() e decrementaGiacenza()
+     * @throws IOException in caso di errori nella lettura del file CSV
+     */
+    @Test
+    public void testIncrementaDecrementaGiacenza() throws IOException
+    {
+        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzino em1 = new EntityMagazzino();
+        em1.setNome("Tonno in scatola 200 g");
+        em1.setGiacenza(7);
+        assertNotNull(controller.aggiungiProdotto(em1));
+
+        EntityMagazzino em2 = new EntityMagazzino();
+        em2.setNome("Asparagi 300 g");
+        em2.setGiacenza(6);
+        assertNotNull(controller.aggiungiProdotto(em2));
+
+        EntityMagazzino em3 = new EntityMagazzino();
+        em3.setNome("Zucchine 500 g");
+        em3.setGiacenza(3);
+        assertNotNull(controller.aggiungiProdotto(em3));
+
+        assertTrue(controller.incrementaGiacenza(em1, 2));
+        assertTrue(controller.decrementaGiacenza(em3, 1));
+    }
 }
