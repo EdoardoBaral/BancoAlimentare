@@ -38,7 +38,6 @@ public class EntityRegistroController
         fileRegistro.createNewFile();
         listaTransazioni = new ArrayList<>();
         nextId = 1L;
-        mappingDaFile();
     }
 
     /**
@@ -79,12 +78,9 @@ public class EntityRegistroController
     public void scriviProdottiSuFile() throws IOException
     {
         File fileMagazzino = new File(PATH);
-        BufferedReader br = new BufferedReader(new FileReader(fileMagazzino));
-        String checkIntestazione = br.readLine();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(fileMagazzino, true));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(fileMagazzino, false));
 
-        if(checkIntestazione == null) //controllo se il file contiene già delle transazioni registrate o meno
-            bw.append(INTESTAZIONE +"\n");
+        bw.append(INTESTAZIONE +"\n");
 
         for(EntityRegistro transazione : listaTransazioni)
         {

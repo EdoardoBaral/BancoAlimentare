@@ -174,6 +174,7 @@ public class EntityRegistroControllerTest
         controller.scriviProdottiSuFile();
 
         EntityRegistroController controller2 = new EntityRegistroController();
+        controller2.mappingDaFile();
         int result = controller2.exists(1L);
         assertEquals(0, result);
     }
