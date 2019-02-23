@@ -3,6 +3,7 @@ package impl.controller;
 import static org.junit.Assert.*;
 
 import om.EntityMagazzino;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.IOException;
  *
  * @author Edoardo Baral
  */
+@Ignore
 public class EntityMagazzinoControllerTest
 {
     /**

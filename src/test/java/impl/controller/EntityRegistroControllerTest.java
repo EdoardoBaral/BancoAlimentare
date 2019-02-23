@@ -3,8 +3,8 @@ package impl.controller;
 import om.EntityRegistro;
 import om.TipoTransazione;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
-
 import java.io.IOException;
 
 import static org.junit.Assert.*;
@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
  *
  * @author Edoardo Baral
  */
+@Ignore
 public class EntityRegistroControllerTest
 {
     /**
