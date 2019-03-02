@@ -106,4 +106,21 @@ public class EntityRegistroTest
         assertTrue(er2.compareTo(er1) > 0);
         assertTrue(er1.compareTo(er1) == 0);
     }
+
+    /**
+     * Metodo che permette di testare il metodo toString() della classe EntityMagazzino
+     */
+    @Test
+    public void testToString()
+    {
+        EntityRegistro er = new EntityRegistro();
+        er.setProdotto("Spaghetti 1 kg");
+        er.setQuantita(10);
+        er.setDestinatario("Mario Rossi");
+        er.setDataTransazione(new DateTime());
+        er.setTipoTransazione(TipoTransazione.USCITA);
+
+        String result = er.toString();
+        assertNotNull(result);
+    }
 }
