@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * EntityMagazzinoController. Classe che permette di realizzare un controller per la gestione dei prodotti presenti in magazzino.
  * Lo stato del magazzino viene scritto su un apposito file CSV.
@@ -262,5 +265,23 @@ public class EntityMagazzinoController
     public List<EntityMagazzino> getProdotti()
     {
         return this.listaProdotti;
+    }
+
+    /**
+     * Metodo che restituisce una rappresentazione testuale dello stato del magazzino
+     * @return una stringa che rappresenta lo stato del magazzino
+     */
+    @Override
+    public String toString()
+    {
+        try
+        {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        }
+        catch(JsonProcessingException e)
+        {
+            return null;
+        }
     }
 }
