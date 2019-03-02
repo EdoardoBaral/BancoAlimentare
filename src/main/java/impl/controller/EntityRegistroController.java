@@ -210,4 +210,36 @@ public class EntityRegistroController
         if(!listaTransazioni.isEmpty() && listaTransazioni.size() > 1)
             Collections.sort(listaTransazioni);
     }
+
+    /**
+     * Metodo che restituisce una rappresentazione testuale dello stato del registro
+     * @return una stringa che rappresenta lo stato del registro
+     */
+    @Override
+    public String toString()
+    {
+        StringBuilder result = new StringBuilder();
+        result.append("{");
+        result.append("\"listaTransazioni\":[");
+        int i;
+        for(i=0; i<listaTransazioni.size()-1; i++)
+        {
+            result.append(listaTransazioni.get(i).toString());
+            result.append(",");
+        }
+        result.append(listaTransazioni.get(i).toString());
+        result.append("]");
+        result.append("}");
+
+        return result.toString();
+    }
+
+    /**
+     * Metodo che restituisce la lista delle transazioni presenti sul registro
+     * @return la lista delle transazioni presenti sul registro
+     */
+    public List<EntityRegistro> getListaTransazioni()
+    {
+        return listaTransazioni;
+    }
 }
