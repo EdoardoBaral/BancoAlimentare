@@ -277,4 +277,21 @@ public class BancoAlimentareControllerTest
         controller.aggiungiTransazione(er3);
         controller.aggiungiTransazione(er4);
     }
+
+    /**
+     * Metodo che permette di testare il metodo toString()
+     * @throws IOException in caso di problemi di accesso ai file CSV
+     */
+    @Test
+    public void toStringTest() throws IOException
+    {
+        BancoAlimentareController controller = new BancoAlimentareController();
+        controller.inizializza();
+        boolean result = controller.deposita("Asparagi 300 g", 1);
+        assertTrue(result);
+        controller.caricaSuFile();
+
+        String toStringResult = controller.toString();
+        assertNotNull(toStringResult);
+    }
 }

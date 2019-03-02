@@ -276,4 +276,40 @@ public class EntityMagazzinoControllerTest
         assertTrue(controller.incrementaGiacenza(em1, 2));
         assertTrue(controller.decrementaGiacenza(em3, 1));
     }
+
+    /**
+     * Metodo che permette di testare il metodo toString()
+     * @throws IOException in caso di errori nella lettura del file CSV
+     */
+    @Test
+    public void testToString() throws IOException
+    {
+        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzino em1 = new EntityMagazzino();
+        em1.setNome("Tonno in scatola 200 g");
+        em1.setGiacenza(7);
+        assertNotNull(controller.aggiungiProdotto(em1));
+
+        EntityMagazzino em2 = new EntityMagazzino();
+        em2.setNome("Asparagi 300 g");
+        em2.setGiacenza(6);
+        assertNotNull(controller.aggiungiProdotto(em2));
+
+        EntityMagazzino em3 = new EntityMagazzino();
+        em3.setNome("Zucchine 500 g");
+        em3.setGiacenza(3);
+        assertNotNull(controller.aggiungiProdotto(em3));
+
+        EntityMagazzino em4 = new EntityMagazzino();
+        em4.setNome("Gallette 400 g");
+        em4.setGiacenza(3);
+        assertNotNull(controller.aggiungiProdotto(em4));
+
+        // Caso prodotto già presente in magazzino
+        EntityMagazzino result = controller.aggiungiProdotto(em3);
+        assertNull(result);
+
+        String controllerToString = controller.toString();
+        assertNotNull(controllerToString);
+    }
 }

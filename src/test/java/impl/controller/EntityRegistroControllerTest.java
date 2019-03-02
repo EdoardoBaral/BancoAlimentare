@@ -180,4 +180,44 @@ public class EntityRegistroControllerTest
         assertEquals(0, result);
     }
 
+    /**
+     * Metodo che permette di testare il corretto comportamento del metodo toString()
+     * @throws IOException in caso di errori nell'apertura/creazione del file CSV
+     */
+    @Test
+    public void testToString() throws IOException
+    {
+        EntityRegistroController controller = new EntityRegistroController();
+        EntityRegistro er1 = new EntityRegistro();
+        er1.setProdotto("Fusilli");
+        er1.setQuantita(5);
+        er1.setDestinatario("Mario Rossi");
+        er1.setDataTransazione(new DateTime());
+        er1.setTipoTransazione(TipoTransazione.USCITA);
+        assertNotNull(controller.aggiungiTransazione(er1));
+
+        EntityRegistro er2 = new EntityRegistro();
+        er2.setProdotto("Aceto");
+        er2.setQuantita(2);
+        er2.setDataTransazione(new DateTime());
+        er2.setTipoTransazione(TipoTransazione.INGRESSO);
+        assertNotNull(controller.aggiungiTransazione(er2));
+
+        EntityRegistro er3 = new EntityRegistro();
+        er3.setProdotto("Mele");
+        er3.setQuantita(10);
+        er3.setDataTransazione(new DateTime());
+        er3.setTipoTransazione(TipoTransazione.USCITA);
+        assertNotNull(controller.aggiungiTransazione(er3));
+
+        EntityRegistro er4 = new EntityRegistro();
+        er4.setProdotto("Mele");
+        er4.setQuantita(4);
+        er4.setDataTransazione(new DateTime());
+        er4.setTipoTransazione(TipoTransazione.USCITA);
+        assertNotNull(controller.aggiungiTransazione(er4));
+
+        String controllerToString = controller.toString();
+        assertNotNull(controllerToString);
+    }
 }
