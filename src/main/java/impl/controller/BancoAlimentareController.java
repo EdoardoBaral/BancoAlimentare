@@ -1,5 +1,7 @@
 package impl.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import om.TipoTransazione;
@@ -287,5 +289,39 @@ public class BancoAlimentareController
     public List<EntityMagazzino> getProdotti()
     {
         return magazzino.getProdotti();
+    }
+
+    /**
+     * Metodo che restituisce una rappresentazione testuale dello stato del banco alimentare
+     * @return una stringa che rappresenta lo stato del banco alimenatre
+     */
+    @Override
+    public String toString()
+    {
+        StringBuilder result = new StringBuilder();
+        result.append("{");
+        result.append("\"magazzino\":[");
+        int i;
+
+        for(i=0; i<magazzino.getProdotti().size()-1; i++)
+        {
+            result.append(magazzino.getProdotti().get(i).toString());
+            result.append(",");
+        }
+        result.append(magazzino.getProdotti().get(i).toString());
+        result.append("]");
+        result.append(",");
+
+        result.append("\"registro\":[");
+        for(i=0; i<registro.getListaTransazioni().size()-1; i++)
+        {
+            result.append(registro.getListaTransazioni().get(i).toString());
+            result.append(",");
+        }
+        result.append(registro.getListaTransazioni().get(i));
+        result.append("]");
+
+        result.append("}");
+        return result.toString();
     }
 }
