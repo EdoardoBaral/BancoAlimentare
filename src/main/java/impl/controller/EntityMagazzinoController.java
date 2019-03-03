@@ -105,7 +105,7 @@ public class EntityMagazzinoController
         int indice = exists(prodotto);
         if(indice >= 0)
         {
-            LOGGER.info("Metodo aggiungiProdotto() - Fine - Prodotto già presente in magazzino");
+            LOGGER.warn("Metodo aggiungiProdotto() - Fine - Prodotto già presente in magazzino");
             return null;
         }
         else
@@ -130,7 +130,7 @@ public class EntityMagazzinoController
         int indice = exists(prodotto);
         if(indice < 0)
         {
-            LOGGER.info("Metodo cancellaProdotto() - Fine - Prodotto non trovato in magazzino");
+            LOGGER.warn("Metodo cancellaProdotto() - Fine - Prodotto non trovato in magazzino");
             return null;
         }
         else
@@ -154,14 +154,14 @@ public class EntityMagazzinoController
         int indice = exists(nomeProdotto);
         if(indice < 0)
         {
-            LOGGER.info("Metodo cancellaProdotto() - Fine - Prodotto non trovato in magazzino");
+            LOGGER.warn("Metodo cancellaProdotto() - Fine - Prodotto non trovato in magazzino");
             return null;
         }
         else
         {
             EntityMagazzino result = listaProdotti.remove(indice);
 
-            LOGGER.info("Metodo cancellaProdotto() - Fine - Prodotto trovato in magazzino - "+ result);
+            LOGGER.info("Metodo cancellaProdotto() - Fine - Prodotto rimosso dal magazzino - "+ result);
             return result;
         }
     }
@@ -177,7 +177,7 @@ public class EntityMagazzinoController
         int indice = exists(prodotto);
         if(indice < 0)
         {
-            LOGGER.info("Metodo modificaProdotto() - Fine - Prodotto non trovato in magazzino");
+            LOGGER.warn("Metodo modificaProdotto() - Fine - Prodotto non trovato in magazzino");
             return null;
         }
         else
@@ -215,17 +215,17 @@ public class EntityMagazzinoController
 
         if(listaProdotti.isEmpty())
         {
-            LOGGER.info("Metodo exists() - Fine - Prodotto non trovato: magazzino vuoto");
+            LOGGER.warn("Metodo exists() - Fine - Prodotto non trovato: magazzino vuoto");
             return -1;
         }
         if(nomeProdotto.compareTo(listaProdotti.get(0).getNome()) < 0)
         {
-            LOGGER.info("Metodo exists() - Fine - Prodotto non trovato: inserimento in testa alla lista");
+            LOGGER.warn("Metodo exists() - Fine - Prodotto non trovato: inserimento in testa alla lista");
             return -1;
         }
         if(nomeProdotto.compareTo(listaProdotti.get(end).getNome()) > 0)
         {
-            LOGGER.info("Metodo exists() - Fine - Prodotto non trovato: inserimento in coda alla lista");
+            LOGGER.warn("Metodo exists() - Fine - Prodotto non trovato: inserimento in coda alla lista");
             return -(end + 1);
         }
 
@@ -244,7 +244,7 @@ public class EntityMagazzinoController
             }
         }
 
-        LOGGER.info("Metodo exists() - Fine - Prodotto non trovato");
+        LOGGER.warn("Metodo exists() - Fine - Prodotto non trovato");
         return -(end + 1);
     }
 
@@ -290,7 +290,7 @@ public class EntityMagazzinoController
         int indice = exists(prodotto);
         if(indice < 0)
         {
-            LOGGER.info("Metodo decrementaGiacenza() - Fine - Prodotto non trovato in magazzino");
+            LOGGER.warn("Metodo decrementaGiacenza() - Fine - Prodotto non trovato in magazzino");
             return false;
         }
         else
