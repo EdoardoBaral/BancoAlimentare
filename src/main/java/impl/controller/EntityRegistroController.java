@@ -5,6 +5,8 @@ import om.TipoTransazione;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ import java.util.List;
  */
 public class EntityRegistroController
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityRegistroController.class);
+
     private static final String PATH = "archivio/registro.csv";
     private static final String INTESTAZIONE = "ID;PRODOTTO;QUANTITA';NOME_DESTINATARIO;DATA_TRANSAZIONE;TIPO_TRANSAZIONE";
     private static final String SEPARATORE = ";";
@@ -38,6 +42,8 @@ public class EntityRegistroController
         fileRegistro.createNewFile();
         listaTransazioni = new ArrayList<>();
         nextId = 1L;
+
+        LOGGER.info("Istanziato un nuovo oggetto EntityRegistroController - "+ this.toString());
     }
 
     /**
@@ -50,6 +56,8 @@ public class EntityRegistroController
         BufferedReader br = new BufferedReader(new FileReader(fileMagazzino));
         String riga;
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+        LOGGER.info("Metodo mappingDaFile() - Inizio lettura dal file");
 
         while( (riga = br.readLine()) != null )
         {
@@ -69,6 +77,8 @@ public class EntityRegistroController
                 aggiungiTransazione(transazione);
             }
         }
+
+        LOGGER.info("Metodo mappingDaFile() - Fine lettura dal file");
     }
 
     /**
@@ -80,6 +90,7 @@ public class EntityRegistroController
         File fileMagazzino = new File(PATH);
         BufferedWriter bw = new BufferedWriter(new FileWriter(fileMagazzino, false));
 
+        LOGGER.info("Metodo scriviProdottiSuFile() - Inizio scrittura su file");
         bw.append(INTESTAZIONE +"\n");
 
         for(EntityRegistro transazione : listaTransazioni)
@@ -89,6 +100,8 @@ public class EntityRegistroController
             bw.append(transazione.getDestinatario() +";"+ dtf.print(transazione.getDataTransazione()) +";"+ transazione.getTipoTransazione() +"\n");
             bw.flush();
         }
+
+        LOGGER.info("Metodo scriviProdottiSuFile() - Fine scrittura su file");
     }
 
     /**
@@ -98,11 +111,15 @@ public class EntityRegistroController
      */
     public EntityRegistro aggiungiTransazione(EntityRegistro transazione)
     {
+        LOGGER.info("Metodo aggiungiTransazione() - Inizio");
+
         transazione.setId(nextId);
         nextId++;
         transazione.setDataTransazione(new DateTime());
         listaTransazioni.add(transazione);
         ordinaListaTransazioni();
+
+        LOGGER.info("Metodo aggiungiTransazione() - Fine - Aggiunta transazione al registro - "+ transazione);
         return transazione;
     }
 
@@ -113,13 +130,21 @@ public class EntityRegistroController
      */
     public EntityRegistro cancellaTransazione(EntityRegistro transazione)
     {
+        LOGGER.info("Metodo cancellaTransazione() - Inizio");
+
         int indice = exists(transazione);
         if(indice < 0)
+        {
+            LOGGER.info("Metodo cancellaTransazione() - Fine - Transazione non trovata nel registro");
             return null;
+        }
         else
         {
             // In caso di rimozione di un elemento della lista, non è necessario riordinare i rimanenti in quanto l'ordine rimane inalterato
-            return listaTransazioni.remove(indice);
+            EntityRegistro t = listaTransazioni.remove(indice);
+
+            LOGGER.info("Metodo cancellaProdotto() - Fine - Transazione cancellata dal registro - "+ t);
+            return t;
         }
     }
 
@@ -130,11 +155,21 @@ public class EntityRegistroController
      */
     public EntityRegistro cancellaTransazione(Long id)
     {
+        LOGGER.info("Metodo cancellaTransazione() - Inizio");
+
         int indice = exists(id);
         if(indice < 0)
+        {
+            LOGGER.info("Metodo cancellaTransazione() - Fine - Transazione non trovata nel registro");
             return null;
+        }
         else
-            return listaTransazioni.remove(indice);
+        {
+            EntityRegistro t = listaTransazioni.remove(indice);
+
+            LOGGER.info("Metodo cancellaTransazione() - Fine - Transazione cancellata dal registro - "+ t);
+            return t;
+        }
     }
 
     /**
@@ -144,9 +179,14 @@ public class EntityRegistroController
      */
     public EntityRegistro modificaTransazione(EntityRegistro transazione)
     {
+        LOGGER.info("Metodo modificaProdotto() - Inizio");
+
         int indice = exists(transazione);
         if(indice < 0)
+        {
+            LOGGER.info("Metodo modificaTransazione() - Fine - Transazione non trovata nel registro");
             return null;
+        }
         else
         {
             EntityRegistro t = listaTransazioni.get(indice);
@@ -156,6 +196,8 @@ public class EntityRegistroController
             t.setDataTransazione(transazione.getDataTransazione());
             t.setTipoTransazione(transazione.getTipoTransazione());
             ordinaListaTransazioni();
+
+            LOGGER.info("Metodo modificaTransazione() - Fine - Transazione trovata nel registro e modificata - "+ t);
             return t;
         }
     }
@@ -177,15 +219,26 @@ public class EntityRegistroController
      */
     public int exists(Long id)
     {
+        LOGGER.info("Metodo exists() - Inizio");
+
         int start = 0;
         int end = listaTransazioni.size() - 1;
 
         if(listaTransazioni.isEmpty())
+        {
+            LOGGER.info("Metodo exists() - Fine - Transazione non trovata: registro vuoto");
             return -1;
+        }
         if(id < listaTransazioni.get(0).getId())
+        {
+            LOGGER.info("Metodo exists() - Fine - Transazione non trovata: inserimento in testa alla lista");
             return -1;
+        }
         if(id > listaTransazioni.get(end).getId())
+        {
+            LOGGER.info("Metodo exists() - Fine - Transazione non trovata: inserimento in coda alla lista");
             return -(end + 1);
+        }
 
         while(start <= end)
         {
@@ -196,9 +249,13 @@ public class EntityRegistroController
             else if(id > middleId)
                 start = middle + 1;
             else
+            {
+                LOGGER.info("Metodo exists() - Fine - Transazione trovata alla posizione "+ middle);
                 return middle;
+            }
         }
 
+        LOGGER.info("Metodo exists() - Fine - Transazione non trovata");
         return -(end + 1);
     }
 
@@ -207,8 +264,26 @@ public class EntityRegistroController
      */
     private void ordinaListaTransazioni()
     {
+        LOGGER.info("Metodo ordinaListaTransazioni() - Inizio");
+
         if(!listaTransazioni.isEmpty() && listaTransazioni.size() > 1)
             Collections.sort(listaTransazioni);
+
+        LOGGER.info("Metodo ordinaListaTransazioni() - Fine");
+    }
+
+    /**
+     * Metodo che restituisce la lista delle transazioni presenti sul registro
+     * @return la lista delle transazioni presenti sul registro
+     */
+    public List<EntityRegistro> getListaTransazioni()
+    {
+        LOGGER.info("Metodo getListaTransazioni() - Inizio");
+
+        List<EntityRegistro> result = this.listaTransazioni;
+
+        LOGGER.info("Metodo getListaTransazioni() - Fine");
+        return result;
     }
 
     /**
@@ -221,25 +296,25 @@ public class EntityRegistroController
         StringBuilder result = new StringBuilder();
         result.append("{");
         result.append("\"listaTransazioni\":[");
-        int i;
-        for(i=0; i<listaTransazioni.size()-1; i++)
+        if(listaTransazioni.isEmpty())
         {
-            result.append(listaTransazioni.get(i).toString());
-            result.append(",");
+            result.append("]");
+            result.append("}");
+            return result.toString();
         }
-        result.append(listaTransazioni.get(i).toString());
-        result.append("]");
-        result.append("}");
+        else
+        {
+            int i;
+            for(i=0; i<listaTransazioni.size()-1; i++)
+            {
+                result.append(listaTransazioni.get(i).toString());
+                result.append(",");
+            }
+            result.append(listaTransazioni.get(i).toString());
+            result.append("]");
+            result.append("}");
 
-        return result.toString();
-    }
-
-    /**
-     * Metodo che restituisce la lista delle transazioni presenti sul registro
-     * @return la lista delle transazioni presenti sul registro
-     */
-    public List<EntityRegistro> getListaTransazioni()
-    {
-        return listaTransazioni;
+            return result.toString();
+        }
     }
 }

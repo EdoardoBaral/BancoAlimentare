@@ -3,6 +3,7 @@ package impl.controller;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import om.TipoTransazione;
+import org.apache.log4j.BasicConfigurator;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,6 +26,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void inizializzaTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         controller.inizializza();
         assertFalse(controller.getNomiProdotti().isEmpty());
@@ -37,6 +39,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void caricaSuFileTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         controller.inizializza();
         controller.caricaSuFile();
@@ -49,6 +52,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void prelevaTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         controller.inizializza();
         boolean result = controller.preleva("Asparagi 300 g", 1, "Mario Rossi");
@@ -63,6 +67,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void depositaTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         controller.inizializza();
         boolean result = controller.deposita("Asparagi 300 g", 1);
@@ -77,6 +82,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void aggiungiProdottoTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
 
         EntityMagazzino em1 = new EntityMagazzino();
@@ -107,6 +113,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void cancellaProdottoTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         initControllerMagazzino(controller);
 
@@ -121,6 +128,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void cancellaProdottoTest_2() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         initControllerMagazzino(controller);
 
@@ -135,6 +143,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void modificaProdottoTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         initControllerMagazzino(controller);
 
@@ -154,6 +163,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void existsTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         initControllerMagazzino(controller);
 
@@ -172,6 +182,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void aggiungiTransazioneTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
 
         EntityRegistro er1 = new EntityRegistro();
@@ -211,6 +222,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void cancellaTransazioneTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         initControllerRegistro(controller);
 
@@ -285,6 +297,7 @@ public class BancoAlimentareControllerTest
     @Test
     public void toStringTest() throws IOException
     {
+        BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
         controller.inizializza();
         boolean result = controller.deposita("Asparagi 300 g", 1);

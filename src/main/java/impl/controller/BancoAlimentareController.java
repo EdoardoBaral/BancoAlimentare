@@ -1,11 +1,11 @@
 package impl.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import om.TipoTransazione;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class BancoAlimentareController
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareController.class);
+
     private EntityMagazzinoController magazzino;
     private EntityRegistroController registro;
 
@@ -29,6 +31,8 @@ public class BancoAlimentareController
     {
         magazzino = new EntityMagazzinoController();
         registro = new EntityRegistroController();
+
+        LOGGER.info("Istanziato un nuovo oggetto BancoAlimentareController - "+ this.toString());
     }
 
     /**
@@ -37,8 +41,13 @@ public class BancoAlimentareController
      */
     public void inizializza() throws IOException
     {
+        LOGGER.info("Metodo inizializza() - Inizio");
+
         magazzino.mappingDaFile();
         registro.mappingDaFile();
+
+        LOGGER.info("Metodo inizializza() - Fine");
+        LOGGER.info("Stato del controller: "+ this.toString());
     }
 
     /**
@@ -47,8 +56,13 @@ public class BancoAlimentareController
      */
     public void caricaSuFile() throws IOException
     {
+        LOGGER.info("Metodo caricaSuFile() - Inizio");
+
         magazzino.scriviProdottiSuFile();
         registro.scriviProdottiSuFile();
+
+        LOGGER.info("Metodo caricaSuFile() - Fine");
+        LOGGER.info("Stato del controller: "+ this.toString());
     }
 
     /**
@@ -60,15 +74,27 @@ public class BancoAlimentareController
      */
     public boolean preleva(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
     {
+        LOGGER.info("Metodo preleva() - Inizio");
+
         if(!magazzino.decrementaGiacenza(prodotto, quantita))
+        {
+            LOGGER.warn("Metodo preleva() - Fine - Prodotto non presente nel magazzino");
             return false;
+        }
 
         transazione.setTipoTransazione(TipoTransazione.USCITA);
 
         if(registro.aggiungiTransazione(transazione) != null)
+        {
+            LOGGER.info("Metoto preleva() - Fine - Transazione in uscita registrata - "+ transazione);
+            LOGGER.info("Stato del controller: "+ this.toString());
             return true;
+        }
         else
+        {
+            LOGGER.warn("Metoto preleva() - Fine - Transazione già registrata");
             return false;
+        }
     }
 
     /**
@@ -106,25 +132,38 @@ public class BancoAlimentareController
      */
     public boolean deposita(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
     {
+        LOGGER.info("Metodo deposita() - Inizio");
         if(!magazzino.incrementaGiacenza(prodotto, quantita))
+        {
+            LOGGER.warn("Metodo deposita() - Fine - Prodotto non trovato nel magazzino");
             return false;
+        }
 
         transazione.setTipoTransazione(TipoTransazione.INGRESSO);
 
         if(registro.aggiungiTransazione(transazione) != null)
+        {
+            LOGGER.info("Metodo deposita() - Fine - Transazione in entrata registrata - "+ transazione);
+            LOGGER.info("Stato del controller: "+ this.toString());
             return true;
+        }
         else
+        {
+            LOGGER.warn("Metodo deposita() - Fine - Transazione già registrata");
             return false;
+        }
     }
 
     /**
      * Metodo che permette di depositare una quantità specificata di un certo prodotto nel magazzino e registrare la transazione
      * @param nomeProdotto: nome del prodotto da depositare
      * @param quantita: quantità di prodotto da depositare
-     * @return
+     * @return true se il prodotto viene correttamente depositato in magazzino e la sua giacenza viene aggiornata, false altrimenti
      */
     public boolean deposita(String nomeProdotto, int quantita)
     {
+        LOGGER.info("Metodo deposita() - Inizio");
+
         int indice = magazzino.exists(nomeProdotto);
         if(indice >= 0)
         {
@@ -135,6 +174,8 @@ public class BancoAlimentareController
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);
 
+            LOGGER.info("Metodo deposita() - Fine - Prodotto trovato nel magazzino e giacenza aggiornata");
+            LOGGER.info("Stato del controller: "+ this.toString());
             return deposita(prodotto, transazione, quantita);
         }
         else
@@ -149,6 +190,7 @@ public class BancoAlimentareController
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);
 
+            LOGGER.warn("Metodo deposita() - Fine - Prodotto non trovato nel magazzino e successivamente depositato");
             return deposita(prodotto, transazione, quantita);
         }
     }
@@ -160,7 +202,11 @@ public class BancoAlimentareController
      */
     public EntityMagazzino aggiungiProdotto(EntityMagazzino prodotto)
     {
-        return magazzino.aggiungiProdotto(prodotto);
+        LOGGER.info("Metodo aggiungiProdotto() - Inizio");
+        EntityMagazzino p = magazzino.aggiungiProdotto(prodotto);
+
+        LOGGER.info("Metodo aggiungiProdotto() - Fine");
+        return p;
     }
 
     /**
@@ -303,23 +349,34 @@ public class BancoAlimentareController
         result.append("\"magazzino\":[");
         int i;
 
-        for(i=0; i<magazzino.getProdotti().size()-1; i++)
+        if(magazzino.getProdotti().isEmpty())
+            result.append("]");
+        else
         {
+            for(i=0; i<magazzino.getProdotti().size()-1; i++)
+            {
+                result.append(magazzino.getProdotti().get(i).toString());
+                result.append(",");
+            }
             result.append(magazzino.getProdotti().get(i).toString());
-            result.append(",");
+            result.append("]");
         }
-        result.append(magazzino.getProdotti().get(i).toString());
-        result.append("]");
+
         result.append(",");
 
         result.append("\"registro\":[");
-        for(i=0; i<registro.getListaTransazioni().size()-1; i++)
+        if(registro.getListaTransazioni().isEmpty())
+            result.append("]");
+        else
         {
-            result.append(registro.getListaTransazioni().get(i).toString());
-            result.append(",");
+            for(i=0; i<registro.getListaTransazioni().size()-1; i++)
+            {
+                result.append(registro.getListaTransazioni().get(i).toString());
+                result.append(",");
+            }
+            result.append(registro.getListaTransazioni().get(i));
+            result.append("]");
         }
-        result.append(registro.getListaTransazioni().get(i));
-        result.append("]");
 
         result.append("}");
         return result.toString();
