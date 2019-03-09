@@ -21,13 +21,4 @@ public class LogTest
         logger.warn("Prova log livello WARNING");
         logger.error("Prova log livello ERROR");
     }
-
-    public static void main(String[] args)
-    {
-        BasicConfigurator.configure();
-        logger.debug("Prova log livello DEBUG");
-        logger.info("Prova log livello INFO");
-        logger.warn("Prova log livello WARNING");
-        logger.error("Prova log livello ERROR");
-    }
 }
