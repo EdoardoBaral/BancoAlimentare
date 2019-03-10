@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
+import java.awt.Font;
 
 public class BancoAlimentareGUI {
 
@@ -93,10 +94,12 @@ public class BancoAlimentareGUI {
 		pulsantiMagazzinoPanel.setLayout(null);
 		
 		JButton nuovoProdottoBtn = new JButton("Aggiungi nuovo prodotto");
+		nuovoProdottoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		nuovoProdottoBtn.setBounds(10, 50, 183, 23);
 		pulsantiMagazzinoPanel.add(nuovoProdottoBtn);
 		
 		JButton salvaMagazzinoBtn = new JButton("Salva su file CSV");
+		salvaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		salvaMagazzinoBtn.setBounds(10, 100, 183, 23);
 		pulsantiMagazzinoPanel.add(salvaMagazzinoBtn);
 		
@@ -131,10 +134,12 @@ public class BancoAlimentareGUI {
 		pulsantiRegistroPanel.setLayout(null);
 		
 		JButton nuovaTransazioneBtn = new JButton("Aggiungi nuova transazione");
+		nuovaTransazioneBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		nuovaTransazioneBtn.setBounds(10, 50, 183, 23);
 		pulsantiRegistroPanel.add(nuovaTransazioneBtn);
 		
 		JButton btnSalvaSuFile = new JButton("Salva su file CSV");
+		btnSalvaSuFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSalvaSuFile.setBounds(10, 100, 183, 23);
 		pulsantiRegistroPanel.add(btnSalvaSuFile);
 	}
