@@ -3,8 +3,19 @@ package gui;
 import java.awt.EventQueue;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import impl.controller.BancoAlimentareController;
+import om.EntityMagazzino;
+import om.EntityRegistro;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.io.IOException;
+import java.util.List;
 
 public class BancoAlimentareGUI {
 
@@ -13,6 +24,9 @@ public class BancoAlimentareGUI {
 	private static final String[] COLONNE_REGISTRO = {"ID", "PRODOTTO", "QUANTITA'", "NOME DESTINATARIO", "DATA TRANSAZIONE", "TIPO"};
 	private static final String[][] RIGHE_REGISTRO = {};
 	private JFrame mainWindow;
+	private JTable tabellaMagazzino;
+	private JTable tabellaRegistro;
+	private BancoAlimentareController controller;
 
 	/**
 	 * Launch the application.
@@ -41,6 +55,16 @@ public class BancoAlimentareGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		try
+		{
+			controller = new BancoAlimentareController();
+			controller.inizializza();
+		}
+		catch(IOException e)
+		{
+			//TODO mostrare un popup d'errore e terminare il programma
+		}
+		
 		mainWindow = new JFrame();
 		mainWindow.setTitle("Banco Alimentare (v 1.0)");
 		mainWindow.setBounds(100, 100, 1024, 768);
@@ -74,18 +98,8 @@ public class BancoAlimentareGUI {
 		scrollPaneMagazzino.setLayout(new ScrollPaneLayout());
 		schedaMagazzino.add(scrollPaneMagazzino);
 		
-		JTable tabellaMagazzino = new JTable(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
-//		tabellaMagazzino.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{null, null},
-//				{null, null},
-//				{null, null},
-//				{null, null},
-//			},
-//			new String[] {
-//				"PRODOTTO", "GIACENZA"
-//			}
-//		));
+		tabellaMagazzino = new JTable(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
+		popolaTabellaMagazzino();
 		scrollPaneMagazzino.setViewportView(tabellaMagazzino);
 		
 		JPanel pulsantiMagazzinoPanel = new JPanel();
@@ -114,18 +128,8 @@ public class BancoAlimentareGUI {
 		scrollPaneRegistro.setLayout(new ScrollPaneLayout());
 		schedaRegistro.add(scrollPaneRegistro);
 		
-		JTable tabellaRegistro = new JTable(RIGHE_REGISTRO, COLONNE_REGISTRO);
-//		tabellaRegistro.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{null, null, null, null, null, null},
-//				{null, null, null, null, null, null},
-//				{null, null, null, null, null, null},
-//				{null, null, null, null, null, null},
-//			},
-//			new String[] {
-//				"ID", "PRODOTTO", "QUANTITA'", "NOME DESTINATARIO", "DATA TRANSAZIONE", "TIPO"
-//			}
-//		));
+		tabellaRegistro = new JTable(RIGHE_REGISTRO, COLONNE_REGISTRO);
+		popolaTabellaRegistro();
 		scrollPaneRegistro.setViewportView(tabellaRegistro);
 		
 		JPanel pulsantiRegistroPanel = new JPanel();
@@ -142,5 +146,43 @@ public class BancoAlimentareGUI {
 		btnSalvaSuFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSalvaSuFile.setBounds(10, 100, 183, 23);
 		pulsantiRegistroPanel.add(btnSalvaSuFile);
+	}
+	
+	private void popolaTabellaMagazzino()
+	{
+		DefaultTableModel model = new DefaultTableModel(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
+		tabellaMagazzino.setModel(model);
+		
+		List<EntityMagazzino> prodotti = controller.getProdotti();
+		for(EntityMagazzino p : prodotti)
+		{
+			String[] valori = new String[2];
+			valori[0] = p.getNome();
+			valori[1] = Integer.toString(p.getGiacenza());
+			
+			model.addRow(valori);
+		}
+	}
+	
+	private void popolaTabellaRegistro()
+	{
+		DefaultTableModel model = new DefaultTableModel(RIGHE_REGISTRO, COLONNE_REGISTRO);
+		tabellaRegistro.setModel(model);
+		
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+		
+		List<EntityRegistro> transazioni = controller.getTransazioni();
+		for(EntityRegistro t : transazioni)
+		{
+			String[] valori = new String[6];
+			valori[0] = Long.toString(t.getId());
+			valori[1] = t.getProdotto();
+			valori[2] = Integer.toString(t.getQuantita());
+			valori[3] = (t.getDestinatario() != null) && (!"null".equals(t.getDestinatario())) ? t.getDestinatario() : "";
+			valori[4] = dtf.print(t.getDataTransazione());
+			valori[5] = t.getTipoTransazione().toString();
+			
+			model.addRow(valori);
+		}
 	}
 }
