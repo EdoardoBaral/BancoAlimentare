@@ -336,6 +336,15 @@ public class BancoAlimentareController
     {
         return magazzino.getProdotti();
     }
+    
+    /**
+     * Metodo che restituisce la lista delle transazioni registrate nel registro
+     * @return la lista delle transazioni presenti nel registro
+     */
+    public List<EntityRegistro> getTransazioni()
+    {
+    	return registro.getListaTransazioni();
+    }
 
     /**
      * Metodo che restituisce una rappresentazione testuale dello stato del banco alimentare
