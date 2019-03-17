@@ -1,25 +1,24 @@
 package gui;
 
-import java.awt.EventQueue;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import impl.controller.BancoAlimentareController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
 public class BancoAlimentareGUI
 {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareGUI.class);
     private static final String[] COLONNE_MAGAZZINO = {"PRODOTTO", "GIACENZA"};
     private static final String[][] RIGHE_MAGAZZINO = {};
     private static final String[] COLONNE_REGISTRO = {"ID", "PRODOTTO", "QUANTITA'", "NOME DESTINATARIO", "DATA TRANSAZIONE", "TIPO"};
@@ -71,7 +70,9 @@ public class BancoAlimentareGUI
         }
         catch(IOException e)
         {
-            //TODO mostrare un popup d'errore e terminare il programma
+            String errorMessage = "L'applicazione non può essere avviata a causa di un errore nell'istanziazione del controller.\nConsultare i log per maggiori informazioni.";
+            JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore avvio programma", JOptionPane.ERROR_MESSAGE);
+            LOGGER.error("Errore durante l'istanziazione del controller all'avvio del programma\n" + e.getMessage());
         }
 
         mainWindow = new JFrame();
@@ -117,6 +118,24 @@ public class BancoAlimentareGUI
         pulsantiMagazzinoPanel.setLayout(null);
 
         JButton nuovoProdottoBtn = new JButton("Aggiungi nuovo prodotto");
+        nuovoProdottoBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                try
+                {
+                    SchedaInserimentoProdotto.startNewWindow(controller);
+                    this.wait();
+                }
+                catch(InterruptedException e)
+                {
+                    LOGGER.error("Errore nella gestione del multithreading per l'aggiunta di un nuovo prodotto nel magazzino - " + e.getMessage());
+                    LOGGER.error("Terminazione forzata del programma");
+                    System.exit(0);
+                }
+                popolaTabellaMagazzino();
+            }
+        });
         nuovoProdottoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         nuovoProdottoBtn.setBounds(10, 50, 183, 23);
         pulsantiMagazzinoPanel.add(nuovoProdottoBtn);
