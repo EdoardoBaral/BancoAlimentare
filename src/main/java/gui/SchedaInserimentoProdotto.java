@@ -1,14 +1,17 @@
 package gui;
 
 import impl.controller.BancoAlimentareController;
+import om.EntityMagazzino;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 public class SchedaInserimentoProdotto
 {
@@ -23,7 +26,7 @@ public class SchedaInserimentoProdotto
     /**
      * Launch the application.
      */
-    public static void startNewWindow(BancoAlimentareController controller)
+    public static void startNewWindow(BancoAlimentareController controller, JTable tabellaMagazzino)
     {
         EventQueue.invokeLater(new Runnable()
         {
@@ -31,7 +34,7 @@ public class SchedaInserimentoProdotto
             {
                 try
                 {
-                    SchedaInserimentoProdotto window = new SchedaInserimentoProdotto(controller);
+                    SchedaInserimentoProdotto window = new SchedaInserimentoProdotto(controller, tabellaMagazzino);
                     window.mainWindow.setVisible(true);
                 }
                 catch(Exception e)
@@ -45,15 +48,15 @@ public class SchedaInserimentoProdotto
     /**
      * Create the application.
      */
-    public SchedaInserimentoProdotto(BancoAlimentareController controller)
+    public SchedaInserimentoProdotto(BancoAlimentareController controller, JTable tabellaMagazzino)
     {
-        initialize(controller);
+        initialize(controller, tabellaMagazzino);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller)
+    private void initialize(BancoAlimentareController controller, JTable tabellaMagazzino)
     {
         this.controller = controller;
 
@@ -80,7 +83,7 @@ public class SchedaInserimentoProdotto
         mainWindow.getContentPane().add(nomeLabel);
 
         quantitaField = new JTextField();
-        quantitaField.setBounds(129, 67, 46, 20);
+        quantitaField.setBounds(129, 67, 45, 20);
         mainWindow.getContentPane().add(quantitaField);
         quantitaField.setColumns(5);
 
@@ -96,17 +99,16 @@ public class SchedaInserimentoProdotto
             {
                 if(aggiungiProdottoAlMagazzino())
                 {
-                    //TODO verificare l'effettiva aggiunta del prodotto nel controller e l'aggiornamento della tabella
                     JOptionPane.showMessageDialog(new JFrame(), "Prodotto aggiunto al magazzino", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
                     LOGGER.info("Prodotto aggiunto al magazzino");
+                    popolaTabellaMagazzino(tabellaMagazzino);
                     salvaSuFile();
                     mainWindow.dispose();
                 } else
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Prodotto gi\u00e0 presente nel magazzino", "Avviso", JOptionPane.WARNING_MESSAGE);
-                    LOGGER.info("Prodotto aggiunto al magazzino");
+                    LOGGER.warn("Prodotto gi\\u00e0 presente nel magazzino");
                 }
-                this.notifyAll();
             }
         });
 
@@ -160,6 +162,24 @@ public class SchedaInserimentoProdotto
             String errorMessage = "Errore nel salvataggio dello stato del controller sul file CSV";
             JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
             LOGGER.error("Errore nel salvataggio dello stato del controller sul file CSV - " + e.getMessage());
+        }
+    }
+
+    private void popolaTabellaMagazzino(JTable tabellaMagazzino)
+    {
+        final String[] COLONNE_MAGAZZINO = {"PRODOTTO", "GIACENZA"};
+        final String[][] RIGHE_MAGAZZINO = {};
+        DefaultTableModel model = new DefaultTableModel(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
+        tabellaMagazzino.setModel(model);
+
+        List<EntityMagazzino> prodotti = controller.getProdotti();
+        for(EntityMagazzino p : prodotti)
+        {
+            String[] valori = new String[2];
+            valori[0] = p.getNome();
+            valori[1] = Integer.toString(p.getGiacenza());
+
+            model.addRow(valori);
         }
     }
 }

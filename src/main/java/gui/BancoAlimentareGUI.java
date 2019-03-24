@@ -122,18 +122,7 @@ public class BancoAlimentareGUI
         {
             public void actionPerformed(ActionEvent arg0)
             {
-                try
-                {
-                    SchedaInserimentoProdotto.startNewWindow(controller);
-                    this.wait();
-                }
-                catch(InterruptedException e)
-                {
-                    LOGGER.error("Errore nella gestione del multithreading per l'aggiunta di un nuovo prodotto nel magazzino - " + e.getMessage());
-                    LOGGER.error("Terminazione forzata del programma");
-                    System.exit(0);
-                }
-                popolaTabellaMagazzino();
+                SchedaInserimentoProdotto.startNewWindow(controller, tabellaMagazzino);
             }
         });
         nuovoProdottoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -166,11 +155,34 @@ public class BancoAlimentareGUI
         pulsantiRegistroPanel.setLayout(null);
 
         JButton nuovaTransazioneBtn = new JButton("Aggiungi nuova transazione");
+        nuovaTransazioneBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                SchedaInserimentoTransazione.startNewWindow(controller, tabellaRegistro);
+            }
+        });
         nuovaTransazioneBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         nuovaTransazioneBtn.setBounds(10, 50, 183, 23);
         pulsantiRegistroPanel.add(nuovaTransazioneBtn);
 
         JButton btnSalvaSuFile = new JButton("Salva su file CSV");
+        btnSalvaSuFile.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    controller.caricaSuFile();
+                }
+                catch(IOException ex)
+                {
+                    String errorMessage = "Errore nel salvataggio dello stato del controller sul file CSV";
+                    JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
+                    LOGGER.error("Errore nel salvataggio dello stato del controller sul file CSV - " + ex.getMessage());
+                }
+            }
+        });
         btnSalvaSuFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
         btnSalvaSuFile.setBounds(10, 100, 183, 23);
         pulsantiRegistroPanel.add(btnSalvaSuFile);
