@@ -56,7 +56,7 @@ public class BancoAlimentareController
      */
     public void caricaSuFile() throws IOException
     {
-        LOGGER.info("Metodo caricaSuFile() - Inizio");
+    	LOGGER.info("Metodo caricaSuFile() - Inizio");
 
         magazzino.scriviProdottiSuFile();
         registro.scriviProdottiSuFile();
@@ -106,6 +106,8 @@ public class BancoAlimentareController
      */
     public boolean preleva(String nomeProdotto, int quantita, String destinatario)
     {
+    	LOGGER.info("Metodo preleva() - Inizio");
+        
         int indice = magazzino.exists(nomeProdotto);
         if(indice >= 0)
         {
@@ -117,10 +119,16 @@ public class BancoAlimentareController
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.USCITA);
 
+            LOGGER.info("Metodo preleva() - Fine - Prodotto prelevato dal magazzino");
+            LOGGER.info("Stato del controller: "+ this.toString());
             return preleva(prodotto, transazione, quantita);
         }
         else
-            return false;
+        {
+        	LOGGER.info("Metodo preleva() - Fine - Impossibile prelevare il prodotto dal magazzino");
+            LOGGER.info("Stato del controller: "+ this.toString());
+        	return false;
+        }
     }
 
     /**
@@ -163,7 +171,7 @@ public class BancoAlimentareController
     public boolean deposita(String nomeProdotto, int quantita)
     {
         LOGGER.info("Metodo deposita() - Inizio");
-
+        
         int indice = magazzino.exists(nomeProdotto);
         if(indice >= 0)
         {
@@ -335,6 +343,15 @@ public class BancoAlimentareController
     public List<EntityMagazzino> getProdotti()
     {
         return magazzino.getProdotti();
+    }
+    
+    /**
+     * Metodo che restituisce la lista delle transazioni registrate nel registro
+     * @return la lista delle transazioni presenti nel registro
+     */
+    public List<EntityRegistro> getTransazioni()
+    {
+    	return registro.getListaTransazioni();
     }
 
     /**

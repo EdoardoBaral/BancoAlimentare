@@ -132,9 +132,11 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,windows,intellij
-/archivio/
 
 .classpath
 .project
 .settings/
 target/
+/archivio/magazzino.csv
+/archivio/registro.csv
+/.idea/codeStyles/Project.xml
