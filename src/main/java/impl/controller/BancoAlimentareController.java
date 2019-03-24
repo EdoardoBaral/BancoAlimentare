@@ -39,7 +39,7 @@ public class BancoAlimentareController
      * Metodo che permette di leggere il contenuto dei file CSV e inizializzare opportunamente le strutture dati dei controller per magazzino e registro
      * @throws IOException in caso di errori nella lettura/scrittura dei file CSV
      */
-    public synchronized void inizializza() throws IOException
+    public void inizializza() throws IOException
     {
         LOGGER.info("Metodo inizializza() - Inizio");
 
@@ -54,9 +54,9 @@ public class BancoAlimentareController
      * Metodo che permette di riversare su file CSV il contenuto delle strutture dati del magazzino e del registro
      * @throws IOException in caso di errori nella lettura/scrittura dei file CSV
      */
-    public synchronized void caricaSuFile() throws IOException
+    public void caricaSuFile() throws IOException
     {
-        LOGGER.info("Metodo caricaSuFile() - Inizio");
+    	LOGGER.info("Metodo caricaSuFile() - Inizio");
 
         magazzino.scriviProdottiSuFile();
         registro.scriviProdottiSuFile();
@@ -72,7 +72,7 @@ public class BancoAlimentareController
      * @param quantita: quantità di prodotto da prelevare dal magazzino
      * @return true se il prodotto viene trovato nel magazzino, se la sua giacenza è sufficiente per coprire la richiesta e se la transazione viene correttamente registrata, false altrimenti
      */
-    public synchronized boolean preleva(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
+    public boolean preleva(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
     {
         LOGGER.info("Metodo preleva() - Inizio");
 
@@ -104,8 +104,10 @@ public class BancoAlimentareController
      * @param destinatario: destinatario del prodotto prelevato
      * @return true se il prodotto viene trovato nel magazzino, se la sua giacenza è sufficiente per coprire la richiesta e se la transazione viene correttamente registrata, false altrimenti
      */
-    public synchronized boolean preleva(String nomeProdotto, int quantita, String destinatario)
+    public boolean preleva(String nomeProdotto, int quantita, String destinatario)
     {
+    	LOGGER.info("Metodo preleva() - Inizio");
+        
         int indice = magazzino.exists(nomeProdotto);
         if(indice >= 0)
         {
@@ -117,10 +119,16 @@ public class BancoAlimentareController
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.USCITA);
 
+            LOGGER.info("Metodo preleva() - Fine - Prodotto prelevato dal magazzino");
+            LOGGER.info("Stato del controller: "+ this.toString());
             return preleva(prodotto, transazione, quantita);
         }
         else
-            return false;
+        {
+        	LOGGER.info("Metodo preleva() - Fine - Impossibile prelevare il prodotto dal magazzino");
+            LOGGER.info("Stato del controller: "+ this.toString());
+        	return false;
+        }
     }
 
     /**
@@ -130,7 +138,7 @@ public class BancoAlimentareController
      * @param quantita: quantità di prodotto da depositare nel magazzino
      * @return true se il prodotto viene trovato nel magazzino e se la transazione viene correttamente registrata, false altrimenti
      */
-    public synchronized boolean deposita(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
+    public boolean deposita(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
     {
         LOGGER.info("Metodo deposita() - Inizio");
         if(!magazzino.incrementaGiacenza(prodotto, quantita))
@@ -160,10 +168,10 @@ public class BancoAlimentareController
      * @param quantita: quantità di prodotto da depositare
      * @return true se il prodotto viene correttamente depositato in magazzino e la sua giacenza viene aggiornata, false altrimenti
      */
-    public synchronized boolean deposita(String nomeProdotto, int quantita)
+    public boolean deposita(String nomeProdotto, int quantita)
     {
         LOGGER.info("Metodo deposita() - Inizio");
-
+        
         int indice = magazzino.exists(nomeProdotto);
         if(indice >= 0)
         {
