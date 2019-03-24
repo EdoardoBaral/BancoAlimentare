@@ -50,7 +50,7 @@ public class BancoAlimentareControllerTest
      * @throws IOException in caso di problemi di accesso ai file CSV
      */
     @Test
-    public void prelevaTest() throws IOException
+    public void prelevaTest() throws IOException, InterruptedException
     {
         BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
@@ -65,7 +65,7 @@ public class BancoAlimentareControllerTest
      * @throws IOException in caso di problemi di accesso ai file CSV
      */
     @Test
-    public void depositaTest() throws IOException
+    public void depositaTest() throws IOException, InterruptedException
     {
         BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
@@ -295,7 +295,7 @@ public class BancoAlimentareControllerTest
      * @throws IOException in caso di problemi di accesso ai file CSV
      */
     @Test
-    public void toStringTest() throws IOException
+    public void toStringTest() throws IOException, InterruptedException
     {
         BasicConfigurator.configure();
         BancoAlimentareController controller = new BancoAlimentareController();
