@@ -115,7 +115,8 @@ public class EntityRegistroController
 
         transazione.setId(nextId);
         nextId++;
-        transazione.setDataTransazione(new DateTime());
+        if(transazione.getDataTransazione() == null)
+            transazione.setDataTransazione(new DateTime());
         listaTransazioni.add(transazione);
         ordinaListaTransazioni();
 
