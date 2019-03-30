@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * BancoAlimentareController. Classe che permette di mettere in relazione i due controller che gestiscono il magazzino e il registro del banco alimentare
  * (EntityMagazzinoController ed EntityRegistroController) per gestire in modo centralizzato le operazioni di gestione del magazzino e registro delle transazioni
- *
  * @author Edoardo Baral
  */
 public class BancoAlimentareController
@@ -32,7 +31,7 @@ public class BancoAlimentareController
         magazzino = new EntityMagazzinoController();
         registro = new EntityRegistroController();
 
-        LOGGER.info("Istanziato un nuovo oggetto BancoAlimentareController - "+ this.toString());
+        LOGGER.info("Istanziato un nuovo oggetto BancoAlimentareController - " + this.toString());
     }
 
     /**
@@ -47,7 +46,7 @@ public class BancoAlimentareController
         registro.mappingDaFile();
 
         LOGGER.info("Metodo inizializza() - Fine");
-        LOGGER.info("Stato del controller: "+ this.toString());
+        LOGGER.info("Stato del controller: " + this.toString());
     }
 
     /**
@@ -56,26 +55,24 @@ public class BancoAlimentareController
      */
     public void caricaSuFile() throws IOException
     {
-    	LOGGER.info("Metodo caricaSuFile() - Inizio");
+        LOGGER.info("Metodo caricaSuFile() - Inizio");
 
         magazzino.scriviProdottiSuFile();
         registro.scriviProdottiSuFile();
 
         LOGGER.info("Metodo caricaSuFile() - Fine");
-        LOGGER.info("Stato del controller: "+ this.toString());
+        LOGGER.info("Stato del controller: " + this.toString());
     }
 
     /**
      * Metodo che permette di prelevare una quantità specificata di un certo prodotto dal magazzino e registrare la transazione
-     * @param prodotto: prodotto da cercare nel magazzino
+     * @param prodotto:    prodotto da cercare nel magazzino
      * @param transazione: transazione da registrare
-     * @param quantita: quantità di prodotto da prelevare dal magazzino
+     * @param quantita:    quantità di prodotto da prelevare dal magazzino
      * @return true se il prodotto viene trovato nel magazzino, se la sua giacenza è sufficiente per coprire la richiesta e se la transazione viene correttamente registrata, false altrimenti
      */
     public boolean preleva(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
     {
-        LOGGER.info("Metodo preleva() - Inizio");
-
         if(!magazzino.decrementaGiacenza(prodotto, quantita))
         {
             LOGGER.warn("Metodo preleva() - Fine - Prodotto non presente nel magazzino");
@@ -86,8 +83,7 @@ public class BancoAlimentareController
 
         if(registro.aggiungiTransazione(transazione) != null)
         {
-            LOGGER.info("Metoto preleva() - Fine - Transazione in uscita registrata - "+ transazione);
-            LOGGER.info("Stato del controller: "+ this.toString());
+            LOGGER.info("Metoto preleva() - Fine - Transazione in uscita registrata - " + transazione);
             return true;
         }
         else
@@ -100,14 +96,14 @@ public class BancoAlimentareController
     /**
      * Metodo che permette di prelevare una quantità specificata di un certo prodotto dal magazzino e registrare la transazione
      * @param nomeProdotto: nome del prodotto oggetto della transazione
-     * @param quantita: quantità di prodotto da prelevare
+     * @param quantita:     quantità di prodotto da prelevare
      * @param destinatario: destinatario del prodotto prelevato
      * @return true se il prodotto viene trovato nel magazzino, se la sua giacenza è sufficiente per coprire la richiesta e se la transazione viene correttamente registrata, false altrimenti
      */
     public boolean preleva(String nomeProdotto, int quantita, String destinatario)
     {
-    	LOGGER.info("Metodo preleva() - Inizio");
-        
+        LOGGER.info("Metodo preleva() - Inizio");
+
         int indice = magazzino.exists(nomeProdotto);
         if(indice >= 0)
         {
@@ -119,28 +115,26 @@ public class BancoAlimentareController
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.USCITA);
 
-            LOGGER.info("Metodo preleva() - Fine - Prodotto prelevato dal magazzino");
-            LOGGER.info("Stato del controller: "+ this.toString());
-            return preleva(prodotto, transazione, quantita);
+            boolean result = preleva(prodotto, transazione, quantita);
+            LOGGER.info("Stato del controller: " + this.toString());
+            return result;
         }
         else
         {
-        	LOGGER.info("Metodo preleva() - Fine - Impossibile prelevare il prodotto dal magazzino");
-            LOGGER.info("Stato del controller: "+ this.toString());
-        	return false;
+            LOGGER.info("Stato del controller: " + this.toString());
+            return false;
         }
     }
 
     /**
      * Metodo che permette di depositare una quantità specificata di un certo prodotto nel magazzino e registrare la transazione
-     * @param prodotto: prodotto da cercare nel magazzino
+     * @param prodotto:    prodotto da cercare nel magazzino
      * @param transazione: transazione da registrare
-     * @param quantita: quantità di prodotto da depositare nel magazzino
+     * @param quantita:    quantità di prodotto da depositare nel magazzino
      * @return true se il prodotto viene trovato nel magazzino e se la transazione viene correttamente registrata, false altrimenti
      */
     public boolean deposita(EntityMagazzino prodotto, EntityRegistro transazione, int quantita)
     {
-        LOGGER.info("Metodo deposita() - Inizio");
         if(!magazzino.incrementaGiacenza(prodotto, quantita))
         {
             LOGGER.warn("Metodo deposita() - Fine - Prodotto non trovato nel magazzino");
@@ -151,8 +145,7 @@ public class BancoAlimentareController
 
         if(registro.aggiungiTransazione(transazione) != null)
         {
-            LOGGER.info("Metodo deposita() - Fine - Transazione in entrata registrata - "+ transazione);
-            LOGGER.info("Stato del controller: "+ this.toString());
+            LOGGER.info("Metodo deposita() - Fine - Transazione in entrata registrata - " + transazione);
             return true;
         }
         else
@@ -165,13 +158,13 @@ public class BancoAlimentareController
     /**
      * Metodo che permette di depositare una quantità specificata di un certo prodotto nel magazzino e registrare la transazione
      * @param nomeProdotto: nome del prodotto da depositare
-     * @param quantita: quantità di prodotto da depositare
+     * @param quantita:     quantità di prodotto da depositare
      * @return true se il prodotto viene correttamente depositato in magazzino e la sua giacenza viene aggiornata, false altrimenti
      */
     public boolean deposita(String nomeProdotto, int quantita)
     {
         LOGGER.info("Metodo deposita() - Inizio");
-        
+
         int indice = magazzino.exists(nomeProdotto);
         if(indice >= 0)
         {
@@ -182,8 +175,7 @@ public class BancoAlimentareController
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);
 
-            LOGGER.info("Metodo deposita() - Fine - Prodotto trovato nel magazzino e giacenza aggiornata");
-            LOGGER.info("Stato del controller: "+ this.toString());
+            LOGGER.info("Stato del controller: " + this.toString());
             return deposita(prodotto, transazione, quantita);
         }
         else
@@ -198,7 +190,7 @@ public class BancoAlimentareController
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);
 
-            LOGGER.warn("Metodo deposita() - Fine - Prodotto non trovato nel magazzino e successivamente depositato");
+            LOGGER.info("Stato del controller: " + this.toString());
             return deposita(prodotto, transazione, quantita);
         }
     }
@@ -210,11 +202,7 @@ public class BancoAlimentareController
      */
     public EntityMagazzino aggiungiProdotto(EntityMagazzino prodotto)
     {
-        LOGGER.info("Metodo aggiungiProdotto() - Inizio");
-        EntityMagazzino p = magazzino.aggiungiProdotto(prodotto);
-
-        LOGGER.info("Metodo aggiungiProdotto() - Fine");
-        return p;
+        return magazzino.aggiungiProdotto(prodotto);
     }
 
     /**
@@ -344,14 +332,14 @@ public class BancoAlimentareController
     {
         return magazzino.getProdotti();
     }
-    
+
     /**
      * Metodo che restituisce la lista delle transazioni registrate nel registro
      * @return la lista delle transazioni presenti nel registro
      */
     public List<EntityRegistro> getTransazioni()
     {
-    	return registro.getListaTransazioni();
+        return registro.getListaTransazioni();
     }
 
     /**
@@ -366,11 +354,10 @@ public class BancoAlimentareController
         result.append("\"magazzino\":[");
         int i;
 
-        if(magazzino.getProdotti().isEmpty())
-            result.append("]");
+        if(magazzino.getProdotti().isEmpty()) result.append("]");
         else
         {
-            for(i=0; i<magazzino.getProdotti().size()-1; i++)
+            for(i = 0; i < magazzino.getProdotti().size() - 1; i++)
             {
                 result.append(magazzino.getProdotti().get(i).toString());
                 result.append(",");
@@ -382,11 +369,10 @@ public class BancoAlimentareController
         result.append(",");
 
         result.append("\"registro\":[");
-        if(registro.getListaTransazioni().isEmpty())
-            result.append("]");
+        if(registro.getListaTransazioni().isEmpty()) result.append("]");
         else
         {
-            for(i=0; i<registro.getListaTransazioni().size()-1; i++)
+            for(i = 0; i < registro.getListaTransazioni().size() - 1; i++)
             {
                 result.append(registro.getListaTransazioni().get(i).toString());
                 result.append(",");
