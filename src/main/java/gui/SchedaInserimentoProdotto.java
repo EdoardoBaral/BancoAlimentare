@@ -2,6 +2,10 @@ package gui;
 
 import impl.controller.BancoAlimentareController;
 import om.EntityMagazzino;
+import om.EntityRegistro;
+
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +30,7 @@ public class SchedaInserimentoProdotto
     /**
      * Launch the application.
      */
-    public static void startNewWindow(BancoAlimentareController controller, JTable tabellaMagazzino)
+    public static void startNewWindow(BancoAlimentareController controller, JTable tabellaMagazzino, JTable tabellaRegistro)
     {
         EventQueue.invokeLater(new Runnable()
         {
@@ -34,7 +38,7 @@ public class SchedaInserimentoProdotto
             {
                 try
                 {
-                    SchedaInserimentoProdotto window = new SchedaInserimentoProdotto(controller, tabellaMagazzino);
+                    SchedaInserimentoProdotto window = new SchedaInserimentoProdotto(controller, tabellaMagazzino, tabellaRegistro);
                     window.mainWindow.setVisible(true);
                 }
                 catch(Exception e)
@@ -48,15 +52,15 @@ public class SchedaInserimentoProdotto
     /**
      * Create the application.
      */
-    public SchedaInserimentoProdotto(BancoAlimentareController controller, JTable tabellaMagazzino)
+    public SchedaInserimentoProdotto(BancoAlimentareController controller, JTable tabellaMagazzino, JTable tabellaRegistro)
     {
-        initialize(controller, tabellaMagazzino);
+        initialize(controller, tabellaMagazzino, tabellaRegistro);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller, JTable tabellaMagazzino)
+    private void initialize(BancoAlimentareController controller, JTable tabellaMagazzino, JTable tabellaRegistro)
     {
         this.controller = controller;
 
@@ -102,6 +106,7 @@ public class SchedaInserimentoProdotto
                     JOptionPane.showMessageDialog(new JFrame(), "Prodotto aggiunto al magazzino", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
                     LOGGER.info("Prodotto aggiunto al magazzino");
                     popolaTabellaMagazzino(tabellaMagazzino);
+                    popolaTabellaRegistro(tabellaRegistro);
                     salvaSuFile();
                     mainWindow.dispose();
                 }
@@ -179,6 +184,29 @@ public class SchedaInserimentoProdotto
             String[] valori = new String[2];
             valori[0] = p.getNome();
             valori[1] = Integer.toString(p.getGiacenza());
+
+            model.addRow(valori);
+        }
+    }
+    
+    private void popolaTabellaRegistro(JTable tabellaRegistro)
+    {
+    	final String[] COLONNE_REGISTRO = {"ID", "PRODOTTO", "QUANTITA'", "NOME DESTINATARIO", "DATA TRANSAZIONE", "TIPO"};
+        final String[][] RIGHE_REGISTRO = {};
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DefaultTableModel model = new DefaultTableModel(RIGHE_REGISTRO, COLONNE_REGISTRO);
+        tabellaRegistro.setModel(model);
+        
+        List<EntityRegistro> transazioni = controller.getTransazioni();
+        for(EntityRegistro t : transazioni)
+        {
+            String[] valori = new String[6];
+            valori[0] = Long.toString(t.getId());
+            valori[1] = t.getProdotto();
+            valori[2] = Integer.toString(t.getQuantita());
+            valori[3] = (t.getDestinatario() != null) && (!"null".equals(t.getDestinatario())) ? t.getDestinatario() : "";
+            valori[4] = dtf.print(t.getDataTransazione());
+            valori[5] = t.getTipoTransazione().toString();
 
             model.addRow(valori);
         }
