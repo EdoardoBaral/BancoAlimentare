@@ -104,7 +104,8 @@ public class SchedaInserimentoProdotto
                     popolaTabellaMagazzino(tabellaMagazzino);
                     salvaSuFile();
                     mainWindow.dispose();
-                } else
+                }
+                else
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Prodotto gi\u00e0 presente nel magazzino", "Avviso", JOptionPane.WARNING_MESSAGE);
                     LOGGER.warn("Prodotto gi\\u00e0 presente nel magazzino");
