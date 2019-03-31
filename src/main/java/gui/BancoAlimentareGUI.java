@@ -130,35 +130,37 @@ public class BancoAlimentareGUI
         pulsantiMagazzinoPanel.add(nuovoProdottoBtn);
 
         JButton salvaMagazzinoBtn = new JButton("Salva su file CSV");
-        salvaMagazzinoBtn.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) 
-        	{
-        		try
-        		{
-        			controller.caricaSuFile();
-        			JOptionPane.showMessageDialog(new JFrame(), "Salvataggio avvenuto correttamente", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
-        			LOGGER.info("Salvataggio dello stato del controller sul file CSV avvenuto correttamente");
-        			LOGGER.info("Stato del controller: "+ controller);
-        		}
-        		catch (IOException ex)
-        		{
-        			JOptionPane.showMessageDialog(new JFrame(), "Errore durante il salvataggio dello stato del controller", "Errore", JOptionPane.ERROR_MESSAGE);
-        			LOGGER.error("Errore durante il salvataggio dello stato del controller - "+ ex.getMessage());
-        		}
-        	}
+        salvaMagazzinoBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                try
+                {
+                    controller.caricaSuFile();
+                    JOptionPane.showMessageDialog(new JFrame(), "Salvataggio avvenuto correttamente", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
+                    LOGGER.info("Salvataggio dello stato del controller sul file CSV avvenuto correttamente");
+                    LOGGER.info("Stato del controller: " + controller);
+                }
+                catch(IOException ex)
+                {
+                    JOptionPane.showMessageDialog(new JFrame(), "Errore durante il salvataggio dello stato del controller", "Errore", JOptionPane.ERROR_MESSAGE);
+                    LOGGER.error("Errore durante il salvataggio dello stato del controller - " + ex.getMessage());
+                }
+            }
         });
         salvaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         salvaMagazzinoBtn.setBounds(10, 100, 183, 23);
         pulsantiMagazzinoPanel.add(salvaMagazzinoBtn);
-        
+
         JButton aggiornaMagazzinoBtn = new JButton("Aggiorna tabella");
         aggiornaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        aggiornaMagazzinoBtn.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) 
-        	{
-        		popolaTabellaMagazzino();
-        		JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
-        	}
+        aggiornaMagazzinoBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                popolaTabellaMagazzino();
+                JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
         });
         aggiornaMagazzinoBtn.setBounds(10, 150, 183, 23);
         pulsantiMagazzinoPanel.add(aggiornaMagazzinoBtn);
@@ -215,14 +217,15 @@ public class BancoAlimentareGUI
         btnSalvaSuFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
         btnSalvaSuFile.setBounds(10, 100, 183, 23);
         pulsantiRegistroPanel.add(btnSalvaSuFile);
-        
+
         JButton aggiornaRegistroBtn = new JButton("Aggiorna tabella");
-        aggiornaRegistroBtn.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) 
-        	{
-        		popolaTabellaRegistro();
-        		JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
-        	}
+        aggiornaRegistroBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                popolaTabellaRegistro();
+                JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
         });
         aggiornaRegistroBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         aggiornaRegistroBtn.setBounds(10, 150, 183, 23);

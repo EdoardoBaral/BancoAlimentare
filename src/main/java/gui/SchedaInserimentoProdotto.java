@@ -3,7 +3,6 @@ package gui;
 import impl.controller.BancoAlimentareController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
-
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -188,15 +187,15 @@ public class SchedaInserimentoProdotto
             model.addRow(valori);
         }
     }
-    
+
     private void popolaTabellaRegistro(JTable tabellaRegistro)
     {
-    	final String[] COLONNE_REGISTRO = {"ID", "PRODOTTO", "QUANTITA'", "NOME DESTINATARIO", "DATA TRANSAZIONE", "TIPO"};
+        final String[] COLONNE_REGISTRO = {"ID", "PRODOTTO", "QUANTITA'", "NOME DESTINATARIO", "DATA TRANSAZIONE", "TIPO"};
         final String[][] RIGHE_REGISTRO = {};
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
         DefaultTableModel model = new DefaultTableModel(RIGHE_REGISTRO, COLONNE_REGISTRO);
         tabellaRegistro.setModel(model);
-        
+
         List<EntityRegistro> transazioni = controller.getTransazioni();
         for(EntityRegistro t : transazioni)
         {

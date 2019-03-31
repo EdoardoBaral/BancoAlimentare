@@ -147,7 +147,8 @@ public class SchedaInserimentoTransazione
                     popolaTabellaMagazzino(tabellaMagazzino);
                     salvaSuFile();
                     mainWindow.dispose();
-                } else
+                }
+                else
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Transazione gi\u00e0 presente nel registro", "Avviso", JOptionPane.WARNING_MESSAGE);
                     LOGGER.warn("Transazione gi\\u00e0 presente nel registro");
@@ -190,7 +191,7 @@ public class SchedaInserimentoTransazione
         if(tipoTransazione.equals("INGRESSO"))
         {
             result = controller.deposita(nomeProdotto, quantita);
-        } 
+        }
         else
         {
             if(destinatario == null || destinatario.equals(""))
@@ -198,7 +199,8 @@ public class SchedaInserimentoTransazione
                 String errorMessage = "Nessun destinatario specificato per la transazione in uscita";
                 JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
                 LOGGER.warn("Nessun destinatario specificato per la transazione in uscita");
-            } else
+            }
+            else
             {
                 result = controller.preleva(nomeProdotto, quantita, destinatario);
             }
@@ -244,7 +246,7 @@ public class SchedaInserimentoTransazione
             model.addRow(valori);
         }
     }
-    
+
     private void popolaTabellaMagazzino(JTable tabellaMagazzino)
     {
         final String[] COLONNE_MAGAZZINO = {"PRODOTTO", "GIACENZA"};
