@@ -150,6 +150,18 @@ public class BancoAlimentareGUI
         salvaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         salvaMagazzinoBtn.setBounds(10, 100, 183, 23);
         pulsantiMagazzinoPanel.add(salvaMagazzinoBtn);
+        
+        JButton aggiornaTabellaBtn = new JButton("Aggiorna tabella");
+        aggiornaTabellaBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        aggiornaTabellaBtn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) 
+        	{
+        		popolaTabellaMagazzino();
+        		JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
+        	}
+        });
+        aggiornaTabellaBtn.setBounds(10, 150, 183, 23);
+        pulsantiMagazzinoPanel.add(aggiornaTabellaBtn);
 
         JPanel schedaRegistro = new JPanel();
         tabbedPane.addTab("Registro", null, schedaRegistro, null);
