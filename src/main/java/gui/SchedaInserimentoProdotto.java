@@ -67,7 +67,7 @@ public class SchedaInserimentoProdotto
         mainWindow.setResizable(false);
         mainWindow.setTitle("Inserire prodotto nel magazzino");
         mainWindow.setBounds(100, 100, 400, 200);
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainWindow.getContentPane().setLayout(null);
 
         JLabel intestazione = new JLabel("Inserire i dati del prodotto che si intende aggiungere al magazzino");

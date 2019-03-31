@@ -72,11 +72,12 @@ public class SchedaInserimentoTransazione
         mainWindow.setResizable(false);
         mainWindow.setTitle("Inserire prodotto nel magazzino");
         mainWindow.setBounds(100, 100, 400, 290);
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainWindow.getContentPane().setLayout(null);
 
         JLabel intestazione = new JLabel("Inserire i dati della transazione da registrare");
         intestazione.setBounds(86, 11, 212, 14);
+        intestazione.setFont(new Font("Tahoma", Font.PLAIN, 11));
         mainWindow.getContentPane().add(intestazione);
 
         List<String> nomiProdotti = controller.getNomiProdotti();
@@ -91,6 +92,7 @@ public class SchedaInserimentoTransazione
 
         JLabel nomeProdottoLabel = new JLabel("Nome prodotto:");
         nomeProdottoLabel.setBounds(45, 39, 76, 14);
+        nomeProdottoLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
         mainWindow.getContentPane().add(nomeProdottoLabel);
 
         quantitaField = new JTextField();
@@ -160,6 +162,13 @@ public class SchedaInserimentoTransazione
         mainWindow.getContentPane().add(confermaBtn);
 
         JButton annullaBtn = new JButton("Annulla");
+        annullaBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                mainWindow.dispose();
+            }
+        });
         annullaBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         annullaBtn.setBounds(215, 225, 89, 23);
         mainWindow.getContentPane().add(annullaBtn);
