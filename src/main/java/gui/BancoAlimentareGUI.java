@@ -188,7 +188,7 @@ public class BancoAlimentareGUI
         {
             public void actionPerformed(ActionEvent e)
             {
-                SchedaInserimentoTransazione.startNewWindow(controller, tabellaRegistro);
+                SchedaInserimentoTransazione.startNewWindow(controller, tabellaRegistro, tabellaMagazzino);
             }
         });
         nuovaTransazioneBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
