@@ -130,6 +130,23 @@ public class BancoAlimentareGUI
         pulsantiMagazzinoPanel.add(nuovoProdottoBtn);
 
         JButton salvaMagazzinoBtn = new JButton("Salva su file CSV");
+        salvaMagazzinoBtn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) 
+        	{
+        		try
+        		{
+        			controller.caricaSuFile();
+        			JOptionPane.showMessageDialog(new JFrame(), "Salvataggio avvenuto correttamente", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
+        			LOGGER.info("Salvataggio dello stato del controller sul file CSV avvenuto correttamente");
+        			LOGGER.info("Stato del controller: "+ controller);
+        		}
+        		catch (IOException ex)
+        		{
+        			JOptionPane.showMessageDialog(new JFrame(), "Errore durante il salvataggio dello stato del controller", "Errore", JOptionPane.ERROR_MESSAGE);
+        			LOGGER.error("Errore durante il salvataggio dello stato del controller - "+ ex.getMessage());
+        		}
+        	}
+        });
         salvaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         salvaMagazzinoBtn.setBounds(10, 100, 183, 23);
         pulsantiMagazzinoPanel.add(salvaMagazzinoBtn);
