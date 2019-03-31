@@ -151,17 +151,17 @@ public class BancoAlimentareGUI
         salvaMagazzinoBtn.setBounds(10, 100, 183, 23);
         pulsantiMagazzinoPanel.add(salvaMagazzinoBtn);
         
-        JButton aggiornaTabellaBtn = new JButton("Aggiorna tabella");
-        aggiornaTabellaBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        aggiornaTabellaBtn.addActionListener(new ActionListener() {
+        JButton aggiornaMagazzinoBtn = new JButton("Aggiorna tabella");
+        aggiornaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        aggiornaMagazzinoBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) 
         	{
         		popolaTabellaMagazzino();
         		JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
         	}
         });
-        aggiornaTabellaBtn.setBounds(10, 150, 183, 23);
-        pulsantiMagazzinoPanel.add(aggiornaTabellaBtn);
+        aggiornaMagazzinoBtn.setBounds(10, 150, 183, 23);
+        pulsantiMagazzinoPanel.add(aggiornaMagazzinoBtn);
 
         JPanel schedaRegistro = new JPanel();
         tabbedPane.addTab("Registro", null, schedaRegistro, null);
@@ -215,6 +215,18 @@ public class BancoAlimentareGUI
         btnSalvaSuFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
         btnSalvaSuFile.setBounds(10, 100, 183, 23);
         pulsantiRegistroPanel.add(btnSalvaSuFile);
+        
+        JButton aggiornaRegistroBtn = new JButton("Aggiorna tabella");
+        aggiornaRegistroBtn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) 
+        	{
+        		popolaTabellaRegistro();
+        		JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
+        	}
+        });
+        aggiornaRegistroBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        aggiornaRegistroBtn.setBounds(10, 150, 183, 23);
+        pulsantiRegistroPanel.add(aggiornaRegistroBtn);
     }
 
     private void popolaTabellaMagazzino()
