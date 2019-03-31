@@ -122,7 +122,7 @@ public class BancoAlimentareGUI
         {
             public void actionPerformed(ActionEvent arg0)
             {
-                SchedaInserimentoProdotto.startNewWindow(controller, tabellaMagazzino);
+                SchedaInserimentoProdotto.startNewWindow(controller, tabellaMagazzino, tabellaRegistro);
             }
         });
         nuovoProdottoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -130,9 +130,40 @@ public class BancoAlimentareGUI
         pulsantiMagazzinoPanel.add(nuovoProdottoBtn);
 
         JButton salvaMagazzinoBtn = new JButton("Salva su file CSV");
+        salvaMagazzinoBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                try
+                {
+                    controller.caricaSuFile();
+                    JOptionPane.showMessageDialog(new JFrame(), "Salvataggio avvenuto correttamente", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
+                    LOGGER.info("Salvataggio dello stato del controller sul file CSV avvenuto correttamente");
+                    LOGGER.info("Stato del controller: " + controller);
+                }
+                catch(IOException ex)
+                {
+                    JOptionPane.showMessageDialog(new JFrame(), "Errore durante il salvataggio dello stato del controller", "Errore", JOptionPane.ERROR_MESSAGE);
+                    LOGGER.error("Errore durante il salvataggio dello stato del controller - " + ex.getMessage());
+                }
+            }
+        });
         salvaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         salvaMagazzinoBtn.setBounds(10, 100, 183, 23);
         pulsantiMagazzinoPanel.add(salvaMagazzinoBtn);
+
+        JButton aggiornaMagazzinoBtn = new JButton("Aggiorna tabella");
+        aggiornaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        aggiornaMagazzinoBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                popolaTabellaMagazzino();
+                JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        aggiornaMagazzinoBtn.setBounds(10, 150, 183, 23);
+        pulsantiMagazzinoPanel.add(aggiornaMagazzinoBtn);
 
         JPanel schedaRegistro = new JPanel();
         tabbedPane.addTab("Registro", null, schedaRegistro, null);
@@ -159,7 +190,7 @@ public class BancoAlimentareGUI
         {
             public void actionPerformed(ActionEvent e)
             {
-                SchedaInserimentoTransazione.startNewWindow(controller, tabellaRegistro);
+                SchedaInserimentoTransazione.startNewWindow(controller, tabellaRegistro, tabellaMagazzino);
             }
         });
         nuovaTransazioneBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -186,6 +217,19 @@ public class BancoAlimentareGUI
         btnSalvaSuFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
         btnSalvaSuFile.setBounds(10, 100, 183, 23);
         pulsantiRegistroPanel.add(btnSalvaSuFile);
+
+        JButton aggiornaRegistroBtn = new JButton("Aggiorna tabella");
+        aggiornaRegistroBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent arg0)
+            {
+                popolaTabellaRegistro();
+                JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        aggiornaRegistroBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        aggiornaRegistroBtn.setBounds(10, 150, 183, 23);
+        pulsantiRegistroPanel.add(aggiornaRegistroBtn);
     }
 
     private void popolaTabellaMagazzino()

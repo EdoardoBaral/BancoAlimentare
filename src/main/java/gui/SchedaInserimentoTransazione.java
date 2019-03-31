@@ -1,6 +1,7 @@
 package gui;
 
 import impl.controller.BancoAlimentareController;
+import om.EntityMagazzino;
 import om.EntityRegistro;
 import om.TipoTransazione;
 import org.joda.time.format.DateTimeFormat;
@@ -33,7 +34,7 @@ public class SchedaInserimentoTransazione
     /**
      * Launch the application.
      */
-    public static void startNewWindow(BancoAlimentareController controller, JTable tabellaRegistro)
+    public static void startNewWindow(BancoAlimentareController controller, JTable tabellaRegistro, JTable tabellaMagazzino)
     {
         EventQueue.invokeLater(new Runnable()
         {
@@ -41,7 +42,7 @@ public class SchedaInserimentoTransazione
             {
                 try
                 {
-                    SchedaInserimentoTransazione window = new SchedaInserimentoTransazione(controller, tabellaRegistro);
+                    SchedaInserimentoTransazione window = new SchedaInserimentoTransazione(controller, tabellaRegistro, tabellaMagazzino);
                     window.mainWindow.setVisible(true);
                 }
                 catch(Exception e)
@@ -55,15 +56,15 @@ public class SchedaInserimentoTransazione
     /**
      * Create the application.
      */
-    public SchedaInserimentoTransazione(BancoAlimentareController controller, JTable tabellaRegistro)
+    public SchedaInserimentoTransazione(BancoAlimentareController controller, JTable tabellaRegistro, JTable tabellaMagazzino)
     {
-        initialize(controller, tabellaRegistro);
+        initialize(controller, tabellaRegistro, tabellaMagazzino);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller, JTable tabellaRegistro)
+    private void initialize(BancoAlimentareController controller, JTable tabellaRegistro, JTable tabellaMagazzino)
     {
         this.controller = controller;
 
@@ -143,9 +144,11 @@ public class SchedaInserimentoTransazione
                     JOptionPane.showMessageDialog(new JFrame(), "Transazione aggiunta al registro", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
                     LOGGER.info("Transazione registrata correttamente");
                     popolaTabellaRegistro(tabellaRegistro);
+                    popolaTabellaMagazzino(tabellaMagazzino);
                     salvaSuFile();
                     mainWindow.dispose();
-                } else
+                }
+                else
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Transazione gi\u00e0 presente nel registro", "Avviso", JOptionPane.WARNING_MESSAGE);
                     LOGGER.warn("Transazione gi\\u00e0 presente nel registro");
@@ -188,14 +191,16 @@ public class SchedaInserimentoTransazione
         if(tipoTransazione.equals("INGRESSO"))
         {
             result = controller.deposita(nomeProdotto, quantita);
-        } else
+        }
+        else
         {
             if(destinatario == null || destinatario.equals(""))
             {
                 String errorMessage = "Nessun destinatario specificato per la transazione in uscita";
                 JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
                 LOGGER.warn("Nessun destinatario specificato per la transazione in uscita");
-            } else
+            }
+            else
             {
                 result = controller.preleva(nomeProdotto, quantita, destinatario);
             }
@@ -237,6 +242,24 @@ public class SchedaInserimentoTransazione
             valori[3] = t.getDestinatario();
             valori[4] = dtf.print(t.getDataTransazione());
             valori[5] = t.getTipoTransazione().toString();
+
+            model.addRow(valori);
+        }
+    }
+
+    private void popolaTabellaMagazzino(JTable tabellaMagazzino)
+    {
+        final String[] COLONNE_MAGAZZINO = {"PRODOTTO", "GIACENZA"};
+        final String[][] RIGHE_MAGAZZINO = {};
+        DefaultTableModel model = new DefaultTableModel(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
+        tabellaMagazzino.setModel(model);
+
+        List<EntityMagazzino> prodotti = controller.getProdotti();
+        for(EntityMagazzino p : prodotti)
+        {
+            String[] valori = new String[2];
+            valori[0] = p.getNome();
+            valori[1] = Integer.toString(p.getGiacenza());
 
             model.addRow(valori);
         }
