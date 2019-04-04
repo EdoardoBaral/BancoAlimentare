@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
-public class BancoAlimentareGUI
+public class BancoAlimentareGUI implements ICallbackReceiver
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareGUI.class);
     private static final String[] COLONNE_MAGAZZINO = {"PRODOTTO", "GIACENZA"};
@@ -122,7 +122,7 @@ public class BancoAlimentareGUI
         {
             public void actionPerformed(ActionEvent arg0)
             {
-                SchedaInserimentoProdotto.startNewWindow(controller, tabellaMagazzino, tabellaRegistro);
+                SchedaInserimentoProdotto.startNewWindow(controller, BancoAlimentareGUI.this);
             }
         });
         nuovoProdottoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -190,7 +190,7 @@ public class BancoAlimentareGUI
         {
             public void actionPerformed(ActionEvent e)
             {
-                SchedaInserimentoTransazione.startNewWindow(controller, tabellaRegistro, tabellaMagazzino);
+                SchedaInserimentoTransazione.startNewWindow(controller, BancoAlimentareGUI.this);
             }
         });
         nuovaTransazioneBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -232,7 +232,7 @@ public class BancoAlimentareGUI
         pulsantiRegistroPanel.add(aggiornaRegistroBtn);
     }
 
-    private void popolaTabellaMagazzino()
+    private synchronized void popolaTabellaMagazzino()
     {
         DefaultTableModel model = new DefaultTableModel(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
         tabellaMagazzino.setModel(model);
@@ -248,7 +248,7 @@ public class BancoAlimentareGUI
         }
     }
 
-    private void popolaTabellaRegistro()
+    private synchronized void popolaTabellaRegistro()
     {
         DefaultTableModel model = new DefaultTableModel(RIGHE_REGISTRO, COLONNE_REGISTRO);
         tabellaRegistro.setModel(model);
@@ -268,5 +268,16 @@ public class BancoAlimentareGUI
 
             model.addRow(valori);
         }
+    }
+
+    @Override
+    public void callback(Object caller) {
+        if (caller instanceof SchedaInserimentoProdotto)
+            LOGGER.info("callback from SchedaInserimentoProdotto");
+        else if (caller instanceof SchedaInserimentoTransazione)
+            LOGGER.info("callback from SchedaInserimentoTransazione");
+            
+        popolaTabellaMagazzino();
+        popolaTabellaRegistro();
     }
 }

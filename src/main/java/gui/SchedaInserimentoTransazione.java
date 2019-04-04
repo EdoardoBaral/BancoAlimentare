@@ -1,16 +1,11 @@
 package gui;
 
 import impl.controller.BancoAlimentareController;
-import om.EntityMagazzino;
-import om.EntityRegistro;
 import om.TipoTransazione;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +29,7 @@ public class SchedaInserimentoTransazione
     /**
      * Launch the application.
      */
-    public static void startNewWindow(BancoAlimentareController controller, JTable tabellaRegistro, JTable tabellaMagazzino)
+    public static void startNewWindow(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
     {
         EventQueue.invokeLater(new Runnable()
         {
@@ -42,7 +37,7 @@ public class SchedaInserimentoTransazione
             {
                 try
                 {
-                    SchedaInserimentoTransazione window = new SchedaInserimentoTransazione(controller, tabellaRegistro, tabellaMagazzino);
+                    SchedaInserimentoTransazione window = new SchedaInserimentoTransazione(controller, callbackReceiver);
                     window.mainWindow.setVisible(true);
                 }
                 catch(Exception e)
@@ -56,15 +51,15 @@ public class SchedaInserimentoTransazione
     /**
      * Create the application.
      */
-    public SchedaInserimentoTransazione(BancoAlimentareController controller, JTable tabellaRegistro, JTable tabellaMagazzino)
+    public SchedaInserimentoTransazione(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
     {
-        initialize(controller, tabellaRegistro, tabellaMagazzino);
+        initialize(controller, callbackReceiver);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller, JTable tabellaRegistro, JTable tabellaMagazzino)
+    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
     {
         this.controller = controller;
 
@@ -145,15 +140,9 @@ public class SchedaInserimentoTransazione
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Transazione aggiunta al registro", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
                     LOGGER.info("Transazione registrata correttamente");
-                    popolaTabellaRegistro(tabellaRegistro);
-                    popolaTabellaMagazzino(tabellaMagazzino);
                     salvaSuFile();
                     mainWindow.dispose();
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(new JFrame(), "Transazione gi\u00e0 presente nel registro", "Avviso", JOptionPane.WARNING_MESSAGE);
-                    LOGGER.warn("Transazione gi\\u00e0 presente nel registro");
+                    callbackReceiver.callback(SchedaInserimentoTransazione.this);
                 }
             }
         });
@@ -181,6 +170,7 @@ public class SchedaInserimentoTransazione
             String errorMessage = "Nessun nome specificato per il prodotto";
             JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
             LOGGER.warn("Nessun nome specificato per il prodotto da indicare nella transazione");
+            return false;
         }
 
         if(quantitaField.getText() == null || quantitaField.getText().equals(""))
@@ -188,10 +178,24 @@ public class SchedaInserimentoTransazione
             String errorMessage = "Nessuna quantit\u00e0 specificata per il prodotto";
             JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
             LOGGER.warn("Nessuna quantit\u00e0 specificata per il prodotto da indicare nella transazione");
+            return false;
         }
 
         String nomeProdotto = ((String) selezioneProdotti.getSelectedItem());
-        int quantita = Integer.parseInt(quantitaField.getText());
+        
+        int quantita;
+        try
+        {
+            quantita = Integer.parseInt(quantitaField.getText());
+        }
+        catch(NumberFormatException nfe)
+        {   
+            String errorMessage = "Il valore della quantit\u00e0 specificata per il prodotto deve essere un numero intero";
+            JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
+            LOGGER.warn("Il valore specificato per la quantit\u00e0 del prodotto non e' un numero intero");  
+            return false;
+        }
+        
         String destinatario = destinatarioField.getText();
         String tipoTransazione = ((String) selezioneTipoTransazione.getSelectedItem());
 
@@ -208,6 +212,7 @@ public class SchedaInserimentoTransazione
                 String errorMessage = "Nessun destinatario specificato per la transazione in uscita";
                 JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
                 LOGGER.warn("Nessun destinatario specificato per la transazione in uscita");
+                return false;
             }
             else
             {
@@ -215,6 +220,11 @@ public class SchedaInserimentoTransazione
             }
         }
 
+        if(!result){
+            JOptionPane.showMessageDialog(new JFrame(), "Transazione gi\u00e0 presente nel registro", "Avviso", JOptionPane.WARNING_MESSAGE);
+            LOGGER.warn("Transazione gi\\u00e0 presente nel registro");
+        }
+        
         return result;
     }
 
@@ -229,48 +239,6 @@ public class SchedaInserimentoTransazione
             String errorMessage = "Errore nel salvataggio dello stato del controller sul file CSV";
             JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
             LOGGER.error("Errore nel salvataggio dello stato del controller sul file CSV - " + e.getMessage());
-        }
-    }
-
-    private void popolaTabellaRegistro(JTable tabellaRegistro)
-    {
-        final String[] COLONNE_REGISTRO = {"ID", "PRODOTTO", "QUANTITA'", "NOME DESTINATARIO", "DATA TRANSAZIONE", "TIPO"};
-        final String[][] RIGHE_REGISTRO = {};
-        DefaultTableModel model = new DefaultTableModel(RIGHE_REGISTRO, COLONNE_REGISTRO);
-        tabellaRegistro.setModel(model);
-
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
-
-        List<EntityRegistro> transazioni = controller.getTransazioni();
-        for(EntityRegistro t : transazioni)
-        {
-            String[] valori = new String[6];
-            valori[0] = Long.toString(t.getId());
-            valori[1] = t.getProdotto();
-            valori[2] = Integer.toString(t.getQuantita());
-            valori[3] = t.getDestinatario();
-            valori[4] = dtf.print(t.getDataTransazione());
-            valori[5] = t.getTipoTransazione().toString();
-
-            model.addRow(valori);
-        }
-    }
-
-    private void popolaTabellaMagazzino(JTable tabellaMagazzino)
-    {
-        final String[] COLONNE_MAGAZZINO = {"PRODOTTO", "GIACENZA"};
-        final String[][] RIGHE_MAGAZZINO = {};
-        DefaultTableModel model = new DefaultTableModel(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
-        tabellaMagazzino.setModel(model);
-
-        List<EntityMagazzino> prodotti = controller.getProdotti();
-        for(EntityMagazzino p : prodotti)
-        {
-            String[] valori = new String[2];
-            valori[0] = p.getNome();
-            valori[1] = Integer.toString(p.getGiacenza());
-
-            model.addRow(valori);
         }
     }
 }

@@ -65,7 +65,7 @@ public class EntityRegistroController
                 transazione.setQuantita(Integer.parseInt(valori[2]));
                 transazione.setDestinatario(valori[3]);
                 transazione.setDataTransazione(dtf.parseDateTime(valori[4]));
-                if(valori[5].equals(TipoTransazione.INGRESSO)) transazione.setTipoTransazione(TipoTransazione.INGRESSO);
+                if(valori[5].equals(TipoTransazione.INGRESSO.name())) transazione.setTipoTransazione(TipoTransazione.INGRESSO);
                 else transazione.setTipoTransazione(TipoTransazione.USCITA);
                 aggiungiTransazione(transazione);
             }
