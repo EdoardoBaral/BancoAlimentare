@@ -153,7 +153,7 @@ public class SchedaInserimentoTransazione
                 else
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Giacenza insufficiente nel magazzino", "Avviso", JOptionPane.WARNING_MESSAGE);
-                    LOGGER.warn("Transazione gi\\u00e0 presente nel registro");
+                    LOGGER.warn("Giacenza insufficiente nel magazzino");
                 }
             }
         });
