@@ -1,7 +1,8 @@
-package impl.controller;
+package impl.controller.csv;
 
 import static org.junit.Assert.*;
 
+import impl.controller.csv.EntityMagazzinoCSVController;
 import om.EntityMagazzino;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,12 +10,12 @@ import org.junit.Test;
 import java.io.IOException;
 
 /**
- * EntityMagazzinoControllerTest. Classe di test che permette di verificare il corretto funzionamento dei metodi della classe EntityMagazzinoController.
+ * EntityMagazzinoCSVControllerTest. Classe di test che permette di verificare il corretto funzionamento dei metodi della classe EntityMagazzinoCSVController.
  *
  * @author Edoardo Baral
  */
 @Ignore
-public class EntityMagazzinoControllerTest
+public class EntityMagazzinoCSVControllerTest
 {
     /**
      * Metodo che permette di testare il costruttore della classe
@@ -23,7 +24,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testCostruttore() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         assertNotNull(controller);
     }
 
@@ -34,7 +35,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testAggiungiProdotto() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -67,7 +68,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testCancellaProdotto() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -101,7 +102,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testCancellaProdottoPerNome() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -131,7 +132,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testModificaProdotto() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -170,7 +171,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testExists() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -201,7 +202,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testScriviProdottiSuFile() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -227,7 +228,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testMappingDaFile() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -245,7 +246,7 @@ public class EntityMagazzinoControllerTest
 
         controller.scriviProdottiSuFile();
 
-        EntityMagazzinoController controller2 = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller2 = new EntityMagazzinoCSVController();
         controller2.mappingDaFile();
         assertEquals(0, controller2.exists("Asparagi 300 g"));
     }
@@ -257,7 +258,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testIncrementaDecrementaGiacenza() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
@@ -284,7 +285,7 @@ public class EntityMagazzinoControllerTest
     @Test
     public void testToString() throws IOException
     {
-        EntityMagazzinoController controller = new EntityMagazzinoController();
+        EntityMagazzinoCSVController controller = new EntityMagazzinoCSVController();
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
         em1.setGiacenza(7);
