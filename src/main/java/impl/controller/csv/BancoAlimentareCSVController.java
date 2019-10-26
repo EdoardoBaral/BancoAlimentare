@@ -1,5 +1,6 @@
-package impl.controller;
+package impl.controller.csv;
 
+import interfaces.BancoAlimentareController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import om.TipoTransazione;
@@ -12,22 +13,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * BancoAlimentareController. Classe che permette di mettere in relazione i due controller che gestiscono il magazzino e il registro del banco alimentare
- * (EntityMagazzinoController ed EntityRegistroController) per gestire in modo centralizzato le operazioni di gestione del magazzino e registro delle transazioni
+ * BancoAlimentareCSVController. Classe che permette di mettere in relazione i due controller che gestiscono il magazzino e il registro del banco alimentare
+ * (EntityMagazzinoCSVController ed EntityRegistroCSVController) per gestire in modo centralizzato le operazioni di gestione del magazzino e registro delle transazioni
  * @author Edoardo Baral
  */
-public class BancoAlimentareController
+public class BancoAlimentareCSVController implements BancoAlimentareController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareCSVController.class);
 
-    private EntityMagazzinoController magazzino;
-    private EntityRegistroController registro;
+    private EntityMagazzinoCSVController magazzino;
+    private EntityRegistroCSVController registro;
 
     /**
-     * Metodo costruttore della classe BancoAlimentareController
+     * Metodo costruttore della classe BancoAlimentareCSVController
      * @throws IOException in caso di errori nella lettura/scrittura dei file CSV
      */
-    public BancoAlimentareController() throws IOException
+    public BancoAlimentareCSVController() throws IOException
     {
         File cartella = new File("archivio");
         if(!cartella.exists())
@@ -41,10 +42,10 @@ public class BancoAlimentareController
                 throw new IOException(e.getMessage());
             }
         }
-        magazzino = new EntityMagazzinoController();
-        registro = new EntityRegistroController();
+        magazzino = new EntityMagazzinoCSVController();
+        registro = new EntityRegistroCSVController();
 
-        LOGGER.info("Istanziato un nuovo oggetto BancoAlimentareController - " + this.toString());
+        LOGGER.info("Istanziato un nuovo oggetto BancoAlimentareCSVController - " + this.toString());
     }
 
     /**
@@ -122,7 +123,7 @@ public class BancoAlimentareController
         {
             EntityMagazzino prodotto = magazzino.getProdotti().get(indice);
             EntityRegistro transazione = new EntityRegistro();
-            transazione.setProdotto(nomeProdotto);
+            //transazione.setProdotto(nomeProdotto);
             transazione.setQuantita(quantita);
             transazione.setDestinatario(destinatario);
             transazione.setDataTransazione(new DateTime());
@@ -183,7 +184,7 @@ public class BancoAlimentareController
         {
             EntityMagazzino prodotto = magazzino.getProdotti().get(indice);
             EntityRegistro transazione = new EntityRegistro();
-            transazione.setProdotto(nomeProdotto);
+            //transazione.setProdotto(nomeProdotto);
             transazione.setQuantita(quantita);
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);
@@ -198,7 +199,7 @@ public class BancoAlimentareController
             prodotto.setGiacenza(quantita);
 
             EntityRegistro transazione = new EntityRegistro();
-            transazione.setProdotto(nomeProdotto);
+            //transazione.setProdotto(nomeProdotto);
             transazione.setQuantita(quantita);
             transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);

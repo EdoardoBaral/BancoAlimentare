@@ -1,5 +1,6 @@
-package impl.controller;
+package impl.controller.csv;
 
+import interfaces.EntityRegistroController;
 import om.EntityRegistro;
 import om.TipoTransazione;
 import org.joda.time.DateTime;
@@ -14,15 +15,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * EntityRegistroController. Classe che permette di realizzare un controller per la gestione delle transazioni del banco alimentare.
+ * EntityRegistroCSVController. Classe che permette di realizzare un controller per la gestione delle transazioni del banco alimentare.
  * Il registro delle transazioni viene scritto su un apposito file CSV.
  * La classe contiene metodi che permettono la lettura del file per recuperarne l'intero contenuto e mapparlo all'interno di una lista e metodi che permettono la scrittura del
  * contenuto della lista sul medesimo file, in caso di aggiornamenti.
  * @author Edoardo Baral
  */
-public class EntityRegistroController
+public class EntityRegistroCSVController implements EntityRegistroController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityRegistroController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityRegistroCSVController.class);
 
     private static final String PATH = "archivio/registro.csv";
     private static final String INTESTAZIONE = "ID;PRODOTTO;QUANTITA';NOME_DESTINATARIO;DATA_TRANSAZIONE;TIPO_TRANSAZIONE";
@@ -32,10 +33,10 @@ public class EntityRegistroController
     private Long nextId;
 
     /**
-     * Costruttore della classe EntityRegistroController
+     * Costruttore della classe EntityRegistroCSVController
      * @throws IOException in caso di problemi di lettura/scrittura del file CSV
      */
-    public EntityRegistroController() throws IOException
+    public EntityRegistroCSVController() throws IOException
     {
         File fileRegistro = new File(PATH);
         fileRegistro.createNewFile();
@@ -61,7 +62,7 @@ public class EntityRegistroController
                 String[] valori = riga.split(SEPARATORE);
                 EntityRegistro transazione = new EntityRegistro();
                 transazione.setId(Long.parseLong(valori[0]));
-                transazione.setProdotto(valori[1]);
+                //transazione.setProdotto(valori[1]);
                 transazione.setQuantita(Integer.parseInt(valori[2]));
                 transazione.setDestinatario(valori[3]);
                 transazione.setDataTransazione(dtf.parseDateTime(valori[4]));
