@@ -21,7 +21,7 @@ public class EntityRegistroTest
     public void testSetterGetterMethods()
     {
         EntityRegistro er = new EntityRegistro();
-        er.setProdotto("Spaghetti 1 kg");
+        //er.setProdotto("Spaghetti 1 kg");
         er.setQuantita(10);
         er.setDestinatario("Mario Rossi");
         er.setDataTransazione(new DateTime());
@@ -41,7 +41,7 @@ public class EntityRegistroTest
     {
         EntityRegistro er1 = new EntityRegistro();
         er1.setId(1L);
-        er1.setProdotto("Spaghetti 1 kg");
+        //er1.setProdotto("Spaghetti 1 kg");
         er1.setQuantita(10);
         er1.setDestinatario("Mario Rossi");
         er1.setDataTransazione(new DateTime());
@@ -49,7 +49,7 @@ public class EntityRegistroTest
 
         EntityRegistro er2 = new EntityRegistro();
         er2.setId(2L);
-        er2.setProdotto("Tonno 1 kg");
+        //er2.setProdotto("Tonno 1 kg");
         er2.setQuantita(10);
         er2.setDestinatario("Mario Rossi");
         er2.setDataTransazione(new DateTime());
@@ -57,7 +57,7 @@ public class EntityRegistroTest
 
         EntityRegistro er3 = new EntityRegistro();
         er3.setId(3L);
-        er3.setProdotto("Acciughe 1 kg");
+        //er3.setProdotto("Acciughe 1 kg");
         er3.setQuantita(10);
         er3.setDestinatario("Mario Rossi");
         er3.setDataTransazione(new DateTime());
@@ -65,7 +65,7 @@ public class EntityRegistroTest
 
         EntityRegistro er4 = new EntityRegistro();
         er4.setId(1L);
-        er4.setProdotto("Spaghetti 1 kg");
+        //er4.setProdotto("Spaghetti 1 kg");
         er4.setQuantita(10);
         er4.setDestinatario("Mario Rossi");
         er4.setDataTransazione(er1.getDataTransazione());
@@ -84,7 +84,7 @@ public class EntityRegistroTest
     public void testCompareToBis()
     {
         EntityRegistro er1 = new EntityRegistro();
-        er1.setProdotto("Fusilli");
+        //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
         er1.setDataTransazione(new DateTime());
@@ -93,7 +93,7 @@ public class EntityRegistroTest
         EntityRegistro er2 = new EntityRegistro();
         DateTime d = new DateTime();
         d = d.plus(100);
-        er2.setProdotto("Aceto");
+        //er2.setProdotto("Aceto");
         er2.setQuantita(2);
         er2.setDataTransazione(d);
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
@@ -114,7 +114,7 @@ public class EntityRegistroTest
     public void testToString()
     {
         EntityRegistro er = new EntityRegistro();
-        er.setProdotto("Spaghetti 1 kg");
+        //er.setProdotto("Spaghetti 1 kg");
         er.setQuantita(10);
         er.setDestinatario("Mario Rossi");
         er.setDataTransazione(new DateTime());
