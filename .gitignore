@@ -139,4 +139,5 @@ $RECYCLE.BIN/
 target/
 /archivio/magazzino.csv
 /archivio/registro.csv
-/.idea/codeStyles/Project.xml
+/.idea
+/.idea/
