@@ -2,6 +2,7 @@ package om;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.morphia.annotations.*;
 import org.joda.time.DateTime;
 
 /**
@@ -9,10 +10,15 @@ import org.joda.time.DateTime;
  *
  * @author Edoardo Baral
  */
+
+@Entity("Transazione")
+@Validation("{ quantita: { $gt: 0 } }")
 public class EntityRegistro implements Comparable<EntityRegistro>
 {
+    @Id
     private Long id;
-    private String prodotto;
+    @Reference
+    private EntityMagazzino prodotto;
     private int quantita;
     private String destinatario;
     private DateTime dataTransazione;
@@ -45,19 +51,19 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     }
 
     /**
-     * Metodo che restituisce il prodotto del prodotto ceduto
-     * @return il prodotto del prodotto
+     * Metodo che restituisce il prodotto oggetto della transazione
+     * @return il prodotto oggetto della transazione
      */
-    public String getProdotto()
+    public EntityMagazzino getProdotto()
     {
         return prodotto;
     }
 
     /**
-     * Metodo che permette di impostare un nuovo prodotto per il prodotto ceduto
-     * @param prodotto: nuovo prodotto del prodotto
+     * Metodo che permette di impostare un nuovo prodotto la transazione
+     * @param prodotto: prodotto della transazione
      */
-    public void setProdotto(String prodotto)
+    public void setProdotto(EntityMagazzino prodotto)
     {
         this.prodotto = prodotto;
     }
