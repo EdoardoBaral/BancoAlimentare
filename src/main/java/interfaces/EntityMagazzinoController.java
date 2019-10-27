@@ -35,20 +35,6 @@ public interface EntityMagazzinoController
     EntityMagazzino modificaProdotto(EntityMagazzino prodotto);
 
     /**
-     * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento, sfruttando l'algoritmo di ricerca binaria
-     * @param prodotto: prodotto da cercare nel magazzino
-     * @return l'indice del prodotto all'interno della lista, negativo nel caso non esista
-     */
-    int exists(EntityMagazzino prodotto);
-
-    /**
-     * Metodo che verifica l'esistenza nel magazzino di un prodotto il cui nome è uguale a quello passato come argomento, sfruttando l'algoritmo della ricerca binaria
-     * @param nomeProdotto: nome del prodotto da cercare nel magazzino
-     * @return l'indice del prodotto all'interno della lista, negativo nel caso non esista
-     */
-    int exists(String nomeProdotto);
-
-    /**
      * Metodo che permette di incrementare la giacenza di un prodotto in magazzino della quantità specificata
      * @param prodotto: prodotto da cercare in magazzino
      * @param quantita: quantità da aggiungere alla giacenza
