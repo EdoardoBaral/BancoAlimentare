@@ -41,6 +41,8 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
         MongoClient mongoClient = new MongoClient(new MongoClientURI(URI));
         datastore = morphia.createDatastore(mongoClient, DATABASE);
         datastore.ensureIndexes();
+
+        LOGGER.info("EntityMagazzinoMorphiaController - Nuova istanza creata");
     }
 
     /**
@@ -51,8 +53,17 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     @Override
     public EntityMagazzino aggiungiProdotto(EntityMagazzino prodotto)
     {
-        Key<EntityMagazzino> key = datastore.save(prodotto);
-        return key == null ? null : prodotto;
+        if(!exists(prodotto))
+        {
+            Key<EntityMagazzino> key = datastore.save(prodotto);
+            LOGGER.info("EntityMagazzinoMorphiaController - Aggiunto nuovo prodotto: "+ prodotto);
+            return prodotto;
+        }
+        else
+        {
+            LOGGER.info("EntityMagazzinoMorphiaController - Prodotto già esistente: "+ prodotto);
+            return null;
+        }
     }
 
     /**
@@ -64,7 +75,9 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     public EntityMagazzino cancellaProdotto(EntityMagazzino prodotto)
     {
         Query<EntityMagazzino> selectQuery = datastore.createQuery(EntityMagazzino.class).field("nome").equalIgnoreCase(prodotto.getNome());
-        return datastore.findAndDelete(selectQuery);
+        EntityMagazzino result = datastore.findAndDelete(selectQuery);
+        LOGGER.info("EntityMagazzinoMorphiaController - Cancellazione prodotto: "+ result);
+        return result;
     }
 
     /**
@@ -76,7 +89,9 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     public EntityMagazzino cancellaProdotto(String nomeProdotto)
     {
         Query<EntityMagazzino> selectQuery = datastore.createQuery(EntityMagazzino.class).field("nome").equalIgnoreCase(nomeProdotto);
-        return datastore.findAndDelete(selectQuery);
+        EntityMagazzino result = datastore.findAndDelete(selectQuery);
+        LOGGER.info("EntityMagazzinoMorphiaController - Cancellazione prodotto: "+ result);
+        return result;
     }
 
     /**
@@ -89,7 +104,9 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     {
         Query<EntityMagazzino> selectQuery = datastore.createQuery(EntityMagazzino.class).field("nome").equalIgnoreCase(prodotto.getNome());
         UpdateOperations<EntityMagazzino> updates = datastore.createUpdateOperations(EntityMagazzino.class).set("giacenza", prodotto.getGiacenza());
-        return datastore.findAndModify(selectQuery, updates);
+        EntityMagazzino result = datastore.findAndModify(selectQuery, updates);
+        LOGGER.info("EntityMagazzinoMorphiaController - Aggiornamento prodotto: "+ result);
+        return result;
     }
     /**
      * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento, sfruttando l'algoritmo di ricerca binaria
@@ -98,6 +115,7 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
      */
     public boolean exists(EntityMagazzino prodotto)
     {
+        LOGGER.info("EntityMagazzinoMorphiaController - Verifica esistenza prodotto: "+ prodotto);
         List<EntityMagazzino> list = datastore.find(EntityMagazzino.class).field("nome").equalIgnoreCase(prodotto.getNome()).find().toList();
         return (list == null || list.isEmpty()) ? false : true;
     }
@@ -109,6 +127,7 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
      */
     public boolean exists(String nomeProdotto)
     {
+        LOGGER.info("EntityMagazzinoMorphiaController - Verifica esistenza prodotto: "+ nomeProdotto);
         List<EntityMagazzino> list = datastore.find(EntityMagazzino.class).field("nome").equalIgnoreCase(nomeProdotto).find().toList();
         return (list == null || list.isEmpty()) ? false : true;
     }
@@ -125,7 +144,16 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
         int nuovaGiacenza = prodotto.getGiacenza() + quantita;
         prodotto.setGiacenza(nuovaGiacenza);
         Key<EntityMagazzino> key = datastore.merge(prodotto);
-        return key == null ? false : true;
+
+        if(key != null) {
+            LOGGER.info("EntityMagazzinoMorphiaController - Incrementata la giacenza del prodotto: "+ prodotto);
+            return true;
+        }
+        else
+        {
+            LOGGER.info("EntityMagazzinoMorphiaController - Prodotto non trovato per incremento giacenza: "+ prodotto);
+            return false;
+        }
     }
 
     /**
@@ -141,7 +169,16 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
         if(nuovaGiacenza <= 0) return false;
         prodotto.setGiacenza(nuovaGiacenza);
         Key<EntityMagazzino> key = datastore.merge(prodotto);
-        return key == null ? false : true;
+
+        if(key != null) {
+            LOGGER.info("EntityMagazzinoMorphiaController - Decrementata la giacenza del prodotto: "+ prodotto);
+            return true;
+        }
+        else
+        {
+            LOGGER.info("EntityMagazzinoMorphiaController - Prodotto non trovato per decremento giacenza: "+ prodotto);
+            return false;
+        }
     }
 
     /**
@@ -159,6 +196,7 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
             listNomi.add(prodotto.getNome());
         }
 
+        LOGGER.info("EntityMagazzinoMorphiaController - Recuperata lista nomi prodotti");
         return listNomi;
     }
 
@@ -170,6 +208,7 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     public List<EntityMagazzino> getProdotti()
     {
         List<EntityMagazzino> list = datastore.find(EntityMagazzino.class).order(Sort.ascending("nome")).find().toList();
+        LOGGER.info("EntityMagazzinoMorphiaController - Recuperata lista prodotti");
         return list;
     }
 }
