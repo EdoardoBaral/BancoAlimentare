@@ -38,8 +38,7 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     {
         Morphia morphia = new Morphia();
         morphia.mapPackage("om");
-        MongoClientURI uri;
-        MongoClient mongoClient = new MongoClient(URI);
+        MongoClient mongoClient = new MongoClient(new MongoClientURI(URI));
         datastore = morphia.createDatastore(mongoClient, DATABASE);
         datastore.ensureIndexes();
     }
