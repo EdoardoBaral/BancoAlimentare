@@ -7,6 +7,7 @@ import dev.morphia.Key;
 import dev.morphia.Morphia;
 import dev.morphia.query.Query;
 import dev.morphia.query.Sort;
+import dev.morphia.query.UpdateException;
 import dev.morphia.query.UpdateOperations;
 import interfaces.EntityMagazzinoController;
 import om.EntityMagazzino;
@@ -141,17 +142,18 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     @Override
     public boolean incrementaGiacenza(EntityMagazzino prodotto, int quantita)
     {
-        int nuovaGiacenza = prodotto.getGiacenza() + quantita;
-        prodotto.setGiacenza(nuovaGiacenza);
-        Key<EntityMagazzino> key = datastore.merge(prodotto);
+        Query<EntityMagazzino> selectQuery = datastore.createQuery(EntityMagazzino.class).field("nome").equalIgnoreCase(prodotto.getNome());
+        UpdateOperations<EntityMagazzino> updates = datastore.createUpdateOperations(EntityMagazzino.class).inc("giacenza", quantita);
+        EntityMagazzino result = datastore.findAndModify(selectQuery, updates);
 
-        if(key != null) {
-            LOGGER.info("EntityMagazzinoMorphiaController - Incrementata la giacenza del prodotto: "+ prodotto);
+        if(result != null)
+        {
+            LOGGER.info("EntityMagazzinoMorphiaController - Incremento giacenza prodotto: "+ result);
             return true;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMorphiaController - Prodotto non trovato per incremento giacenza: "+ prodotto);
+            LOGGER.info("EntityMagazzinoMorphiaController - Incremento giacenza prodotto inesistente: "+ result);
             return false;
         }
     }
@@ -165,18 +167,18 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     @Override
     public boolean decrementaGiacenza(EntityMagazzino prodotto, int quantita)
     {
-        int nuovaGiacenza = prodotto.getGiacenza() - quantita;
-        if(nuovaGiacenza <= 0) return false;
-        prodotto.setGiacenza(nuovaGiacenza);
-        Key<EntityMagazzino> key = datastore.merge(prodotto);
+        Query<EntityMagazzino> selectQuery = datastore.createQuery(EntityMagazzino.class).field("nome").equalIgnoreCase(prodotto.getNome());
+        UpdateOperations<EntityMagazzino> updates = datastore.createUpdateOperations(EntityMagazzino.class).dec("giacenza", quantita);
+        EntityMagazzino result = datastore.findAndModify(selectQuery, updates);
 
-        if(key != null) {
-            LOGGER.info("EntityMagazzinoMorphiaController - Decrementata la giacenza del prodotto: "+ prodotto);
+        if(result != null)
+        {
+            LOGGER.info("EntityMagazzinoMorphiaController - decremento giacenza prodotto: "+ result);
             return true;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMorphiaController - Prodotto non trovato per decremento giacenza: "+ prodotto);
+            LOGGER.info("EntityMagazzinoMorphiaController - decremento giacenza prodotto inesistente: "+ result);
             return false;
         }
     }
@@ -210,5 +212,16 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
         List<EntityMagazzino> list = datastore.find(EntityMagazzino.class).order(Sort.ascending("nome")).find().toList();
         LOGGER.info("EntityMagazzinoMorphiaController - Recuperata lista prodotti");
         return list;
+    }
+
+    /**
+     * Metodo che cerca sul database un determinato prodotto in base al nome passato come argomento
+     * @param nome: nome del prodotto da cercare
+     * @return il prodotto indicato, se esiste, altrimenti null;
+     */
+    public EntityMagazzino getProdotto(String nome)
+    {
+        List<EntityMagazzino> result = datastore.find(EntityMagazzino.class).field("nome").equalIgnoreCase(nome).find().toList();
+        return result.isEmpty() ? null : result.get(0);
     }
 }
