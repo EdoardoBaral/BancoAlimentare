@@ -141,3 +141,4 @@ target/
 /archivio/registro.csv
 /.idea
 /.idea/
+/.idea/compiler.xml
