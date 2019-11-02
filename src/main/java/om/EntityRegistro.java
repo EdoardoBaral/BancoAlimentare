@@ -21,7 +21,9 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     private EntityMagazzino prodotto;
     private int quantita;
     private String destinatario;
+    @Property("data")
     private DateTime dataTransazione;
+    @Property("tipo")
     private TipoTransazione tipoTransazione;
 
     /**
