@@ -1,6 +1,6 @@
 package gui;
 
-import impl.controller.BancoAlimentareController;
+import impl.controller.csv.BancoAlimentareCSVController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +18,12 @@ public class SchedaInserimentoProdotto
     private JTextField nomeField;
     private JTextField quantitaField;
 
-    private BancoAlimentareController controller;
+    private BancoAlimentareCSVController controller;
 
     /**
      * Launch the application.
      */
-    public static void startNewWindow(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    public static void startNewWindow(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
     {
         EventQueue.invokeLater(new Runnable()
         {
@@ -45,7 +45,7 @@ public class SchedaInserimentoProdotto
     /**
      * Create the application.
      */
-    public SchedaInserimentoProdotto(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    public SchedaInserimentoProdotto(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
     {
         initialize(controller, callbackReceiver);
     }
@@ -53,7 +53,7 @@ public class SchedaInserimentoProdotto
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    private void initialize(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
     {
         this.controller = controller;
 

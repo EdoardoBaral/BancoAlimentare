@@ -1,6 +1,6 @@
 package gui;
 
-import impl.controller.BancoAlimentareController;
+import impl.controller.csv.BancoAlimentareCSVController;
 import om.TipoTransazione;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class SchedaInserimentoTransazione
 
     private JFrame mainWindow;
 
-    private BancoAlimentareController controller;
+    private BancoAlimentareCSVController controller;
     private JTextField quantitaField;
     private JTextField destinatarioField;
     private JComboBox<String> selezioneProdotti;
@@ -29,7 +29,7 @@ public class SchedaInserimentoTransazione
     /**
      * Launch the application.
      */
-    public static void startNewWindow(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    public static void startNewWindow(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
     {
         EventQueue.invokeLater(new Runnable()
         {
@@ -51,7 +51,7 @@ public class SchedaInserimentoTransazione
     /**
      * Create the application.
      */
-    public SchedaInserimentoTransazione(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    public SchedaInserimentoTransazione(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
     {
         initialize(controller, callbackReceiver);
     }
@@ -59,7 +59,7 @@ public class SchedaInserimentoTransazione
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    private void initialize(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
     {
         this.controller = controller;
 
