@@ -172,12 +172,12 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
 
         if(result != null)
         {
-            LOGGER.info("EntityMagazzinoMorphiaController - decremento giacenza prodotto: "+ result);
+            LOGGER.info("EntityMagazzinoMorphiaController - Decremento giacenza prodotto: "+ result);
             return true;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMorphiaController - decremento giacenza prodotto inesistente: "+ result);
+            LOGGER.info("EntityMagazzinoMorphiaController - Decremento giacenza prodotto inesistente: "+ result);
             return false;
         }
     }
