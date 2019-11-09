@@ -15,6 +15,13 @@ import java.util.List;
 import static utils.ConnectionParams.DATABASE;
 import static utils.ConnectionParams.URI;
 
+/**
+ * TransactionIDMorphiaController. Classe che permette di creare un controller che gestisce l'autoincremento del valore dell'id
+ * per le transazioni del Banco Alimentare.
+ * La classe viene gestita come un singleton perciò, in ogni momento, può esistere al più una singola istanza di TransactionIDMorphiaController.
+ *
+ * @author Edoardo Baral
+ */
 public class TransactionIDMorphiaController
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionIDMorphiaController.class);
@@ -22,6 +29,10 @@ public class TransactionIDMorphiaController
     private static TransactionIDMorphiaController instance = null;
     private Datastore datastore;
 
+    /**
+     * Metodo costruttore privato della classe TransactionIDMorphiaController. Viene richiamato esclusivamente all'interno
+     * di getInstance() qualora si debba creare una nuova istanza della classe per il singleton
+     */
     private TransactionIDMorphiaController()
     {
         Morphia morphia = new Morphia();
@@ -33,13 +44,20 @@ public class TransactionIDMorphiaController
         LOGGER.info("TransactionIDMorphiaController - Nuova istanza creata");
     }
 
+    /**
+     * Metodo che gestisce il singleton e restituisce un'istanza della classe
+     * @return una nuova istanza di TransactionIDMorphiaController
+     */
     public static TransactionIDMorphiaController getInstance()
     {
-        if(instance == null)
-            instance = new TransactionIDMorphiaController();
+        if(instance == null) instance = new TransactionIDMorphiaController();
         return instance;
     }
 
+    /**
+     * Metodo che restituisce il valore del prossimo id disponibile per la classe EntityRegistro salvato sul database
+     * @return il valore del prossimo id disponibile per la classe EntityRegistro
+     */
     public Long getNextId()
     {
         List<TransactionID> result = datastore.find(TransactionID.class).field("className").equalIgnoreCase("EntityRegistro").find().toList();
@@ -57,6 +75,10 @@ public class TransactionIDMorphiaController
         }
     }
 
+    /**
+     * Metodo che permette di incrementare il valore dell'id salvato sul database
+     * @return true se l'incremento va a buon fine, false in caso di errore
+     */
     public boolean incrementaId()
     {
         Query<TransactionID> selectQuery = datastore.find(TransactionID.class).field("className").equalIgnoreCase("EntityRegistro");
