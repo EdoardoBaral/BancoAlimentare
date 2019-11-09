@@ -1,5 +1,6 @@
-package impl.controller;
+package impl.controller.csv;
 
+import impl.controller.csv.BancoAlimentareCSVController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import om.TipoTransazione;
@@ -8,16 +9,17 @@ import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
 /**
- * BancoAlimentareControllerTest. Classe che permette di testare i metodi della classe BancoAlimentareController.
+ * BancoAlimentareCSVControllerTest. Classe che permette di testare i metodi della classe BancoAlimentareCSVController.
  *
  * @author Edoardo Baral
  */
 @Ignore
-public class BancoAlimentareControllerTest
+public class BancoAlimentareCSVControllerTest
 {
     /**
      * Metodo che permette di testare il metodo inizializza()
@@ -27,7 +29,7 @@ public class BancoAlimentareControllerTest
     public void inizializzaTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         controller.inizializza();
         assertFalse(controller.getNomiProdotti().isEmpty());
     }
@@ -40,7 +42,7 @@ public class BancoAlimentareControllerTest
     public void caricaSuFileTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         controller.inizializza();
         controller.caricaSuFile();
     }
@@ -53,7 +55,7 @@ public class BancoAlimentareControllerTest
     public void prelevaTest() throws IOException, InterruptedException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         controller.inizializza();
         boolean result = controller.preleva("Asparagi 300 g", 1, "Mario Rossi");
         assertTrue(result);
@@ -68,7 +70,7 @@ public class BancoAlimentareControllerTest
     public void depositaTest() throws IOException, InterruptedException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         controller.inizializza();
         boolean result = controller.deposita("Asparagi 300 g", 1);
         assertTrue(result);
@@ -83,7 +85,7 @@ public class BancoAlimentareControllerTest
     public void aggiungiProdottoTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
 
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
@@ -114,7 +116,7 @@ public class BancoAlimentareControllerTest
     public void cancellaProdottoTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         initControllerMagazzino(controller);
 
         EntityMagazzino result = controller.cancellaProdotto("Asparagi 300 g");
@@ -129,7 +131,7 @@ public class BancoAlimentareControllerTest
     public void cancellaProdottoTest_2() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         initControllerMagazzino(controller);
 
         EntityMagazzino result = controller.cancellaProdotto("Olio");
@@ -144,7 +146,7 @@ public class BancoAlimentareControllerTest
     public void modificaProdottoTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         initControllerMagazzino(controller);
 
         EntityMagazzino em = new EntityMagazzino();
@@ -164,7 +166,7 @@ public class BancoAlimentareControllerTest
     public void existsTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         initControllerMagazzino(controller);
 
         EntityMagazzino em = new EntityMagazzino();
@@ -183,34 +185,34 @@ public class BancoAlimentareControllerTest
     public void aggiungiTransazioneTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
 
         EntityRegistro er1 = new EntityRegistro();
-        er1.setProdotto("Fusilli");
+        //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er1));
 
         EntityRegistro er2 = new EntityRegistro();
-        er2.setProdotto("Aceto");
+        //er2.setProdotto("Aceto");
         er2.setQuantita(2);
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
         assertNotNull(controller.aggiungiTransazione(er2));
 
         EntityRegistro er3 = new EntityRegistro();
-        er3.setProdotto("Mele");
+        //er3.setProdotto("Mele");
         er3.setQuantita(10);
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er3));
 
         EntityRegistro er4 = new EntityRegistro();
-        er4.setProdotto("Mele");
+        //er4.setProdotto("Mele");
         er4.setQuantita(4);
-        er4.setDataTransazione(new DateTime());
+        er4.setDataTransazione(LocalDate.now());
         er4.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er4));
     }
@@ -223,7 +225,7 @@ public class BancoAlimentareControllerTest
     public void cancellaTransazioneTest() throws IOException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         initControllerRegistro(controller);
 
         EntityRegistro result = controller.cancellaTransazione(1L);
@@ -232,9 +234,9 @@ public class BancoAlimentareControllerTest
 
     /**
      * Metodo privato che permette di inizializzare il magazzino all'interno del controller del banco alimentare
-     * @param controller: oggetto BancoAlimentareController da inizializzare
+     * @param controller: oggetto BancoAlimentareCSVController da inizializzare
      */
-    private void initControllerMagazzino(BancoAlimentareController controller)
+    private void initControllerMagazzino(BancoAlimentareCSVController controller)
     {
         EntityMagazzino em1 = new EntityMagazzino();
         em1.setNome("Tonno in scatola 200 g");
@@ -255,33 +257,33 @@ public class BancoAlimentareControllerTest
 
     /**
      * Metodo privato che permette di inizializzare il registro all'interno del controller del banco alimentare
-     * @param controller: oggetto BancoAlimentareController da inizializzare
+     * @param controller: oggetto BancoAlimentareCSVController da inizializzare
      */
-    private void initControllerRegistro(BancoAlimentareController controller)
+    private void initControllerRegistro(BancoAlimentareCSVController controller)
     {
         EntityRegistro er1 = new EntityRegistro();
-        er1.setProdotto("Fusilli");
+        //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
 
         EntityRegistro er2 = new EntityRegistro();
-        er2.setProdotto("Aceto");
+        //er2.setProdotto("Aceto");
         er2.setQuantita(2);
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
 
         EntityRegistro er3 = new EntityRegistro();
-        er3.setProdotto("Mele");
+        //er3.setProdotto("Mele");
         er3.setQuantita(10);
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
 
         EntityRegistro er4 = new EntityRegistro();
-        er4.setProdotto("Mele");
+        //er4.setProdotto("Mele");
         er4.setQuantita(4);
-        er4.setDataTransazione(new DateTime());
+        er4.setDataTransazione(LocalDate.now());
         er4.setTipoTransazione(TipoTransazione.USCITA);
 
         controller.aggiungiTransazione(er1);
@@ -298,7 +300,7 @@ public class BancoAlimentareControllerTest
     public void toStringTest() throws IOException, InterruptedException
     {
         BasicConfigurator.configure();
-        BancoAlimentareController controller = new BancoAlimentareController();
+        BancoAlimentareCSVController controller = new BancoAlimentareCSVController();
         controller.inizializza();
         boolean result = controller.deposita("Asparagi 300 g", 1);
         assertTrue(result);

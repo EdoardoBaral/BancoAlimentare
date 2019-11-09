@@ -1,7 +1,8 @@
-package impl.controller;
+package impl.controller.csv;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import interfaces.EntityMagazzinoController;
 import om.EntityMagazzino;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +13,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * EntityMagazzinoController. Classe che permette di realizzare un controller per la gestione dei prodotti presenti in magazzino.
+ * EntityMagazzinoCSVController. Classe che permette di realizzare un controller per la gestione dei prodotti presenti in magazzino.
  * Lo stato del magazzino viene scritto su un apposito file CSV.
  * La classe contiene metodi che permettono la lettura del file per recuperarne l'intero contenuto e mapparlo all'interno di una lista e metodi che permettono la scrittura del
  * contenuto della lista sul medesimo file, in caso di aggiornamenti.
  * @author Edoardo Baral
  */
-public class EntityMagazzinoController
+public class EntityMagazzinoCSVController implements EntityMagazzinoController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityMagazzinoController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityMagazzinoCSVController.class);
 
     private static final String PATH = "archivio/magazzino.csv";
     private static final String INTESTAZIONE = "NOME;GIACENZA";
@@ -29,10 +30,10 @@ public class EntityMagazzinoController
     private List<EntityMagazzino> listaProdotti;
 
     /**
-     * Costruttore della classe EntityMagazzinoController
+     * Costruttore della classe EntityMagazzinoCSVController
      * @throws IOException in caso di problemi di lettura/scrittura del file CSV
      */
-    public EntityMagazzinoController() throws IOException
+    public EntityMagazzinoCSVController() throws IOException
     {
         File fileMagazzino = new File(PATH);
         fileMagazzino.createNewFile();

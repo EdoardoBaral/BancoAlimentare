@@ -2,20 +2,29 @@ package om;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.joda.time.DateTime;
+import dev.morphia.annotations.*;
+
+import java.time.LocalDate;
 
 /**
  * EntityRegistro. Classe che rappresenta un record (transazione) nel registro dei prodotti ceduti/acquisiti dal Banco Alimentare.
  *
  * @author Edoardo Baral
  */
+
+@Entity("Transazione")
+@Validation("{ quantita: { $gt: 0 } }")
 public class EntityRegistro implements Comparable<EntityRegistro>
 {
+    @Id
     private Long id;
-    private String prodotto;
+    @Reference
+    private EntityMagazzino prodotto;
     private int quantita;
     private String destinatario;
-    private DateTime dataTransazione;
+    @Property("data")
+    private LocalDate dataTransazione;
+    @Property("tipo")
     private TipoTransazione tipoTransazione;
 
     /**
@@ -45,19 +54,19 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     }
 
     /**
-     * Metodo che restituisce il prodotto del prodotto ceduto
-     * @return il prodotto del prodotto
+     * Metodo che restituisce il prodotto oggetto della transazione
+     * @return il prodotto oggetto della transazione
      */
-    public String getProdotto()
+    public EntityMagazzino getProdotto()
     {
         return prodotto;
     }
 
     /**
-     * Metodo che permette di impostare un nuovo prodotto per il prodotto ceduto
-     * @param prodotto: nuovo prodotto del prodotto
+     * Metodo che permette di impostare un nuovo prodotto la transazione
+     * @param prodotto: prodotto della transazione
      */
-    public void setProdotto(String prodotto)
+    public void setProdotto(EntityMagazzino prodotto)
     {
         this.prodotto = prodotto;
     }
@@ -102,7 +111,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
      * Metodo che restituisce la data di cessione del prodotto
      * @return la data di cessione del prodotto
      */
-    public DateTime getDataTransazione()
+    public LocalDate getDataTransazione()
     {
         return dataTransazione;
     }
@@ -111,7 +120,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
      * Metodo che permette di indicare una data di cessione per il prodotto
      * @param dataTransazione: data di cessione da indicare per il prodotto
      */
-    public void setDataTransazione(DateTime dataTransazione)
+    public void setDataTransazione(LocalDate dataTransazione)
     {
         this.dataTransazione = dataTransazione;
     }
@@ -143,9 +152,9 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     {
         if(this.id == null || other.getId() == null)
         {
-            if (this.dataTransazione.getMillis() < other.getDataTransazione().getMillis())
+            if(this.dataTransazione.compareTo(other.getDataTransazione()) < 0)
                 return -1;
-            else if(this.dataTransazione.getMillis() == other.getDataTransazione().getMillis())
+            else if(this.dataTransazione.compareTo(other.getDataTransazione()) == 0)
                 return 0;
             else
                 return 1;
@@ -176,7 +185,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
             return false;
         else if(!this.destinatario.equals(other.getDestinatario()))
             return false;
-        else if(this.dataTransazione.getMillis() != other.getDataTransazione().getMillis())
+        else if(this.dataTransazione.compareTo(other.getDataTransazione()) != 0)
             return false;
         else if(!this.getTipoTransazione().equals(other.getTipoTransazione()))
             return false;

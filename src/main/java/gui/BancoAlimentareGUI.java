@@ -1,6 +1,6 @@
 package gui;
 
-import impl.controller.BancoAlimentareController;
+import impl.controller.csv.BancoAlimentareCSVController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import org.joda.time.format.DateTimeFormat;
@@ -26,7 +26,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
     private JFrame mainWindow;
     private JTable tabellaMagazzino;
     private JTable tabellaRegistro;
-    private BancoAlimentareController controller;
+    private BancoAlimentareCSVController controller;
 
     /**
      * Launch the application.
@@ -65,7 +65,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
     {
         try
         {
-            controller = new BancoAlimentareController();
+            controller = new BancoAlimentareCSVController();
             controller.inizializza();
         }
         catch(IOException e)
@@ -260,10 +260,10 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         {
             String[] valori = new String[6];
             valori[0] = Long.toString(t.getId());
-            valori[1] = t.getProdotto();
+            //valori[1] = t.getProdotto(); //TODO valutare modifica per controller Morphia
             valori[2] = Integer.toString(t.getQuantita());
             valori[3] = (t.getDestinatario() != null) && (!"null".equals(t.getDestinatario())) ? t.getDestinatario() : "";
-            valori[4] = dtf.print(t.getDataTransazione());
+//            valori[4] = dtf.print(t.getDataTransazione());
             valori[5] = t.getTipoTransazione().toString();
 
             model.addRow(valori);
