@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.time.LocalDate;
+
 /**
  * EntityRegistroTest. Classe di test che permette di verificare la correttezza dei metodi scritti nella classe EntityRegistro
  *
@@ -29,7 +31,7 @@ public class EntityRegistroTest
         er.setProdotto(prodotto);
         er.setQuantita(10);
         er.setDestinatario("Mario Rossi");
-        er.setDataTransazione(new DateTime());
+        er.setDataTransazione(LocalDate.now());
         er.setTipoTransazione(TipoTransazione.USCITA);
         assertEquals("Spaghetti 1 kg", er.getProdotto().getNome());
         assertEquals(10, er.getQuantita());
@@ -54,7 +56,7 @@ public class EntityRegistroTest
         er1.setProdotto(p1);
         er1.setQuantita(10);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
 
         EntityRegistro er2 = new EntityRegistro();
@@ -67,7 +69,7 @@ public class EntityRegistroTest
         er2.setProdotto(p2);
         er2.setQuantita(10);
         er2.setDestinatario("Mario Rossi");
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.USCITA);
 
         EntityRegistro er3 = new EntityRegistro();
@@ -80,7 +82,7 @@ public class EntityRegistroTest
         er3.setProdotto(p3);
         er3.setQuantita(10);
         er3.setDestinatario("Mario Rossi");
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
 
         EntityRegistro er4 = new EntityRegistro();
@@ -116,12 +118,12 @@ public class EntityRegistroTest
         er1.setProdotto(p1);
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
 
         EntityRegistro er2 = new EntityRegistro();
-        DateTime d = new DateTime();
-        d = d.plus(100);
+        LocalDate d = LocalDate.now();
+        //d = d.plus(100);
 
         EntityMagazzino p2 = new EntityMagazzino();
         p2.setNome("Aceto");
@@ -152,7 +154,7 @@ public class EntityRegistroTest
         er.setProdotto(prodotto);
         er.setQuantita(10);
         er.setDestinatario("Mario Rossi");
-        er.setDataTransazione(new DateTime());
+        er.setDataTransazione(LocalDate.now());
         er.setTipoTransazione(TipoTransazione.USCITA);
 
         String result = er.toString();

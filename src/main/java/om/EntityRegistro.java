@@ -3,7 +3,8 @@ package om;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.morphia.annotations.*;
-import org.joda.time.DateTime;
+
+import java.time.LocalDate;
 
 /**
  * EntityRegistro. Classe che rappresenta un record (transazione) nel registro dei prodotti ceduti/acquisiti dal Banco Alimentare.
@@ -22,7 +23,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     private int quantita;
     private String destinatario;
     @Property("data")
-    private DateTime dataTransazione;
+    private LocalDate dataTransazione;
     @Property("tipo")
     private TipoTransazione tipoTransazione;
 
@@ -110,7 +111,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
      * Metodo che restituisce la data di cessione del prodotto
      * @return la data di cessione del prodotto
      */
-    public DateTime getDataTransazione()
+    public LocalDate getDataTransazione()
     {
         return dataTransazione;
     }
@@ -119,7 +120,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
      * Metodo che permette di indicare una data di cessione per il prodotto
      * @param dataTransazione: data di cessione da indicare per il prodotto
      */
-    public void setDataTransazione(DateTime dataTransazione)
+    public void setDataTransazione(LocalDate dataTransazione)
     {
         this.dataTransazione = dataTransazione;
     }
@@ -151,9 +152,9 @@ public class EntityRegistro implements Comparable<EntityRegistro>
     {
         if(this.id == null || other.getId() == null)
         {
-            if (this.dataTransazione.getMillis() < other.getDataTransazione().getMillis())
+            if(this.dataTransazione.compareTo(other.getDataTransazione()) < 0)
                 return -1;
-            else if(this.dataTransazione.getMillis() == other.getDataTransazione().getMillis())
+            else if(this.dataTransazione.compareTo(other.getDataTransazione()) == 0)
                 return 0;
             else
                 return 1;
@@ -184,7 +185,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
             return false;
         else if(!this.destinatario.equals(other.getDestinatario()))
             return false;
-        else if(this.dataTransazione.getMillis() != other.getDataTransazione().getMillis())
+        else if(this.dataTransazione.compareTo(other.getDataTransazione()) != 0)
             return false;
         else if(!this.getTipoTransazione().equals(other.getTipoTransazione()))
             return false;
