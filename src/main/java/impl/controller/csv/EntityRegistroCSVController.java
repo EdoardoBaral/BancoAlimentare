@@ -65,7 +65,7 @@ public class EntityRegistroCSVController implements EntityRegistroController
                 //transazione.setProdotto(valori[1]);
                 transazione.setQuantita(Integer.parseInt(valori[2]));
                 transazione.setDestinatario(valori[3]);
-                transazione.setDataTransazione(dtf.parseDateTime(valori[4]));
+//                transazione.setDataTransazione(dtf.parseDateTime(valori[4]));
                 if(valori[5].equals(TipoTransazione.INGRESSO.name())) transazione.setTipoTransazione(TipoTransazione.INGRESSO);
                 else transazione.setTipoTransazione(TipoTransazione.USCITA);
                 aggiungiTransazione(transazione);
@@ -88,7 +88,7 @@ public class EntityRegistroCSVController implements EntityRegistroController
         {
             DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
             bw.append(transazione.getId() + ";" + transazione.getProdotto() + ";" + transazione.getQuantita() + ";");
-            bw.append(transazione.getDestinatario() + ";" + dtf.print(transazione.getDataTransazione()) + ";" + transazione.getTipoTransazione() + "\n");
+//            bw.append(transazione.getDestinatario() + ";" + dtf.print(transazione.getDataTransazione()) + ";" + transazione.getTipoTransazione() + "\n");
             bw.flush();
         }
     }
@@ -102,7 +102,7 @@ public class EntityRegistroCSVController implements EntityRegistroController
     {
         transazione.setId(nextId);
         nextId++;
-        if(transazione.getDataTransazione() == null) transazione.setDataTransazione(new DateTime());
+//        if(transazione.getDataTransazione() == null) transazione.setDataTransazione(new DateTime());
         listaTransazioni.add(transazione);
         ordinaListaTransazioni();
 

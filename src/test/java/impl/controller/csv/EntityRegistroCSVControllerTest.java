@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
@@ -41,21 +42,21 @@ public class EntityRegistroCSVControllerTest
         //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er1));
 
         EntityRegistro er2 = new EntityRegistro();
         //er2.setProdotto("Aceto");
         er2.setQuantita(2);
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
         assertNotNull(controller.aggiungiTransazione(er2));
 
         EntityRegistro er3 = new EntityRegistro();
         //er3.setProdotto("Mele");
         er3.setQuantita(10);
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er3));
 
@@ -78,28 +79,28 @@ public class EntityRegistroCSVControllerTest
         //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er1));
 
         EntityRegistro er2 = new EntityRegistro();
         //er2.setProdotto("Aceto");
         er2.setQuantita(2);
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
         assertNotNull(controller.aggiungiTransazione(er2));
 
         EntityRegistro er3 = new EntityRegistro();
         //er3.setProdotto("Mele");
         er3.setQuantita(10);
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er3));
 
         EntityRegistro er4 = new EntityRegistro();
         //er4.setProdotto("Mele");
         er4.setQuantita(4);
-        er4.setDataTransazione(new DateTime());
+        er4.setDataTransazione(LocalDate.now());
         er4.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er4));
     }
@@ -116,21 +117,21 @@ public class EntityRegistroCSVControllerTest
         //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er1));
 
         EntityRegistro er2 = new EntityRegistro();
         //er2.setProdotto("Aceto");
         er2.setQuantita(2);
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
         assertNotNull(controller.aggiungiTransazione(er2));
 
         EntityRegistro er3 = new EntityRegistro();
         //er3.setProdotto("Mele");
         er3.setQuantita(10);
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er3));
 
@@ -140,7 +141,7 @@ public class EntityRegistroCSVControllerTest
         EntityRegistro er4 = new EntityRegistro();
         //er4.setProdotto("Mele");
         er4.setQuantita(4);
-        er4.setDataTransazione(new DateTime());
+        er4.setDataTransazione(LocalDate.now());
         er4.setTipoTransazione(TipoTransazione.USCITA);
 
         EntityRegistro resultNull = controller.cancellaTransazione(10L);
@@ -155,21 +156,21 @@ public class EntityRegistroCSVControllerTest
         //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er1));
 
         EntityRegistro er2 = new EntityRegistro();
         //er2.setProdotto("Aceto");
         er2.setQuantita(2);
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
         assertNotNull(controller.aggiungiTransazione(er2));
 
         EntityRegistro er3 = new EntityRegistro();
         //er3.setProdotto("Mele");
         er3.setQuantita(10);
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er3));
 
@@ -193,28 +194,28 @@ public class EntityRegistroCSVControllerTest
         //er1.setProdotto("Fusilli");
         er1.setQuantita(5);
         er1.setDestinatario("Mario Rossi");
-        er1.setDataTransazione(new DateTime());
+        er1.setDataTransazione(LocalDate.now());
         er1.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er1));
 
         EntityRegistro er2 = new EntityRegistro();
         //er2.setProdotto("Aceto");
         er2.setQuantita(2);
-        er2.setDataTransazione(new DateTime());
+        er2.setDataTransazione(LocalDate.now());
         er2.setTipoTransazione(TipoTransazione.INGRESSO);
         assertNotNull(controller.aggiungiTransazione(er2));
 
         EntityRegistro er3 = new EntityRegistro();
         //er3.setProdotto("Mele");
         er3.setQuantita(10);
-        er3.setDataTransazione(new DateTime());
+        er3.setDataTransazione(LocalDate.now());
         er3.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er3));
 
         EntityRegistro er4 = new EntityRegistro();
         //er4.setProdotto("Mele");
         er4.setQuantita(4);
-        er4.setDataTransazione(new DateTime());
+        er4.setDataTransazione(LocalDate.now());
         er4.setTipoTransazione(TipoTransazione.USCITA);
         assertNotNull(controller.aggiungiTransazione(er4));
 

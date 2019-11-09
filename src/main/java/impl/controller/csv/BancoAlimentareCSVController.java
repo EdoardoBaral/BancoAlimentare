@@ -126,7 +126,7 @@ public class BancoAlimentareCSVController implements BancoAlimentareController
             //transazione.setProdotto(nomeProdotto);
             transazione.setQuantita(quantita);
             transazione.setDestinatario(destinatario);
-            transazione.setDataTransazione(new DateTime());
+//            transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.USCITA);
 
             boolean result = preleva(prodotto, transazione, quantita);
@@ -186,7 +186,7 @@ public class BancoAlimentareCSVController implements BancoAlimentareController
             EntityRegistro transazione = new EntityRegistro();
             //transazione.setProdotto(nomeProdotto);
             transazione.setQuantita(quantita);
-            transazione.setDataTransazione(new DateTime());
+//            transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);
 
             LOGGER.info("Stato del controller: " + this.toString());
@@ -201,7 +201,7 @@ public class BancoAlimentareCSVController implements BancoAlimentareController
             EntityRegistro transazione = new EntityRegistro();
             //transazione.setProdotto(nomeProdotto);
             transazione.setQuantita(quantita);
-            transazione.setDataTransazione(new DateTime());
+//            transazione.setDataTransazione(new DateTime());
             transazione.setTipoTransazione(TipoTransazione.INGRESSO);
 
             LOGGER.info("Stato del controller: " + this.toString());
