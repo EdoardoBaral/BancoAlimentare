@@ -71,18 +71,18 @@ public interface BancoAlimentareController
     EntityMagazzino modificaProdotto(EntityMagazzino prodotto);
 
     /**
-     * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento, sfruttando l'algoritmo di ricerca binaria
+     * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento
      * @param prodotto: prodotto da cercare nel magazzino
-     * @return l'indice del prodotto all'interno della lista, negativo nel caso non esista
+     * @return true se il rpodotto esiste in magazzino, false altrimenti
      */
-    int exists(EntityMagazzino prodotto);
+    boolean exists(EntityMagazzino prodotto);
 
     /**
-     * Metodo che verifica l'esistenza nel magazzino di un prodotto il cui nome è uguale a quello passato come argomento, sfruttando l'algoritmo della ricerca binaria
+     * Metodo che verifica l'esistenza nel magazzino di un prodotto il cui nome è uguale a quello passato come argomento
      * @param nomeProdotto: nome del prodotto da cercare nel magazzino
-     * @return l'indice del prodotto all'interno della lista, negativo nel caso non esista
+     * @return true se il rpodotto esiste in magazzino, false altrimenti
      */
-    int exists(String nomeProdotto);
+    boolean exists(String nomeProdotto);
 
     /**
      * Metodo che permette l'aggiunta di un nuovo elemento EntityRegistro nella lista delle transazioni presenti in registro
@@ -115,16 +115,16 @@ public interface BancoAlimentareController
     /**
      * Metodo che verifica l'esistenza nel registro di una transazione uguale a quella passata come argomento, sfruttando l'algoritmo di ricerca binaria
      * @param transazione: transazione da cercare nel registro
-     * @return l'indice della transazione all'interno della lista, negativo nel caso non esista
+     * @return true se la transazione è stata registrata, false altrimenti
      */
-    int exists(EntityRegistro transazione);
+    boolean exists(EntityRegistro transazione);
 
     /**
      * Metodo che verifica l'esistenza nel registro di una transazione il cui id è uguale a quello passato come argomento, sfruttando l'algoritmo della ricerca binaria
      * @param id: id della transazione da cercare nel magazzino
-     * @return l'indice della transazione all'interno della lista, negativo nel caso non esista
+     * @return true se la transazione è stata registrata, false altrimenti
      */
-    int exists(Long id);
+    boolean exists(Long id);
 
     /**
      * Metodo che restituisce la lista dei nomi dei prodotti presenti in magazzino
