@@ -39,4 +39,18 @@ public interface EntityRegistroController
      * @return la lista delle transazioni presenti sul registro
      */
     List<EntityRegistro> getListaTransazioni();
+
+    /**
+     * Metodo che verifica l'esistenza nel registro di una transazione uguale a quella passata come argomento, sfruttando l'algoritmo di ricerca binaria
+     * @param transazione: transazione da cercare nel registro
+     * @return l'indice della transazione all'interno della lista, negativo nel caso non esista
+     */
+    boolean exists(EntityRegistro transazione);
+
+    /**
+     * Metodo che verifica l'esistenza nel registro di una transazione il cui id è uguale a quello passato come argomento, sfruttando l'algoritmo della ricerca binaria
+     * @param id: id della transazione da cercare nel magazzino
+     * @return l'indice della transazione all'interno della lista, negativo nel caso non esista
+     */
+    boolean exists(Long id);
 }

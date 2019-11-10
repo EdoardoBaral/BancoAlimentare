@@ -61,4 +61,25 @@ public interface EntityMagazzinoController
      * @return la lista dei prodotti presenti in magazzino
      */
     List<EntityMagazzino> getProdotti();
+
+    /**
+     * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento
+     * @param prodotto: prodotto da cercare nel magazzino
+     * @return true se il prodotto è presente nel magazzino, false altrimenti
+     */
+    boolean exists(EntityMagazzino prodotto);
+
+    /**
+     * Metodo che verifica l'esistenza nel magazzino di un prodotto il cui nome è uguale a quello passato come argomento
+     * @param nomeProdotto: nome del prodotto da cercare nel magazzino
+     * @return true se il prodotto è presente nel magazzino, false altrimenti
+     */
+    boolean exists(String nomeProdotto);
+
+    /**
+     * Metodo che cerca sul database un determinato prodotto in base al nome passato come argomento
+     * @param nome: nome del prodotto da cercare
+     * @return il prodotto indicato, se esiste, altrimenti null;
+     */
+    EntityMagazzino getProdotto(String nome);
 }
