@@ -108,6 +108,7 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
         LOGGER.info("EntityMagazzinoMorphiaController - Aggiornamento prodotto: "+ result);
         return result;
     }
+
     /**
      * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento, sfruttando l'algoritmo di ricerca binaria
      * @param prodotto: prodotto da cercare nel magazzino
@@ -218,6 +219,7 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
      * @param nome: nome del prodotto da cercare
      * @return il prodotto indicato, se esiste, altrimenti null;
      */
+    @Override
     public EntityMagazzino getProdotto(String nome)
     {
         List<EntityMagazzino> result = datastore.find(EntityMagazzino.class).field("nome").equalIgnoreCase(nome).find().toList();
