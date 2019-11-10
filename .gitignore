@@ -142,3 +142,4 @@ target/
 /.idea
 /.idea/
 /.idea/compiler.xml
+/src/main/java/META-INF/
