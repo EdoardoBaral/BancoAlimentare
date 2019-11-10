@@ -1,12 +1,11 @@
 package om;
 
-import static org.junit.Assert.*;
-
-import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
+
+import static org.junit.Assert.*;
 
 /**
  * EntityRegistroTest. Classe di test che permette di verificare la correttezza dei metodi scritti nella classe EntityRegistro
