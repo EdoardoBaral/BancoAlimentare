@@ -1,6 +1,6 @@
 package gui;
 
-import impl.controller.csv.BancoAlimentareCSVController;
+import interfaces.BancoAlimentareController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class SchedaInserimentoProdotto
 {
@@ -18,12 +17,12 @@ public class SchedaInserimentoProdotto
     private JTextField nomeField;
     private JTextField quantitaField;
 
-    private BancoAlimentareCSVController controller;
+    private BancoAlimentareController controller;
 
     /**
      * Launch the application.
      */
-    public static void startNewWindow(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
+    public static void startNewWindow(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
     {
         EventQueue.invokeLater(new Runnable()
         {
@@ -45,7 +44,7 @@ public class SchedaInserimentoProdotto
     /**
      * Create the application.
      */
-    public SchedaInserimentoProdotto(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
+    public SchedaInserimentoProdotto(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
     {
         initialize(controller, callbackReceiver);
     }
@@ -53,7 +52,7 @@ public class SchedaInserimentoProdotto
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareCSVController controller, ICallbackReceiver callbackReceiver)
+    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
     {
         this.controller = controller;
 
@@ -98,7 +97,6 @@ public class SchedaInserimentoProdotto
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Prodotto aggiunto al magazzino", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
                     LOGGER.info("Prodotto aggiunto al magazzino");
-                    salvaSuFile();
                     mainWindow.dispose();
                     callbackReceiver.callback(SchedaInserimentoProdotto.this);
                 }
@@ -141,8 +139,8 @@ public class SchedaInserimentoProdotto
         }
 
         String nome = nomeField.getText();
-        
         int quantita;
+
         try
         {
             quantita = Integer.parseInt(quantitaField.getText());
@@ -157,12 +155,6 @@ public class SchedaInserimentoProdotto
 
         if(!controller.deposita(nome, quantita))
         {
-            //TODO verificare
-            //il metodo "deposita", al momento, va solo in errore se la relativa transazione di ingresso esiste gia'
-            
-            //JOptionPane.showMessageDialog(new JFrame(), "Prodotto gi\u00e0 presente nel magazzino", "Avviso", JOptionPane.WARNING_MESSAGE);
-            //LOGGER.warn("Prodotto gi\\u00e0 presente nel magazzino");
-            
             String errorMessage = "Inserimento del prodotto fallito";
             JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
             LOGGER.warn("Inserimento del prodotto fallito");
@@ -170,19 +162,5 @@ public class SchedaInserimentoProdotto
         }
         
         return true;
-    }
-
-    private void salvaSuFile()
-    {
-        try
-        {
-            controller.caricaSuFile();
-        }
-        catch(IOException e)
-        {
-            String errorMessage = "Errore nel salvataggio dello stato del controller sul file CSV";
-            JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
-            LOGGER.error("Errore nel salvataggio dello stato del controller sul file CSV - " + e.getMessage());
-        }
     }
 }

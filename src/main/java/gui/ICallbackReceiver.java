@@ -2,5 +2,5 @@ package gui;
 
 public interface ICallbackReceiver 
 {
-    public void callback(Object caller);
+    void callback(Object caller);
 }

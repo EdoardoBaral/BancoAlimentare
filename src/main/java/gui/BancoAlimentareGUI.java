@@ -1,10 +1,9 @@
 package gui;
 
-import impl.controller.csv.BancoAlimentareCSVController;
+import impl.controller.morphia.BancoAlimentareMorphiaController;
+import interfaces.BancoAlimentareController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class BancoAlimentareGUI implements ICallbackReceiver
@@ -26,7 +25,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
     private JFrame mainWindow;
     private JTable tabellaMagazzino;
     private JTable tabellaRegistro;
-    private BancoAlimentareCSVController controller;
+    private BancoAlimentareController controller;
 
     /**
      * Launch the application.
@@ -63,21 +62,11 @@ public class BancoAlimentareGUI implements ICallbackReceiver
      */
     private void initialize()
     {
-        try
-        {
-            controller = new BancoAlimentareCSVController();
-            controller.inizializza();
-        }
-        catch(IOException e)
-        {
-            String errorMessage = "L'applicazione non può essere avviata a causa di un errore nell'istanziazione del controller.\nConsultare i log per maggiori informazioni.";
-            JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore avvio programma", JOptionPane.ERROR_MESSAGE);
-            LOGGER.error("Errore durante l'istanziazione del controller all'avvio del programma\n" + e.getMessage());
-        }
+        controller = new BancoAlimentareMorphiaController();
 
         mainWindow = new JFrame();
-        mainWindow.setTitle("Banco Alimentare (v 1.0)");
-        mainWindow.setBounds(100, 100, 1024, 768);
+        mainWindow.setTitle("Banco Alimentare (v 2.0) -- [Edoardo Baral]");
+        mainWindow.setBounds(100, 100, 1200, 768);
         mainWindow.setResizable(false);
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -104,7 +93,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         JScrollPane scrollPaneMagazzino = new JScrollPane();
         scrollPaneMagazzino.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneMagazzino.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPaneMagazzino.setBounds(10, 11, 750, 670);
+        scrollPaneMagazzino.setBounds(10, 11, 900, 670);
         scrollPaneMagazzino.setLayout(new ScrollPaneLayout());
         schedaMagazzino.add(scrollPaneMagazzino);
 
@@ -113,7 +102,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         scrollPaneMagazzino.setViewportView(tabellaMagazzino);
 
         JPanel pulsantiMagazzinoPanel = new JPanel();
-        pulsantiMagazzinoPanel.setBounds(770, 11, 203, 670);
+        pulsantiMagazzinoPanel.setBounds(950, 11, 203, 670);
         schedaMagazzino.add(pulsantiMagazzinoPanel);
         pulsantiMagazzinoPanel.setLayout(null);
 
@@ -128,29 +117,6 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         nuovoProdottoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         nuovoProdottoBtn.setBounds(10, 50, 183, 23);
         pulsantiMagazzinoPanel.add(nuovoProdottoBtn);
-
-        JButton salvaMagazzinoBtn = new JButton("Salva su file CSV");
-        salvaMagazzinoBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent arg0)
-            {
-                try
-                {
-                    controller.caricaSuFile();
-                    JOptionPane.showMessageDialog(new JFrame(), "Salvataggio avvenuto correttamente", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
-                    LOGGER.info("Salvataggio dello stato del controller sul file CSV avvenuto correttamente");
-                    LOGGER.info("Stato del controller: " + controller);
-                }
-                catch(IOException ex)
-                {
-                    JOptionPane.showMessageDialog(new JFrame(), "Errore durante il salvataggio dello stato del controller", "Errore", JOptionPane.ERROR_MESSAGE);
-                    LOGGER.error("Errore durante il salvataggio dello stato del controller - " + ex.getMessage());
-                }
-            }
-        });
-        salvaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        salvaMagazzinoBtn.setBounds(10, 100, 183, 23);
-        pulsantiMagazzinoPanel.add(salvaMagazzinoBtn);
 
         JButton aggiornaMagazzinoBtn = new JButton("Aggiorna tabella");
         aggiornaMagazzinoBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -172,7 +138,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         JScrollPane scrollPaneRegistro = new JScrollPane();
         scrollPaneRegistro.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPaneRegistro.setBounds(10, 11, 750, 670);
+        scrollPaneRegistro.setBounds(10, 11, 900, 670);
         scrollPaneRegistro.setLayout(new ScrollPaneLayout());
         schedaRegistro.add(scrollPaneRegistro);
 
@@ -181,7 +147,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         scrollPaneRegistro.setViewportView(tabellaRegistro);
 
         JPanel pulsantiRegistroPanel = new JPanel();
-        pulsantiRegistroPanel.setBounds(770, 11, 203, 670);
+        pulsantiRegistroPanel.setBounds(950, 11, 203, 670);
         schedaRegistro.add(pulsantiRegistroPanel);
         pulsantiRegistroPanel.setLayout(null);
 
@@ -196,27 +162,6 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         nuovaTransazioneBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
         nuovaTransazioneBtn.setBounds(10, 50, 183, 23);
         pulsantiRegistroPanel.add(nuovaTransazioneBtn);
-
-        JButton btnSalvaSuFile = new JButton("Salva su file CSV");
-        btnSalvaSuFile.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    controller.caricaSuFile();
-                }
-                catch(IOException ex)
-                {
-                    String errorMessage = "Errore nel salvataggio dello stato del controller sul file CSV";
-                    JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Errore", JOptionPane.ERROR_MESSAGE);
-                    LOGGER.error("Errore nel salvataggio dello stato del controller sul file CSV - " + ex.getMessage());
-                }
-            }
-        });
-        btnSalvaSuFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        btnSalvaSuFile.setBounds(10, 100, 183, 23);
-        pulsantiRegistroPanel.add(btnSalvaSuFile);
 
         JButton aggiornaRegistroBtn = new JButton("Aggiorna tabella");
         aggiornaRegistroBtn.addActionListener(new ActionListener()
@@ -253,17 +198,17 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         DefaultTableModel model = new DefaultTableModel(RIGHE_REGISTRO, COLONNE_REGISTRO);
         tabellaRegistro.setModel(model);
 
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         List<EntityRegistro> transazioni = controller.getTransazioni();
         for(EntityRegistro t : transazioni)
         {
             String[] valori = new String[6];
             valori[0] = Long.toString(t.getId());
-            //valori[1] = t.getProdotto(); //TODO valutare modifica per controller Morphia
+            valori[1] = t.getProdotto().getNome();
             valori[2] = Integer.toString(t.getQuantita());
             valori[3] = (t.getDestinatario() != null) && (!"null".equals(t.getDestinatario())) ? t.getDestinatario() : "";
-//            valori[4] = dtf.print(t.getDataTransazione());
+            valori[4] = t.getDataTransazione().format(dtf);
             valori[5] = t.getTipoTransazione().toString();
 
             model.addRow(valori);
