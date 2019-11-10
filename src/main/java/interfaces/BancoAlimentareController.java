@@ -14,7 +14,7 @@ public interface BancoAlimentareController
      * @param quantita:    quantità di prodotto da prelevare dal magazzino
      * @return true se il prodotto viene trovato nel magazzino, se la sua giacenza è sufficiente per coprire la richiesta e se la transazione viene correttamente registrata, false altrimenti
      */
-    boolean preleva(EntityMagazzino prodotto, EntityRegistro transazione, int quantita);
+    //boolean preleva(EntityMagazzino prodotto, EntityRegistro transazione, int quantita);
 
     /**
      * Metodo che permette di prelevare una quantità specificata di un certo prodotto dal magazzino e registrare la transazione
@@ -32,7 +32,7 @@ public interface BancoAlimentareController
      * @param quantita:    quantità di prodotto da depositare nel magazzino
      * @return true se il prodotto viene trovato nel magazzino e se la transazione viene correttamente registrata, false altrimenti
      */
-    boolean deposita(EntityMagazzino prodotto, EntityRegistro transazione, int quantita);
+    //boolean deposita(EntityMagazzino prodotto, EntityRegistro transazione, int quantita);
 
     /**
      * Metodo che permette di depositare una quantità specificata di un certo prodotto nel magazzino e registrare la transazione
