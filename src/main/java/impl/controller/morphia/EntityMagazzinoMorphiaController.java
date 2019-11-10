@@ -167,6 +167,12 @@ public class EntityMagazzinoMorphiaController implements EntityMagazzinoControll
     @Override
     public boolean decrementaGiacenza(EntityMagazzino prodotto, int quantita)
     {
+        if(quantita <= 0)
+        {
+            LOGGER.warn("EntityMagazzinoMorphiaController - Decremento giacenza prodotto non eseguito causa quantità non valida");
+            return false;
+        }
+
         Query<EntityMagazzino> selectQuery = datastore.createQuery(EntityMagazzino.class).field("nome").equalIgnoreCase(prodotto.getNome());
         UpdateOperations<EntityMagazzino> updates = datastore.createUpdateOperations(EntityMagazzino.class).dec("giacenza", quantita);
         EntityMagazzino result = datastore.findAndModify(selectQuery, updates);
