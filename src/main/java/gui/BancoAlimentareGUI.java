@@ -93,7 +93,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         JScrollPane scrollPaneMagazzino = new JScrollPane();
         scrollPaneMagazzino.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneMagazzino.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPaneMagazzino.setBounds(10, 11, 900, 670);
+        scrollPaneMagazzino.setBounds(10, 11, 900, 600);
         scrollPaneMagazzino.setLayout(new ScrollPaneLayout());
         schedaMagazzino.add(scrollPaneMagazzino);
 
@@ -138,7 +138,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         JScrollPane scrollPaneRegistro = new JScrollPane();
         scrollPaneRegistro.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPaneRegistro.setBounds(10, 11, 900, 670);
+        scrollPaneRegistro.setBounds(10, 11, 900, 600);
         scrollPaneRegistro.setLayout(new ScrollPaneLayout());
         schedaRegistro.add(scrollPaneRegistro);
 
