@@ -1,9 +1,5 @@
-package impl.controller.morphia;
+package impl.controller.mysql;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import dev.morphia.Datastore;
-import dev.morphia.Morphia;
 import interfaces.BancoAlimentareController;
 import interfaces.EntityMagazzinoController;
 import interfaces.EntityRegistroController;
@@ -13,32 +9,23 @@ import om.TipoTransazione;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-import static utils.ConnectionParams.DATABASE;
-import static utils.ConnectionParams.URI;
-
-public class BancoAlimentareMorphiaController implements BancoAlimentareController
+public class BancoAlimentareMySQLController implements BancoAlimentareController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareMorphiaController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareMySQLController.class);
 
     private EntityMagazzinoController magazzino;
     private EntityRegistroController registro;
-    private Datastore datastore;
 
-    public BancoAlimentareMorphiaController()
+    public BancoAlimentareMySQLController() throws SQLException
     {
-        Morphia morphia = new Morphia();
-        morphia.mapPackage("om");
-        MongoClient mongoClient = new MongoClient(new MongoClientURI(URI));
-        datastore = morphia.createDatastore(mongoClient, DATABASE);
-        datastore.ensureIndexes();
+        magazzino = new EntityMagazzinoMySQLController();
+        registro = new EntityRegistroMySQLController();
 
-        magazzino = new EntityMagazzinoMorphiaController();
-        registro = new EntityRegistroMorphiaController();
-
-        LOGGER.info("BancoAlimentareMorphiaController - Nuova istanza creata");
+        LOGGER.info("BancoAlimentareMySQLController - Nuova istanza creata");
     }
 
     /**
@@ -47,8 +34,9 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * @param quantita:    quantità di prodotto da prelevare dal magazzino
      * @return true se il prodotto viene trovato nel magazzino, se la sua giacenza è sufficiente per coprire la richiesta
      * e se la transazione viene correttamente registrata, false altrimenti
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
-    private boolean preleva(EntityRegistro transazione, int quantita)
+    private boolean preleva(EntityRegistro transazione, int quantita) throws SQLException
     {
         boolean result = magazzino.decrementaGiacenza(transazione.getProdotto(), quantita);
 
@@ -74,9 +62,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * @param destinatario: destinatario del prodotto prelevato
      * @return true se il prodotto viene trovato nel magazzino, se la sua giacenza è sufficiente per coprire la richiesta
      * e se la transazione viene correttamente registrata, false altrimenti
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public boolean preleva(String nomeProdotto, int quantita, String destinatario)
+    public boolean preleva(String nomeProdotto, int quantita, String destinatario) throws SQLException
     {
         LOGGER.info("Metodo preleva() - Inizio");
 
@@ -105,8 +94,9 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * @param transazione: transazione da registrare
      * @param quantita:    quantità di prodotto da depositare nel magazzino
      * @return true se il prodotto viene trovato nel magazzino e se la transazione viene correttamente registrata, false altrimenti
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
-    private boolean deposita(EntityRegistro transazione, int quantita)
+    private boolean deposita(EntityRegistro transazione, int quantita) throws SQLException
     {
         EntityMagazzino prodotto = magazzino.getProdotto(transazione.getProdotto().getNome());
         boolean result = true;
@@ -128,7 +118,7 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
     }
 
     @Override
-    public boolean deposita(String nomeProdotto, int quantita)
+    public boolean deposita(String nomeProdotto, int quantita) throws SQLException
     {
         LOGGER.info("Metodo deposita() - Inizio");
 
@@ -156,9 +146,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette l'aggiunta di un nuovo elemento EntityMagazzino nella lista dei prodotti presenti in magazzino
      * @param prodotto: prodotto da aggiungere alla lista
      * @return l'elemento appena aggiunto, null se questo è già presente nella lista
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityMagazzino aggiungiProdotto(EntityMagazzino prodotto)
+    public EntityMagazzino aggiungiProdotto(EntityMagazzino prodotto) throws SQLException
     {
         return magazzino.aggiungiProdotto(prodotto);
     }
@@ -167,9 +158,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette la cancellazione del prodotto passato come argomento dalla lista dei prodotti presenti in magazzino
      * @param prodotto: prodotto da cancellare
      * @return l'elemento EntityMagazzino appena rimosso dalla lista, se esiste, altrimenti null
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityMagazzino cancellaProdotto(EntityMagazzino prodotto)
+    public EntityMagazzino cancellaProdotto(EntityMagazzino prodotto) throws SQLException
     {
         return magazzino.cancellaProdotto(prodotto);
     }
@@ -178,9 +170,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette la cancellazione del prodotto il cui nome viene passato come argomento dalla lista dei prodotti presenti in magazzino
      * @param nomeProdotto: nome del prodotto da cancellare
      * @return l'elemento EntityMagazzino appena rimosso dalla lista, se esiste, altrimenti null
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityMagazzino cancellaProdotto(String nomeProdotto)
+    public EntityMagazzino cancellaProdotto(String nomeProdotto) throws SQLException
     {
         return magazzino.cancellaProdotto(nomeProdotto);
     }
@@ -189,9 +182,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette di modificare uno dei prodotti presenti in magazzino (non il nome, che è la chiave di ricerca)
      * @param prodotto: prodotto aggiornato
      * @return il prodotto appena aggiornato, se esiste nella lista, altrimenti null
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityMagazzino modificaProdotto(EntityMagazzino prodotto)
+    public EntityMagazzino modificaProdotto(EntityMagazzino prodotto) throws SQLException
     {
         return magazzino.modificaProdotto(prodotto);
     }
@@ -200,9 +194,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che verifica l'esistenza nel magazzino di un prodotto uguale a quello passato come argomento
      * @param prodotto: prodotto da cercare nel magazzino
      * @return true se il rpodotto esiste in magazzino, false altrimenti
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public boolean exists(EntityMagazzino prodotto)
+    public boolean exists(EntityMagazzino prodotto) throws SQLException
     {
         return magazzino.exists(prodotto);
     }
@@ -211,9 +206,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che verifica l'esistenza nel magazzino di un prodotto il cui nome è uguale a quello passato come argomento
      * @param nomeProdotto: nome del prodotto da cercare nel magazzino
      * @return true se il rpodotto esiste in magazzino, false altrimenti
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public boolean exists(String nomeProdotto)
+    public boolean exists(String nomeProdotto) throws SQLException
     {
         return magazzino.exists(nomeProdotto);
     }
@@ -222,9 +218,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette l'aggiunta di un nuovo elemento EntityRegistro nella lista delle transazioni presenti in registro
      * @param transazione: transazione da aggiungere alla lista
      * @return l'elemento appena aggiunto, null se questo è già presente nella lista
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityRegistro aggiungiTransazione(EntityRegistro transazione)
+    public EntityRegistro aggiungiTransazione(EntityRegistro transazione) throws SQLException
     {
         return registro.aggiungiTransazione(transazione);
     }
@@ -233,9 +230,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette la cancellazione della transazione passata come argomento dal registro
      * @param transazione: transazione da cancellare
      * @return l'elemento EntityRegistro appena rimosso dalla lista, se esiste, altrimenti null
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityRegistro cancellaTransazione(EntityRegistro transazione)
+    public EntityRegistro cancellaTransazione(EntityRegistro transazione) throws SQLException
     {
         return registro.cancellaTransazione(transazione);
     }
@@ -244,9 +242,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette la cancellazione della transazione il cui id viene passato come argomento dal registro
      * @param id: id della transazione da cancellare
      * @return l'elemento EntityRegistro appena rimosso dalla lista, se esiste, altrimenti null
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityRegistro cancellaTransazione(Long id)
+    public EntityRegistro cancellaTransazione(Long id) throws SQLException
     {
         return registro.cancellaTransazione(id);
     }
@@ -255,9 +254,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che permette di modificare una delle transazioni presenti in registro (non l'id, che è la chiave di ricerca)
      * @param transazione: transazione aggiornata
      * @return la transazione appena aggiornata, se esiste nella lista, altrimenti null
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public EntityRegistro modificaTransazione(EntityRegistro transazione)
+    public EntityRegistro modificaTransazione(EntityRegistro transazione) throws SQLException
     {
         return registro.modificaTransazione(transazione);
     }
@@ -266,9 +266,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che verifica l'esistenza nel registro di una transazione uguale a quella passata come argomento, sfruttando l'algoritmo di ricerca binaria
      * @param transazione: transazione da cercare nel registro
      * @return l'indice della transazione all'interno della lista, negativo nel caso non esista
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public boolean exists(EntityRegistro transazione)
+    public boolean exists(EntityRegistro transazione) throws SQLException
     {
         return registro.exists(transazione);
     }
@@ -277,9 +278,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
      * Metodo che verifica l'esistenza nel registro di una transazione il cui id è uguale a quello passato come argomento, sfruttando l'algoritmo della ricerca binaria
      * @param id: id della transazione da cercare nel magazzino
      * @return l'indice della transazione all'interno della lista, negativo nel caso non esista
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public boolean exists(Long id)
+    public boolean exists(Long id) throws SQLException
     {
         return registro.exists(id);
     }
@@ -287,9 +289,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
     /**
      * Metodo che restituisce la lista dei nomi dei prodotti presenti in magazzino
      * @return la lista dei nomi dei prodotti presenti in magazzino
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public List<String> getNomiProdotti()
+    public List<String> getNomiProdotti() throws SQLException
     {
         return magazzino.getNomiProdotti();
     }
@@ -297,9 +300,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
     /**
      * Metodo che restituisce la lista dei prodotti presenti in magazzino
      * @return la lista dei prodotti presenti in magazzino
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public List<EntityMagazzino> getProdotti()
+    public List<EntityMagazzino> getProdotti() throws SQLException
     {
         return magazzino.getProdotti();
     }
@@ -307,9 +311,10 @@ public class BancoAlimentareMorphiaController implements BancoAlimentareControll
     /**
      * Metodo che restituisce la lista delle transazioni registrate nel registro
      * @return la lista delle transazioni presenti nel registro
+     * @throws SQLException in caso di errori nella comunicazione con il database
      */
     @Override
-    public List<EntityRegistro> getTransazioni()
+    public List<EntityRegistro> getTransazioni() throws SQLException
     {
         return registro.getListaTransazioni();
     }

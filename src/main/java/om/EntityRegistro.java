@@ -2,7 +2,6 @@ package om;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.morphia.annotations.*;
 
 import java.time.LocalDate;
 
@@ -12,19 +11,13 @@ import java.time.LocalDate;
  * @author Edoardo Baral
  */
 
-@Entity("Transazione")
-@Validation("{ quantita: { $gt: 0 } }")
 public class EntityRegistro implements Comparable<EntityRegistro>
 {
-    @Id
     private Long id;
-    @Reference
     private EntityMagazzino prodotto;
     private int quantita;
     private String destinatario;
-    @Property("data")
     private LocalDate dataTransazione;
-    @Property("tipo")
     private TipoTransazione tipoTransazione;
 
     /**

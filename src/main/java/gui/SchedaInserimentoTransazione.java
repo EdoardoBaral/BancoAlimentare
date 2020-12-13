@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class SchedaInserimentoTransazione
     /**
      * Create the application.
      */
-    public SchedaInserimentoTransazione(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    public SchedaInserimentoTransazione(BancoAlimentareController controller, ICallbackReceiver callbackReceiver) throws SQLException
     {
         initialize(controller, callbackReceiver);
     }
@@ -58,7 +59,7 @@ public class SchedaInserimentoTransazione
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver) throws SQLException
     {
         this.controller = controller;
 
@@ -135,12 +136,21 @@ public class SchedaInserimentoTransazione
         {
             public void actionPerformed(ActionEvent e)
             {
-                if(aggiungiTransazioneAlRegistro())
+                try
                 {
-                    JOptionPane.showMessageDialog(new JFrame(), "Transazione aggiunta al registro", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
-                    LOGGER.info("Transazione registrata correttamente");
-                    mainWindow.dispose();
-                    callbackReceiver.callback(SchedaInserimentoTransazione.this);
+                    if(aggiungiTransazioneAlRegistro())
+                    {
+                        JOptionPane.showMessageDialog(new JFrame(), "Transazione aggiunta al registro", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
+                        LOGGER.info("Transazione registrata correttamente");
+                        mainWindow.dispose();
+                        callbackReceiver.callback(SchedaInserimentoTransazione.this);
+                    }
+                }
+                catch(SQLException ex)
+                {
+                    LOGGER.error("SchedaInserimentoTransazione - Errore nel popolamento della tabella del registro");
+                    LOGGER.error(ex.getMessage());
+                    ex.printStackTrace();
                 }
             }
         });
@@ -161,7 +171,7 @@ public class SchedaInserimentoTransazione
         mainWindow.getContentPane().add(annullaBtn);
     }
 
-    private boolean aggiungiTransazioneAlRegistro()
+    private boolean aggiungiTransazioneAlRegistro() throws SQLException
     {
         if((selezioneProdotti.getSelectedItem()).equals("-- Selezionare nome prodotto --"))
         {

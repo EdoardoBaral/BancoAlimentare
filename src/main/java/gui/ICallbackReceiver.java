@@ -1,6 +1,8 @@
 package gui;
 
-public interface ICallbackReceiver 
+import java.sql.SQLException;
+
+public interface ICallbackReceiver
 {
-    void callback(Object caller);
+    void callback(Object caller) throws SQLException;
 }

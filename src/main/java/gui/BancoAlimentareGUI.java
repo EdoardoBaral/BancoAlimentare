@@ -1,6 +1,6 @@
 package gui;
 
-import impl.controller.morphia.BancoAlimentareMorphiaController;
+import impl.controller.mysql.BancoAlimentareMySQLController;
 import interfaces.BancoAlimentareController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class BancoAlimentareGUI implements ICallbackReceiver
                 }
                 catch(Exception e)
                 {
+                    LOGGER.error("BancoAlimentareGUI - Errore bloccante");
+                    LOGGER.error(e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -52,7 +55,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
     /**
      * Create the application.
      */
-    public BancoAlimentareGUI()
+    public BancoAlimentareGUI() throws SQLException
     {
         initialize();
     }
@@ -60,9 +63,9 @@ public class BancoAlimentareGUI implements ICallbackReceiver
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize()
+    private void initialize() throws SQLException
     {
-        controller = new BancoAlimentareMorphiaController();
+        controller = new BancoAlimentareMySQLController();
 
         mainWindow = new JFrame();
         mainWindow.setTitle("Banco Alimentare (v 2.0) -- [Edoardo Baral]");
@@ -124,7 +127,17 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         {
             public void actionPerformed(ActionEvent arg0)
             {
-                popolaTabellaMagazzino();
+                try
+                {
+                    popolaTabellaMagazzino();
+                }
+                catch(SQLException e)
+                {
+                    LOGGER.error("BancoAlimentareGUI - Errore nel popolamento della tabella del magazzino");
+                    LOGGER.error(e.getMessage());
+                    e.printStackTrace();
+                }
+
                 JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -168,7 +181,17 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         {
             public void actionPerformed(ActionEvent arg0)
             {
-                popolaTabellaRegistro();
+                try
+                {
+                    popolaTabellaRegistro();
+                }
+                catch(SQLException e)
+                {
+                    LOGGER.error("BancoAlimentareGUI - Errore nel popolamento della tabella del registro");
+                    LOGGER.error(e.getMessage());
+                    e.printStackTrace();
+                }
+
                 JOptionPane.showMessageDialog(new JFrame(), "Aggiornamento completato", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -177,7 +200,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         pulsantiRegistroPanel.add(aggiornaRegistroBtn);
     }
 
-    private synchronized void popolaTabellaMagazzino()
+    private synchronized void popolaTabellaMagazzino() throws SQLException
     {
         DefaultTableModel model = new DefaultTableModel(RIGHE_MAGAZZINO, COLONNE_MAGAZZINO);
         tabellaMagazzino.setModel(model);
@@ -193,7 +216,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         }
     }
 
-    private synchronized void popolaTabellaRegistro()
+    private synchronized void popolaTabellaRegistro() throws SQLException
     {
         DefaultTableModel model = new DefaultTableModel(RIGHE_REGISTRO, COLONNE_REGISTRO);
         tabellaRegistro.setModel(model);
@@ -216,7 +239,8 @@ public class BancoAlimentareGUI implements ICallbackReceiver
     }
 
     @Override
-    public void callback(Object caller) {
+    public void callback(Object caller) throws SQLException
+    {
         if (caller instanceof SchedaInserimentoProdotto)
             LOGGER.info("callback from SchedaInserimentoProdotto");
         else if (caller instanceof SchedaInserimentoTransazione)

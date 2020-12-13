@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class SchedaInserimentoProdotto
 {
@@ -44,7 +45,7 @@ public class SchedaInserimentoProdotto
     /**
      * Create the application.
      */
-    public SchedaInserimentoProdotto(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    public SchedaInserimentoProdotto(BancoAlimentareController controller, ICallbackReceiver callbackReceiver) throws SQLException
     {
         initialize(controller, callbackReceiver);
     }
@@ -52,7 +53,7 @@ public class SchedaInserimentoProdotto
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver)
+    private void initialize(BancoAlimentareController controller, ICallbackReceiver callbackReceiver) throws SQLException
     {
         this.controller = controller;
 
@@ -93,12 +94,22 @@ public class SchedaInserimentoProdotto
         {
             public void actionPerformed(ActionEvent e)
             {
-                if(aggiungiProdottoAlMagazzino())
+                try
                 {
-                    JOptionPane.showMessageDialog(new JFrame(), "Prodotto aggiunto al magazzino", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
-                    LOGGER.info("Prodotto aggiunto al magazzino");
-                    mainWindow.dispose();
-                    callbackReceiver.callback(SchedaInserimentoProdotto.this);
+                    if(aggiungiProdottoAlMagazzino())
+                    {
+                        JOptionPane.showMessageDialog(new JFrame(), "Prodotto aggiunto al magazzino", "Conferma operazione", JOptionPane.INFORMATION_MESSAGE);
+                        LOGGER.info("Prodotto aggiunto al magazzino");
+                        mainWindow.dispose();
+                        callbackReceiver.callback(SchedaInserimentoProdotto.this);
+
+                    }
+                }
+                catch(SQLException ex)
+                {
+                    LOGGER.error("SchedaInserimentoProdotto - Errore nel popolamento della tabella del magazzino");
+                    LOGGER.error(ex.getMessage());
+                    ex.printStackTrace();
                 }
             }
         });
@@ -120,7 +131,7 @@ public class SchedaInserimentoProdotto
         mainWindow.getContentPane().add(annullaBtn);
     }
 
-    private boolean aggiungiProdottoAlMagazzino()
+    private boolean aggiungiProdottoAlMagazzino() throws SQLException
     {
         if(nomeField.getText() == null || nomeField.getText().equals(""))
         {

@@ -2,22 +2,16 @@ package om;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.morphia.annotations.Entity;
-import dev.morphia.annotations.Id;
-import dev.morphia.annotations.Validation;
 
 /**
- * EntityMagazzino. Classe che rappresenta un record nel registro di magazzino. Le istanze di questa classe descrivono un determinato dipo di prodotto presente in magazzino e la relativa giacenza
+ * EntityMagazzino. Classe che rappresenta un record nel registro di magazzino. Le istanze di questa classe descrivono un determinato tipo di prodotto presente in magazzino e la relativa giacenza
  * (ovvero la quantità residua)
  *
  * @author Edoardo Baral
  */
 
-@Entity("Prodotto")
-@Validation("{ giacenza: { $gte: 0 } }")
 public class EntityMagazzino implements Comparable<EntityMagazzino>
 {
-    @Id
     private String nome;
     private int giacenza;
 
