@@ -1,16 +1,15 @@
 package om;
 
-import static org.junit.Assert.*;
-
-import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * EntityMagazzinoTest. Classe di test che permette di verificare la correttezza dei metodi scritti nella classe EntityMagazzino
  *
  * @author Edoardo Baral
  */
-@Ignore
 public class EntityMagazzinoTest
 {
     /**

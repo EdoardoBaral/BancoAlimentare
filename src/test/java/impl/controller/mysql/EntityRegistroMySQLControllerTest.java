@@ -1,4 +1,4 @@
-package impl.controller.morphia;
+package impl.controller.mysql;
 
 import om.EntityMagazzino;
 import om.EntityRegistro;
@@ -6,26 +6,27 @@ import om.TipoTransazione;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class EntityRegistroMorphiaControllerTest
+public class EntityRegistroMySQLControllerTest
 {
     @Test
     @Ignore
-    public void costruttoreTest()
+    public void costruttoreTest() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
         assertNotNull(controller);
     }
 
     @Test
     @Ignore
-    public void existsProdottoInesistenteTest()
+    public void existsTransazioneInesistenteTest() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
 
         EntityRegistro t1 = new EntityRegistro();
         t1.setId(1L);
@@ -35,9 +36,9 @@ public class EntityRegistroMorphiaControllerTest
 
     @Test
     @Ignore
-    public void aggiungiTransazioneInesistente()
+    public void aggiungiTransazioneInesistente() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
 
         /*---------- Transazione 1 ----------*/
         EntityRegistro t1 = new EntityRegistro();
@@ -81,25 +82,25 @@ public class EntityRegistroMorphiaControllerTest
 
     @Test
     @Ignore
-    public void cancellaTransazioneInesistenteTest()
+    public void cancellaTransazioneInesistenteTest() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
         assertNull(controller.cancellaTransazione(0L));
     }
 
     @Test
     @Ignore
-    public void cancellaTransazioneEsistenteTest()
+    public void cancellaTransazioneEsistenteTest() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
-        assertNotNull(controller.cancellaTransazione(4L));
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        assertNotNull(controller.cancellaTransazione(3L));
     }
 
     @Test
     @Ignore
-    public void getListaTransazioniTest()
+    public void getListaTransazioniTest() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
         List<EntityRegistro> list = controller.getListaTransazioni();
         assertNotNull(list);
         assertTrue(!list.isEmpty());
@@ -107,17 +108,17 @@ public class EntityRegistroMorphiaControllerTest
 
     @Test
     @Ignore
-    public void getTransazioneInesistenteTest()
+    public void getTransazioneInesistenteTest() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
         assertNull(controller.getTransazione(0L));
     }
 
     @Test
     @Ignore
-    public void getTransazioneEsistenteTest()
+    public void getTransazioneEsistenteTest() throws SQLException
     {
-        EntityRegistroMorphiaController controller = new EntityRegistroMorphiaController();
+        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
         assertNotNull(controller.getTransazione(3L));
     }
 }

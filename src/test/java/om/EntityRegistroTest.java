@@ -1,6 +1,5 @@
 package om;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -12,7 +11,6 @@ import static org.junit.Assert.*;
  *
  * @author Edoardo Baral
  */
-@Ignore
 public class EntityRegistroTest
 {
     /**
@@ -122,7 +120,7 @@ public class EntityRegistroTest
 
         EntityRegistro er2 = new EntityRegistro();
         LocalDate d = LocalDate.now();
-        //d = d.plus(100);
+        d = d.plusDays(5);
 
         EntityMagazzino p2 = new EntityMagazzino();
         p2.setNome("Aceto");
