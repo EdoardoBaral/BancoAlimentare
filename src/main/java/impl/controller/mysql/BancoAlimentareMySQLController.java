@@ -354,6 +354,11 @@ public class BancoAlimentareMySQLController implements BancoAlimentareController
 
         if(!backupFile.exists())
             backupFile.createNewFile();
+        else
+        {
+            backupFile.delete();
+            backupFile.createNewFile();
+        }
 
         for(EntityMagazzino prodotto : listaProdotti)
         {
