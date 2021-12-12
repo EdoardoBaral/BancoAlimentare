@@ -370,7 +370,7 @@ public class BancoAlimentareMySQLController implements BancoAlimentareController
 
         for(EntityRegistro transazione : listaTransazioni)
         {
-            String query = "insert into "+ tabellaTransazioni + colonneTransazioni +"values ("+ transazione.getProdotto().getNome() +"', "+ transazione.getQuantita() +
+            String query = "insert into "+ tabellaTransazioni + colonneTransazioni +"values ('"+ transazione.getProdotto().getNome() +"', "+ transazione.getQuantita() +
                            ", '"+ transazione.getDestinatario() +"', '"+ transazione.getDataTransazione().toString() +"', '"+ transazione.getTipoTransazione() +"');\n";
             bw.append(query);
         }
