@@ -2,6 +2,7 @@ package om;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
 
@@ -196,6 +197,7 @@ public class EntityRegistro implements Comparable<EntityRegistro>
         try
         {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             return mapper.writeValueAsString(this);
         }
         catch(JsonProcessingException e)
