@@ -84,4 +84,4 @@ target/
 /archivio/registro.csv
 /src/main/java/META-INF/
 /src/main/resources/META-INF/
-!/.idea/
+/.idea/
