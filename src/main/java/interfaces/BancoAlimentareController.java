@@ -143,4 +143,6 @@ public interface BancoAlimentareController
      * @throws SQLException in caso di errori nella comunicazione con il database
      */
     List<EntityRegistro> getTransazioni() throws SQLException;
+
+    int backupDatabase(int exitfunctionCode) throws SQLException;
 }
