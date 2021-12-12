@@ -140,7 +140,7 @@ target/
 /archivio/magazzino.csv
 /archivio/registro.csv
 /.idea
-/.idea/
+/.idea/*
 /.idea/compiler.xml
 /src/main/java/META-INF/
 /src/main/resources/META-INF/
