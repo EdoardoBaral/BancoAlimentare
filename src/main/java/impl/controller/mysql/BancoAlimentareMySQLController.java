@@ -9,6 +9,11 @@ import om.TipoTransazione;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -317,5 +322,60 @@ public class BancoAlimentareMySQLController implements BancoAlimentareController
     public List<EntityRegistro> getTransazioni() throws SQLException
     {
         return registro.getListaTransazioni();
+    }
+
+    @Override
+    public int backupDatabase(int exitFunctionCode) throws SQLException
+    {
+        List<EntityMagazzino> listaProdotti = magazzino.getProdotti();
+        List<EntityRegistro> listaTransazioni = registro.getListaTransazioni();
+
+        try
+        {
+            scriviFileBackupDatabase(listaProdotti, listaTransazioni);
+        }
+        catch(IOException ex)
+        {
+            throw new SQLException("Errore nella scrittura del file di backup del database\n"+ ex.getMessage());
+        }
+
+        return JFrame.EXIT_ON_CLOSE;
+    }
+
+    private void scriviFileBackupDatabase(List<EntityMagazzino> listaProdotti, List<EntityRegistro> listaTransazioni) throws IOException
+    {
+        String tabellaProdotti = "PRODOTTI";
+        String tabellaTransazioni = "TRANSAZIONI";
+        String colonneProdotti = " (NOME, GIACENZA) ";
+        String colonneTransazioni = " (PRODOTTO, QUANTITA, DESTINATARIO, DATA, TIPO) ";
+
+        File backupFile = new File("BackupDatabase.sql");
+        BufferedWriter bw = new BufferedWriter(new FileWriter(backupFile));
+
+        if(!backupFile.exists())
+            backupFile.createNewFile();
+        else
+        {
+            backupFile.delete();
+            backupFile.createNewFile();
+        }
+
+        for(EntityMagazzino prodotto : listaProdotti)
+        {
+            String query = "insert into "+ tabellaProdotti + colonneProdotti +"values ('"+ prodotto.getNome() +"', "+ prodotto.getGiacenza() +");\n";
+            bw.append(query);
+        }
+        bw.append("\n");
+        bw.flush();
+
+        for(EntityRegistro transazione : listaTransazioni)
+        {
+            String query = "insert into "+ tabellaTransazioni + colonneTransazioni +"values ("+ transazione.getProdotto().getNome() +"', "+ transazione.getQuantita() +
+                           ", '"+ transazione.getDestinatario() +"', '"+ transazione.getDataTransazione().toString() +"', '"+ transazione.getTipoTransazione() +"');\n";
+            bw.append(query);
+        }
+        bw.flush();
+
+        bw.close();
     }
 }

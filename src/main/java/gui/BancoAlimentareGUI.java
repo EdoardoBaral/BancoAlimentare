@@ -71,7 +71,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
         mainWindow.setTitle("Banco Alimentare (v 2.0) -- [Edoardo Baral]");
         mainWindow.setBounds(100, 100, 1200, 700);
         mainWindow.setResizable(false);
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainWindow.setDefaultCloseOperation(controller.backupDatabase(JFrame.EXIT_ON_CLOSE));
         mainWindow.getContentPane().setLayout(new BorderLayout(0, 0));
 
         JPanel topMargin = new JPanel();

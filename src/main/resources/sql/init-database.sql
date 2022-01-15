@@ -7,7 +7,7 @@ create table BANCOALIMENTAREDB.PRODOTTI
 (
     NOME     varchar(50) primary key,
     GIACENZA smallint not null,
-    check (GIACENZA > 0)
+    check (GIACENZA >= 0)
 );
 
 -- CREAZIONE DELLA TABELLA TRANSAZIONI --
