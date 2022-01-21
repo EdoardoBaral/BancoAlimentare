@@ -18,19 +18,19 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-public class BancoAlimentareMySQLController implements BancoAlimentareController
+public class BancoAlimentareDerbyController implements BancoAlimentareController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareMySQLController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BancoAlimentareDerbyController.class);
 
     private EntityMagazzinoController magazzino;
     private EntityRegistroController registro;
 
-    public BancoAlimentareMySQLController() throws SQLException
+    public BancoAlimentareDerbyController() throws SQLException
     {
-        magazzino = new EntityMagazzinoMySQLController();
-        registro = new EntityRegistroMySQLController();
+        magazzino = new EntityMagazzinoDerbyController();
+        registro = new EntityRegistroDerbyController();
 
-        LOGGER.info("BancoAlimentareMySQLController - Nuova istanza creata");
+        LOGGER.info("BancoAlimentareDerbyController - Nuova istanza creata");
     }
 
     /**
@@ -332,7 +332,9 @@ public class BancoAlimentareMySQLController implements BancoAlimentareController
 
         try
         {
+            LOGGER.info("BancoAlimentareDerbyController - Inizio backup database su file");
             scriviFileBackupDatabase(listaProdotti, listaTransazioni);
+            LOGGER.info("BancoAlimentareDerbyController - Backup database su file completato");
         }
         catch(IOException ex)
         {

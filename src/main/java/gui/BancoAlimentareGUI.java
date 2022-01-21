@@ -1,17 +1,20 @@
 package gui;
 
-import impl.controller.mysql.BancoAlimentareMySQLController;
+import impl.controller.mysql.BancoAlimentareDerbyController;
 import interfaces.BancoAlimentareController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.DerbyDatabaseInitializer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,6 +30,7 @@ public class BancoAlimentareGUI implements ICallbackReceiver
     private JTable tabellaMagazzino;
     private JTable tabellaRegistro;
     private BancoAlimentareController controller;
+    DerbyDatabaseInitializer derbyInitializer;
 
     /**
      * Launch the application.
@@ -57,6 +61,8 @@ public class BancoAlimentareGUI implements ICallbackReceiver
      */
     public BancoAlimentareGUI() throws SQLException
     {
+        derbyInitializer = new DerbyDatabaseInitializer();
+        derbyInitializer.initDatabaseDerby();
         initialize();
     }
 
@@ -65,13 +71,28 @@ public class BancoAlimentareGUI implements ICallbackReceiver
      */
     private void initialize() throws SQLException
     {
-        controller = new BancoAlimentareMySQLController();
+        controller = new BancoAlimentareDerbyController();
 
         mainWindow = new JFrame();
-        mainWindow.setTitle("Banco Alimentare (v 2.0) -- [Edoardo Baral]");
+        mainWindow.setTitle("Banco Alimentare (v 3.0) -- [Edoardo Baral]");
         mainWindow.setBounds(100, 100, 1200, 700);
         mainWindow.setResizable(false);
         mainWindow.setDefaultCloseOperation(controller.backupDatabase(JFrame.EXIT_ON_CLOSE));
+        mainWindow.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                try
+                {
+                    controller.backupDatabase(JFrame.EXIT_ON_CLOSE);
+                }
+                catch(SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+        });
         mainWindow.getContentPane().setLayout(new BorderLayout(0, 0));
 
         JPanel topMargin = new JPanel();

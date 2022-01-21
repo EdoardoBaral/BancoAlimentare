@@ -14,7 +14,7 @@ public class BancoAlimentareMorphiaControllerTest
     @Ignore
     public void costruttoreTest() throws SQLException
     {
-        BancoAlimentareController controller = new BancoAlimentareMySQLController();
+        BancoAlimentareController controller = new BancoAlimentareDerbyController();
         assertNotNull(controller);
     }
 
@@ -22,7 +22,7 @@ public class BancoAlimentareMorphiaControllerTest
     @Ignore
     public void depositaProdottoInesistenteTest() throws SQLException
     {
-        BancoAlimentareController controller = new BancoAlimentareMySQLController();
+        BancoAlimentareController controller = new BancoAlimentareDerbyController();
         assertNotNull(controller.deposita("Spaghetti 1 Kg", 5));
         assertNotNull(controller.deposita("Passata di pomodoro 1 L", 3));
         assertNotNull(controller.deposita("Biscotti 500 g", 7));
@@ -34,7 +34,7 @@ public class BancoAlimentareMorphiaControllerTest
     @Ignore
     public void depositaProdottoEsistenteTest() throws SQLException
     {
-        BancoAlimentareController controller = new BancoAlimentareMySQLController();
+        BancoAlimentareController controller = new BancoAlimentareDerbyController();
         assertNotNull(controller.deposita("Spaghetti 1 Kg", 5));
     }
 
@@ -42,7 +42,7 @@ public class BancoAlimentareMorphiaControllerTest
     @Ignore
     public void prelevaProdottoInesistenteTest() throws SQLException
     {
-        BancoAlimentareController controller = new BancoAlimentareMySQLController();
+        BancoAlimentareController controller = new BancoAlimentareDerbyController();
         assertFalse(controller.preleva("Chewing gum", 1, "Mario Rossi"));
     }
 
@@ -50,7 +50,7 @@ public class BancoAlimentareMorphiaControllerTest
     @Ignore
     public void prelevaProdottoQuantitaNonValidaTest() throws SQLException
     {
-        BancoAlimentareController controller = new BancoAlimentareMySQLController();
+        BancoAlimentareController controller = new BancoAlimentareDerbyController();
         assertFalse(controller.preleva("Spaghetti 1 Kg", 0, "Mario Rossi"));
     }
 
@@ -58,7 +58,7 @@ public class BancoAlimentareMorphiaControllerTest
     @Ignore
     public void prelevaProdottoTest() throws SQLException
     {
-        BancoAlimentareController controller = new BancoAlimentareMySQLController();
+        BancoAlimentareController controller = new BancoAlimentareDerbyController();
         assertTrue(controller.preleva("Spaghetti 1 Kg", 1, "Mario Rossi"));
     }
 }

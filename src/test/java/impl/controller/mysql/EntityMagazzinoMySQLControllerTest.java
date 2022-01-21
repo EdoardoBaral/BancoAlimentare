@@ -15,7 +15,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void costruttoreTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
         assertNotNull(controller);
     }
 
@@ -23,7 +23,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void existsFalseTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Succo di pesca 1 L");
         p1.setGiacenza(5);
@@ -35,7 +35,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void existsTrueTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Spaghetti 1 kg");
         p1.setGiacenza(5);
@@ -47,7 +47,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void aggiungiProdottiNuoviTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Spaghetti 1 kg");
@@ -70,7 +70,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void aggiungiProdottoEsistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Spaghetti 1 kg");
@@ -83,7 +83,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void cancellaProdottoInesistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Pomodori");
@@ -96,7 +96,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void cancellaProdottoEsistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Spaghetti 1 kg");
@@ -109,7 +109,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void modificaProdottoInesistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Pomodori");
@@ -122,7 +122,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void modificaProdottoEsistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Fagioli in scatola");
@@ -135,7 +135,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void incrementaGiacenzaProdottoInesistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Pomodori");
@@ -148,7 +148,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void incrementaGiacenzaProdottoEsistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Fagioli in scatola");
@@ -161,7 +161,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void decrementaGiacenzaNonValidaTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Pomodori");
@@ -175,7 +175,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void decrementaGiacenzaProdottoInesistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Pomodori");
@@ -188,7 +188,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void decrementaGiacenzaProdottoEsistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
 
         EntityMagazzino p1 = new EntityMagazzino();
         p1.setNome("Fagioli in scatola");
@@ -201,7 +201,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void getProdottoInesistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
         assertNull(controller.getProdotto("Sapone"));
     }
 
@@ -209,7 +209,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void getProdottoEsistenteTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
         assertNotNull(controller.getProdotto("Fagioli in scatola"));
     }
 
@@ -217,7 +217,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void getNomiProdottiTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
         List<String> list = controller.getNomiProdotti();
         assertNotNull(list);
         assertFalse(list.isEmpty());
@@ -227,7 +227,7 @@ public class EntityMagazzinoMySQLControllerTest
     @Ignore
     public void getProdottiTest() throws SQLException
     {
-        EntityMagazzinoMySQLController controller = new EntityMagazzinoMySQLController();
+        EntityMagazzinoDerbyController controller = new EntityMagazzinoDerbyController();
         List<EntityMagazzino> list = controller.getProdotti();
         assertNotNull(list);
         assertFalse(list.isEmpty());

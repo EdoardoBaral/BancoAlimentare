@@ -4,6 +4,7 @@ import interfaces.EntityRegistroController;
 import om.EntityMagazzino;
 import om.EntityRegistro;
 import om.TipoTransazione;
+import org.apache.derby.jdbc.EmbeddedDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.ConnectionParams;
@@ -16,31 +17,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * EntityRegistroMySQLController. Classe che permette di realizzare un controller per gestire le transazioni del Banco
- * Alimentare salvandole su un database MySQL.
+ * EntityRegistroDerbyController. Classe che permette di realizzare un controller per gestire le transazioni del Banco
+ * Alimentare salvandole su un database embedded Derby.
  *
  * @author Edoardo Baral
  */
-public class EntityRegistroMySQLController implements EntityRegistroController
+public class EntityRegistroDerbyController implements EntityRegistroController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityRegistroMySQLController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityRegistroDerbyController.class);
 
-    private final String url = ConnectionParams.URL;
-    private final String username = ConnectionParams.USERNAME;
-    private final String password = ConnectionParams.PASSWORD;
     private Connection conn;
     private Statement st;
 
     /**
-     * Metodo costruttore della classe EntityRegistroMySQLController
+     * Metodo costruttore della classe EntityRegistroDerbyController
      * @throws SQLException in caso di errori nel tentativo di connessione al database
      */
-    public EntityRegistroMySQLController() throws SQLException
+    public EntityRegistroDerbyController() throws SQLException
     {
-        DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-        conn = DriverManager.getConnection(url, username, password);
+        DriverManager.registerDriver(new EmbeddedDriver());
+        conn = DriverManager.getConnection(ConnectionParams.URL);
         st = conn.createStatement();
-        LOGGER.info("EntityRegistroMySQLController - Nuova istanza creata");
+        LOGGER.info("EntityRegistroDerbyController - Nuova istanza creata");
     }
 
     /**
@@ -61,7 +59,7 @@ public class EntityRegistroMySQLController implements EntityRegistroController
 
         String query = queryColonne + queryValori;
         st.executeUpdate(query);
-        LOGGER.info("EntityRegistroMySQLController - Aggiunta nuova transazione: "+ transazione);
+        LOGGER.info("EntityRegistroDerbyController - Aggiunta nuova transazione: "+ transazione);
         return transazione;
     }
 
@@ -78,12 +76,12 @@ public class EntityRegistroMySQLController implements EntityRegistroController
         {
             String query = "delete from TRANSAZIONI where ID = "+ transazione.getId();
             st.executeUpdate(query);
-            LOGGER.info("EntityRegistroMySQLController - Cancellazione transazione: "+ transazione);
+            LOGGER.info("EntityRegistroDerbyController - Cancellazione transazione: "+ transazione);
             return transazione;
         }
         else
         {
-            LOGGER.info("EntityRegistroMySQLController - Tentativo di cancellazione transazione inesistente: "+ transazione);
+            LOGGER.info("EntityRegistroDerbyController - Tentativo di cancellazione transazione inesistente: "+ transazione);
             return null;
         }
     }
@@ -103,12 +101,12 @@ public class EntityRegistroMySQLController implements EntityRegistroController
 
             String query = "delete from TRANSAZIONI where ID = "+ id;
             st.executeUpdate(query);
-            LOGGER.info("EntityRegistroMySQLController - Cancellazione transazione: "+ id);
+            LOGGER.info("EntityRegistroDerbyController - Cancellazione transazione: "+ id);
             return transazione;
         }
         else
         {
-            LOGGER.info("EntityRegistroMySQLController - Tentativo di cancellazione transazione inesistente: "+ id);
+            LOGGER.info("EntityRegistroDerbyController - Tentativo di cancellazione transazione inesistente: "+ id);
             return null;
         }
     }
@@ -137,12 +135,12 @@ public class EntityRegistroMySQLController implements EntityRegistroController
             String query = queryHeader + queryValues + queryCondition;
 
             st.executeUpdate(query);
-            LOGGER.info("EntityRegistroMySQLController - Aggiornamento transazione: "+ transazione);
+            LOGGER.info("EntityRegistroDerbyController - Aggiornamento transazione: "+ transazione);
             return transazione;
         }
         else
         {
-            LOGGER.info("EntityRegistroMySQLController - Tentativo di aggiornamento transazione inesistente: "+ transazione);
+            LOGGER.info("EntityRegistroDerbyController - Tentativo di aggiornamento transazione inesistente: "+ transazione);
             return null;
         }
     }
@@ -221,7 +219,7 @@ public class EntityRegistroMySQLController implements EntityRegistroController
             listaTransazioni.add(transazione);
         }
 
-        LOGGER.info("EntityRegistroMySQLController - Recuperata lista transazioni");
+        LOGGER.info("EntityRegistroDerbyController - Recuperata lista transazioni");
         return listaTransazioni;
     }
 
@@ -255,7 +253,7 @@ public class EntityRegistroMySQLController implements EntityRegistroController
 
             transazione.setTipoTransazione(TipoTransazione.valueOf(rs.getString("TIPO")));
 
-            LOGGER.info("EntityRegistroMySQLController - Recuperata transazione");
+            LOGGER.info("EntityRegistroDerbyController - Recuperata transazione");
             return transazione;
         }
 

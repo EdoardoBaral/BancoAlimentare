@@ -2,6 +2,7 @@ package impl.controller.mysql;
 
 import interfaces.EntityMagazzinoController;
 import om.EntityMagazzino;
+import org.apache.derby.jdbc.EmbeddedDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.ConnectionParams;
@@ -11,31 +12,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * EntityMagazzinoMySQLController. Classe che implementa l'interfaccia EntityMagazzinoController e realizza un connettore
- * verso il database MySQL.
+ * EntityMagazzinoDerbyController. Classe che implementa l'interfaccia EntityMagazzinoController e realizza un connettore
+ * verso il database embedded Derby.
  *
  * @author Edoardo Baral
  */
-public class EntityMagazzinoMySQLController implements EntityMagazzinoController
+public class EntityMagazzinoDerbyController implements EntityMagazzinoController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityMagazzinoMySQLController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityMagazzinoDerbyController.class);
 
-    private final String url = ConnectionParams.URL;
-    private final String username = ConnectionParams.USERNAME;
-    private final String password = ConnectionParams.PASSWORD;
     private Connection conn;
     private Statement st;
 
     /**
-     * Costruttore della classe EntityMagazzinoMySQLController che stabilisce una connessione verso il database MySQL
+     * Costruttore della classe EntityMagazzinoDerbyController che stabilisce una connessione verso il database MySQL
      * @throws SQLException in caso di errori nel tentativo di connessione al database
      */
-    public EntityMagazzinoMySQLController() throws SQLException
+    public EntityMagazzinoDerbyController() throws SQLException
     {
-        DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-        conn = DriverManager.getConnection(url, username, password);
+        DriverManager.registerDriver(new EmbeddedDriver());
+        conn = DriverManager.getConnection(ConnectionParams.URL);
         st = conn.createStatement();
-        LOGGER.info("EntityMagazzinoMySQLController - Nuova istanza creata");
+        LOGGER.info("EntityMagazzinoDerbyController - Nuova istanza creata");
     }
 
     /**
@@ -63,12 +61,12 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
         {
             String query = "insert into PRODOTTI (NOME, GIACENZA) values ('"+ prodotto.getNome() +"', "+ prodotto.getGiacenza() +")";
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            LOGGER.info("EntityMagazzinoMySQLController - Inserimento prodotto: "+ prodotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Inserimento prodotto: "+ prodotto);
             return prodotto;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMySQLController - Tentativo di inserimento prodotto esistente: "+ prodotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Tentativo di inserimento prodotto esistente: "+ prodotto);
             return null;
         }
     }
@@ -86,12 +84,12 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
         {
             String query = "delete from PRODOTTI where NOME = '"+ prodotto.getNome() +"'";
             st.executeUpdate(query);
-            LOGGER.info("EntityMagazzinoMySQLController - Cancellazione prodotto: "+ prodotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Cancellazione prodotto: "+ prodotto);
             return prodotto;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMySQLController - Tentativo di cancellazione di un prodotto inesistente: "+ prodotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Tentativo di cancellazione di un prodotto inesistente: "+ prodotto);
             return null;
         }
     }
@@ -111,12 +109,12 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
         {
             String query = "delete from PRODOTTI where NOME = '"+ nomeProdotto +"'";
             st.executeUpdate(query);
-            LOGGER.info("EntityMagazzinoMySQLController - Cancellazione prodotto: "+ nomeProdotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Cancellazione prodotto: "+ nomeProdotto);
             return prodotto;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMySQLController - Tentatico di cancellazione di un prodotto inesistente: "+ nomeProdotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Tentatico di cancellazione di un prodotto inesistente: "+ nomeProdotto);
             return null;
         }
     }
@@ -134,12 +132,12 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
         {
             String query = "update PRODOTTI set GIACENZA = "+ prodotto.getGiacenza() +" where NOME = '"+ prodotto.getNome() +"'";
             st.executeUpdate(query);
-            LOGGER.info("EntityMagazzinoMySQLController - Aggiornamento prodotto: "+ prodotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Aggiornamento prodotto: "+ prodotto);
             return prodotto;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMySQLController - Tentativo aggiornamento prodotto inesistente: "+ prodotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Tentativo aggiornamento prodotto inesistente: "+ prodotto);
             return null;
         }
     }
@@ -192,7 +190,7 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
     {
         if(quantita <= 0)
         {
-            LOGGER.warn("EntityMagazzinoMySQLController - Incremento giacenza prodotto non eseguito causa quantità non valida");
+            LOGGER.warn("EntityMagazzinoDerbyController - Incremento giacenza prodotto non eseguito causa quantità non valida");
             return false;
         }
 
@@ -200,12 +198,12 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
         {
             String query = "update PRODOTTI set GIACENZA = GIACENZA + "+ quantita +" where NOME = '"+ prodotto.getNome() +"'";
             st.executeUpdate(query);
-            LOGGER.info("EntityMagazzinoMySQLController - Incremento della giacenza del prodotto "+ prodotto.getNome());
+            LOGGER.info("EntityMagazzinoDerbyController - Incremento della giacenza del prodotto "+ prodotto.getNome());
             return true;
         }
         else
         {
-            LOGGER.warn("EntityMagazzinoMySQLController - Incremento giacenza prodotto non eseguito causa prodotto non trovato");
+            LOGGER.warn("EntityMagazzinoDerbyController - Incremento giacenza prodotto non eseguito causa prodotto non trovato");
             return false;
         }
     }
@@ -222,7 +220,7 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
     {
         if(quantita <= 0)
         {
-            LOGGER.warn("EntityMagazzinoMySQLController - Decremento giacenza prodotto non eseguito causa quantità non valida");
+            LOGGER.warn("EntityMagazzinoDerbyController - Decremento giacenza prodotto non eseguito causa quantità non valida");
             return false;
         }
 
@@ -230,12 +228,12 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
         {
             String query = "update PRODOTTI set GIACENZA = GIACENZA - "+ quantita +" where NOME = '"+ prodotto.getNome() +"'";
             st.executeUpdate(query);
-            LOGGER.info("EntityMagazzinoMySQLController - Decremento della giacenza del prodotto "+ prodotto.getNome());
+            LOGGER.info("EntityMagazzinoDerbyController - Decremento della giacenza del prodotto "+ prodotto.getNome());
             return true;
         }
         else
         {
-            LOGGER.warn("EntityMagazzinoMySQLController - Decremento giacenza prodotto non eseguito causa prodotto non trovato");
+            LOGGER.warn("EntityMagazzinoDerbyController - Decremento giacenza prodotto non eseguito causa prodotto non trovato");
             return false;
         }
     }
@@ -258,7 +256,7 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
             nomiProdotti.add(nome);
         }
 
-        LOGGER.info("EntityMagazzinoMySQLController - Recuperata lista nomi prodotti");
+        LOGGER.info("EntityMagazzinoDerbyController - Recuperata lista nomi prodotti");
         return nomiProdotti;
     }
 
@@ -282,7 +280,7 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
             listaProdotti.add(prodotto);
         }
 
-        LOGGER.info("EntityMagazzinoMySQLController - Recuperata lista prodotti");
+        LOGGER.info("EntityMagazzinoDerbyController - Recuperata lista prodotti");
         return listaProdotti;
     }
 
@@ -304,12 +302,12 @@ public class EntityMagazzinoMySQLController implements EntityMagazzinoController
             prodotto.setNome(rs.getString("NOME"));
             prodotto.setGiacenza(rs.getInt("GIACENZA"));
 
-            LOGGER.info("EntityMagazzinoMySQLController - Recupero prodotto - "+ prodotto);
+            LOGGER.info("EntityMagazzinoDerbyController - Recupero prodotto - "+ prodotto);
             return prodotto;
         }
         else
         {
-            LOGGER.info("EntityMagazzinoMySQLController - Tentativo di recupero prodotto inesistente - "+ nome);
+            LOGGER.info("EntityMagazzinoDerbyController - Tentativo di recupero prodotto inesistente - "+ nome);
             return null;
         }
     }

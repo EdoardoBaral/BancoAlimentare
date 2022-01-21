@@ -18,7 +18,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void costruttoreTest() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
         assertNotNull(controller);
     }
 
@@ -26,7 +26,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void existsTransazioneInesistenteTest() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
 
         EntityRegistro t1 = new EntityRegistro();
         t1.setId(1L);
@@ -38,7 +38,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void aggiungiTransazioneInesistente() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
 
         /*---------- Transazione 1 ----------*/
         EntityRegistro t1 = new EntityRegistro();
@@ -84,7 +84,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void cancellaTransazioneInesistenteTest() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
         assertNull(controller.cancellaTransazione(0L));
     }
 
@@ -92,7 +92,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void cancellaTransazioneEsistenteTest() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
         assertNotNull(controller.cancellaTransazione(3L));
     }
 
@@ -100,7 +100,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void getListaTransazioniTest() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
         List<EntityRegistro> list = controller.getListaTransazioni();
         assertNotNull(list);
         assertTrue(!list.isEmpty());
@@ -110,7 +110,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void getTransazioneInesistenteTest() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
         assertNull(controller.getTransazione(0L));
     }
 
@@ -118,7 +118,7 @@ public class EntityRegistroMySQLControllerTest
     @Ignore
     public void getTransazioneEsistenteTest() throws SQLException
     {
-        EntityRegistroMySQLController controller = new EntityRegistroMySQLController();
+        EntityRegistroDerbyController controller = new EntityRegistroDerbyController();
         assertNotNull(controller.getTransazione(3L));
     }
 }
